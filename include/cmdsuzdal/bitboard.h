@@ -2,6 +2,7 @@
 #define CSZD_BITBOARD_HEADER
 
 #include <cstdint>   // for uint64_t
+#include <vector>
 
 namespace cSzd
 {
@@ -38,8 +39,14 @@ namespace cSzd
       BitBoardState state() const { return bbs; }
       BitBoardState setCell(File f, Rank r) { return (bbs |= 1ULL << (r * 8 + f)); }
       BitBoardState resetCell(File f, Rank r) { return (bbs &= ~(1ULL << (r * 8 + f))); }
-      BitBoardState setCellByName(Cell c) { return (bbs |= 1ULL << c); }
-      BitBoardState resetCellByName(Cell c) { return (bbs &= ~(1ULL << c)); }
+      BitBoardState setCell(Cell c) { return (bbs |= 1ULL << c); }
+      BitBoardState resetCell(Cell c) { return (bbs &= ~(1ULL << c)); }
+      BitBoardState setCell(const std::vector<Cell> &cells) { for (auto c: cells) setCell(c); return state(); }
+      BitBoardState resetCell(const std::vector<Cell> &cells) { for (auto c: cells) resetCell(c); return state(); }
+
+      BitBoardState addCells(BitBoardState s) { return bbs |= s;}
+      BitBoardState delCells(BitBoardState s) { return bbs &= ~s;}
+
 
     private:
       BitBoardState bbs = EmptyBB;
