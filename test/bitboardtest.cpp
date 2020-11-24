@@ -6,8 +6,8 @@ using namespace std;
 using namespace cSzd;
 using namespace testing;
 
-// Bitboard not important definitions (just for tests)
-const BitBoardState A1ActiveBB = 0x0000000000000001ULL;
+// Not important Bitboard definitions (just for tests)
+constexpr BitBoardState A1ActiveBB { 0x0000000000000001ULL };
 
 // --------------------------------------------------------
 TEST(BBTester, AfterDefinitionBitboardIsEmpty)

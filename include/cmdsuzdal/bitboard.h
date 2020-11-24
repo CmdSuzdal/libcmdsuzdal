@@ -9,9 +9,9 @@ namespace cSzd
   typedef uint64_t BitBoardState;
 
   // Bitboard important definitions
-  const BitBoardState EmptyBB = 0x0000000000000000ULL;
+  constexpr BitBoardState EmptyBB {};
 
-  typedef enum cellname_e {
+  typedef enum cell_e {
     a1, b1, c1, d1, e1, f1, g1, h1,
     a2, b2, c2, d2, e2, f2, g2, h2,
     a3, b3, c3, d3, e3, f3, g3, h3,
@@ -22,10 +22,10 @@ namespace cSzd
     a8, b8, c8, d8, e8, f8, g8, h8
   } Cell;
 
-  typedef enum filename_e {
+  typedef enum file_e {
     f_a, f_b, f_c, f_d, f_e, f_f, f_g, f_h
   } File;
-  typedef enum rankname_e {
+  typedef enum rank_e {
     r_1, r_2, r_3, r_4, r_5, r_6, r_7, r_8
   } Rank;
 
@@ -33,16 +33,16 @@ namespace cSzd
   class BitBoard
   {
     public:
-      BitBoard() { bbs = EmptyBB; }
+      BitBoard() = default;
 
       BitBoardState state() const { return bbs; }
       BitBoardState setCell(File f, Rank r) { return (bbs |= 1ULL << (r * 8 + f)); }
-      BitBoardState resetCell(File f, Rank r) { return (bbs &= ~(1ULL << (r *8 + f))); }
+      BitBoardState resetCell(File f, Rank r) { return (bbs &= ~(1ULL << (r * 8 + f))); }
       BitBoardState setCellByName(Cell c) { return (bbs |= 1ULL << c); }
       BitBoardState resetCellByName(Cell c) { return (bbs &= ~(1ULL << c)); }
 
     private:
-      BitBoardState bbs;
+      BitBoardState bbs = EmptyBB;
   };
 
 } // namespace cSzd
