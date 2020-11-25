@@ -6,45 +6,6 @@ using namespace std;
 using namespace cSzd;
 using namespace testing;
 
-// Not important Bitboard definitions (just for tests)
-constexpr BitBoardState A1ActiveBB { 0x0000000000000001ULL };
-constexpr BitBoardState Rank1BB    { 0x00000000000000FFULL};
-constexpr BitBoardState RanksBB[]  {
-    Rank1BB,
-    Rank1BB << 8,
-    Rank1BB << 16,
-    Rank1BB << 24,
-    Rank1BB << 32,
-    Rank1BB << 40,
-    Rank1BB << 48,
-    Rank1BB << 56,
-};
-constexpr BitBoardState File1BB    { 0x0101010101010101ULL};
-constexpr BitBoardState FilesBB[]  {
-    File1BB,
-    File1BB << 1,
-    File1BB << 2,
-    File1BB << 3,
-    File1BB << 4,
-    File1BB << 5,
-    File1BB << 6,
-    File1BB << 7,
-};
-
-constexpr BitBoardState DiagonalBB      { 0x8040201008040201ULL };
-constexpr BitBoardState AntiDiagonalBB  { 0x0102040810204080ULL };
-constexpr BitBoardState BothDiagonalsBB { DiagonalBB | AntiDiagonalBB };
-
-constexpr BitBoardState AllCellsBB      { 0xFFFFFFFFFFFFFFFFULL };
-constexpr BitBoardState AllBlackCellsBB { 0xAA55AA55AA55AA55ULL };
-constexpr BitBoardState AllWhiteCellsBB { ~AllBlackCellsBB };
-
-// ------
-// center of board can be defined with the intersection of files d,e and ranks 4,5
-constexpr BitBoardState BoardCenterBB  { (RanksBB[r_4] | RanksBB[r_5]) &
-                                         (FilesBB[f_d] | FilesBB[f_e]) };
-//constexpr BitBoardState BoardCenterBB  { 0x0000001818000000ULL };
-
 // --------------------------------------------------------
 TEST(BBTester, AfterDefinitionBitboardIsEmpty)
 {
@@ -164,8 +125,7 @@ TEST(BBTester, IntersectionBetweenRank3AndFileFIsF3)
 
 TEST(BBTester, AddAllBlackAndWhiteCellsToObtainBitboardFull)
 {
-    BitBoard bb;
-    bb.setCells(AllBlackCellsBB);
+    BitBoard bb(AllBlackCellsBB);
     ASSERT_EQ(bb.setCells(AllWhiteCellsBB), AllCellsBB);
 }
 
@@ -235,6 +195,5 @@ TEST(BBTester, TestXorOperator)
 {
     BitBoard diags(BothDiagonalsBB);
     BitBoard diagsNoCenter({a1, h1, b2, g2, c3, f3, c6, f6, b7, g7, a8, h8});
-    BitBoard center(BoardCenterBB);
-    ASSERT_EQ(diags ^ diagsNoCenter, center);
+    ASSERT_EQ(diags ^ diagsNoCenter, BitBoard::Center());
 }
