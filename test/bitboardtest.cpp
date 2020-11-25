@@ -126,14 +126,14 @@ TEST(BBTester, IntersectionBetweenRank3AndFileFIsF3)
 TEST(BBTester, AddAllBlackAndWhiteCellsToObtainBitboardFull)
 {
     BitBoard bb(AllBlackCellsBB);
-    ASSERT_EQ(bb.setCells(AllWhiteCellsBB), AllCellsBB);
+    ASSERT_EQ(bb | AllWhiteCellsBB, AllCellsBB);
 }
 
 TEST(BBTester, RemoveWhiteCellsToFullBoardToObtainBlackCellsOnly)
 {
-    BitBoard bb;
-    bb.setCells(AllCellsBB);
-    ASSERT_EQ(bb.resetCells(AllWhiteCellsBB), AllBlackCellsBB);
+    BitBoard bb(AllCellsBB);
+    // This is a not clear way to remove cells, but works...
+    ASSERT_EQ(bb & ~AllWhiteCellsBB, AllBlackCellsBB);
 }
 
 TEST(BBTester, TestCopyConstructor)

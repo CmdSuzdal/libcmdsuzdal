@@ -70,6 +70,7 @@ namespace cSzd
 
   // -------------------------------------------------------------------------
   // base class for bitboard representation
+  // After some refactoring one question remains: we REALLY need a class??
   class BitBoard
   {
   public:
@@ -83,9 +84,19 @@ namespace cSzd
       BitBoard bb(this->state() | rhs.state());
       return bb;
     }
+    BitBoard operator|(BitBoardState rhs) const
+    {
+      BitBoard bb(this->state() | rhs);
+      return bb;
+    }
     BitBoard operator&(const BitBoard &rhs) const
     {
       BitBoard bb(this->state() & rhs.state());
+      return bb;
+    }
+    BitBoard operator&(BitBoardState rhs) const
+    {
+      BitBoard bb(this->state() & rhs);
       return bb;
     }
     BitBoard operator^(const BitBoard &rhs) const
@@ -97,6 +108,10 @@ namespace cSzd
     {
       return this->state() == rhs.state();
     }
+    bool operator==(BitBoardState rhs) const
+    {
+      return this->state() == rhs;
+    }
 
     // Special BitBoards
     static BitBoard Center() {return BitBoard(BoardCenterBB); }
@@ -107,24 +122,21 @@ namespace cSzd
       return bbs;
     }
     BitBoardState setCell(File f, Rank r) { return (bbs |= 1ULL << (r * 8 + f)); }
-    BitBoardState resetCell(File f, Rank r) { return (bbs &= ~(1ULL << (r * 8 + f))); }
     BitBoardState setCell(Cell c) { return (bbs |= 1ULL << c); }
-    BitBoardState resetCell(Cell c) { return (bbs &= ~(1ULL << c)); }
     BitBoardState setCell(const std::vector<Cell> &cells)
     {
       for (auto c : cells)
         setCell(c);
       return state();
     }
+    BitBoardState resetCell(File f, Rank r) { return (bbs &= ~(1ULL << (r * 8 + f))); }
+    BitBoardState resetCell(Cell c) { return (bbs &= ~(1ULL << c)); }
     BitBoardState resetCell(const std::vector<Cell> &cells)
     {
       for (auto c : cells)
         resetCell(c);
       return state();
     }
-
-    BitBoardState setCells(BitBoardState s) { return bbs |= s; }
-    BitBoardState resetCells(BitBoardState s) { return bbs &= ~s; }
 
   private:
     BitBoardState bbs = EmptyBB;
