@@ -218,3 +218,13 @@ TEST(BBTester, TestCopyOperator)
     BitBoard bb2 = bb;
     ASSERT_EQ(bb2.state(), AllBlackCellsBB);
 }
+
+TEST(BBTester, ShiftWestOfEightPositionReturnsEmptyBoard) {
+    BitBoard bb(AllCellsBB);
+    ASSERT_EQ(bb.shiftWest(8), EmptyBB);
+}
+
+TEST(BBTester, ShiftWestLastFourEastFilesReturnsFourWestFiles) {
+    BitBoard bb(FilesBB[f_e] | FilesBB[f_f] | FilesBB[f_g] | FilesBB[f_h]);
+    ASSERT_EQ(bb.shiftWest(4), FilesBB[f_a] | FilesBB[f_b] | FilesBB[f_c] | FilesBB[f_d]);
+}
