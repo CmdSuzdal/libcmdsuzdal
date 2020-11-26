@@ -99,7 +99,11 @@ namespace cSzd
     explicit BitBoard(const std::vector<Cell> &cells) { setCell(cells); }
     explicit BitBoard(BitBoardState bitbs) { bbs = bitbs; }
 
+    BitBoardState clear() { bbs = EmptyBB; return state(); }
+
     // operators
+    BitBoard &operator=(const BitBoard &rhs) = default;
+
     BitBoard operator|(const BitBoard &rhs) const
     {
       BitBoard bb(this->state() | rhs.state());

@@ -204,3 +204,17 @@ TEST(BBTester, TestXorOperatorWithBitBoardState)
     BitBoard blackCamp(RanksBB[r_7] | RanksBB[r_8]);
     ASSERT_EQ(whiteCamp ^ (RanksBB[r_7] | RanksBB[r_8]), whiteCamp | blackCamp);
 }
+
+TEST(BBTester, TestClearBoardOperation)
+{
+    BitBoard bb(AllBlackCellsBB);
+    bb.clear();
+    ASSERT_EQ(bb.state(), EmptyBB);
+}
+
+TEST(BBTester, TestCopyOperator)
+{
+    BitBoard bb(AllBlackCellsBB);
+    BitBoard bb2 = bb;
+    ASSERT_EQ(bb2.state(), AllBlackCellsBB);
+}
