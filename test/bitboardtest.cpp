@@ -197,3 +197,10 @@ TEST(BBTester, TestXorOperator)
     BitBoard diagsNoCenter({a1, h1, b2, g2, c3, f3, c6, f6, b7, g7, a8, h8});
     ASSERT_EQ(diags ^ diagsNoCenter, BitBoard::Center());
 }
+
+TEST(BBTester, TestXorOperatorWithBitBoardState)
+{
+    BitBoard whiteCamp(RanksBB[r_1] | RanksBB[r_2]);
+    BitBoard blackCamp(RanksBB[r_7] | RanksBB[r_8]);
+    ASSERT_EQ(whiteCamp ^ (RanksBB[r_7] | RanksBB[r_8]), whiteCamp | blackCamp);
+}
