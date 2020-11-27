@@ -35,6 +35,8 @@ namespace cSzd
   class BitBoard
   {
   public:
+    BitBoardState bbs {};
+
     BitBoard() = default;
     explicit BitBoard(const std::vector<Cell> &cells) { setCell(cells); }
     explicit BitBoard(BitBoardState bitbs) { bbs = bitbs; }
@@ -47,7 +49,7 @@ namespace cSzd
 
     BitBoard operator|(const BitBoard &rhs) const
     {
-      BitBoard bb(bbs | rhs.state());
+      BitBoard bb(bbs | rhs.bbs);
       return bb;
     }
     BitBoard operator|(BitBoardState rhs) const
@@ -57,7 +59,7 @@ namespace cSzd
     }
     BitBoard operator&(const BitBoard &rhs) const
     {
-      BitBoard bb(bbs & rhs.state());
+      BitBoard bb(bbs & rhs.bbs);
       return bb;
     }
     BitBoard operator&(BitBoardState rhs) const
@@ -67,7 +69,7 @@ namespace cSzd
     }
     BitBoard operator^(const BitBoard &rhs) const
     {
-      BitBoard bb(bbs ^ rhs.state());
+      BitBoard bb(bbs ^ rhs.bbs);
       return bb;
     }
     BitBoard operator^(BitBoardState rhs) const
@@ -77,7 +79,7 @@ namespace cSzd
     }
     bool operator==(const BitBoard &rhs) const
     {
-      return bbs == rhs.state();
+      return bbs == rhs.bbs;
     }
     bool operator==(BitBoardState rhs) const
     {
@@ -91,10 +93,6 @@ namespace cSzd
     static BitBoard Center() {return BitBoard(BoardCenterBB); }
 
     // set cells methods
-    BitBoardState state() const
-    {
-      return bbs;
-    }
     BitBoardState setCell(File f, Rank r) { return (bbs |= 1ULL << (r * 8 + f)); }
     BitBoardState setCell(Cell c) { return (bbs |= 1ULL << c); }
     BitBoardState setCell(const std::vector<Cell> &cells)
@@ -111,9 +109,6 @@ namespace cSzd
         resetCell(c);
       return bbs;
     }
-
-  private:
-    BitBoardState bbs {};
   };
 
 } // namespace cSzd

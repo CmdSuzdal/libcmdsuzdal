@@ -21,7 +21,7 @@ namespace cSzd
         //
         // But we prefer this:
         //
-        return set((state() >> npos) & WestShiftClearMask[npos-1]);
+        return set((bbs >> npos) & WestShiftClearMask[npos-1]);
     }
 
 } // namespace cSzd

@@ -10,7 +10,7 @@ using namespace testing;
 TEST(BBTester, AfterDefinitionBitboardIsEmpty)
 {
     BitBoard bb;
-    ASSERT_EQ(bb.state(), EmptyBB);
+    ASSERT_EQ(bb.bbs, EmptyBB);
 }
 
 TEST(BBTester, Cell_0_0_CorrespondToA1)
@@ -139,18 +139,18 @@ TEST(BBTester, RemoveWhiteCellsToFullBoardToObtainBlackCellsOnly)
 TEST(BBTester, TestCopyConstructor)
 {
     BitBoard bb1(AllBlackCellsBB);
-    ASSERT_EQ(bb1.state(), AllBlackCellsBB);
+    ASSERT_EQ(bb1.bbs, AllBlackCellsBB);
     BitBoard bb2 {bb1};
-    ASSERT_EQ(bb2.state(), AllBlackCellsBB);
+    ASSERT_EQ(bb2.bbs, AllBlackCellsBB);
 }
 
 TEST(BBTester, TestAssignmentOperator)
 {
     BitBoard bb1(AllBlackCellsBB);
-    ASSERT_EQ(bb1.state(), AllBlackCellsBB);
+    ASSERT_EQ(bb1.bbs, AllBlackCellsBB);
     BitBoard bb2;
     bb2 = bb1;
-    ASSERT_EQ(bb2.state(), AllBlackCellsBB);
+    ASSERT_EQ(bb2.bbs, AllBlackCellsBB);
 }
 
 TEST(BBTester, TestEqualityOperatorOnEmptyBitBoards)
@@ -168,11 +168,11 @@ TEST(BBTester, TestEqualityOperatorOnBitBoards)
 TEST(BBTester, UnionOperator_TestThatUnionOfBlackAndWhiteSquaresGiveAllBoard)
 {
     BitBoard bbBlack(AllBlackCellsBB);
-    ASSERT_EQ(bbBlack.state(), AllBlackCellsBB);
+    ASSERT_EQ(bbBlack.bbs, AllBlackCellsBB);
     BitBoard bbWhite(AllWhiteCellsBB);
-    ASSERT_EQ(bbWhite.state(), AllWhiteCellsBB);
+    ASSERT_EQ(bbWhite.bbs, AllWhiteCellsBB);
     auto bbAll = bbBlack | bbWhite;
-    ASSERT_EQ(bbAll.state(), AllCellsBB);
+    ASSERT_EQ(bbAll.bbs, AllCellsBB);
 }
 
 TEST(BBTester, IntersectionOperator_TestThatIntersectionOfFilesDandEwithRanks4and5GiveTheBoardCenter)
@@ -180,7 +180,7 @@ TEST(BBTester, IntersectionOperator_TestThatIntersectionOfFilesDandEwithRanks4an
     BitBoard centerFiles(FilesBB[f_d] | FilesBB[f_e]);
     BitBoard centerRanks(RanksBB[r_4] | RanksBB[r_5]);
     auto bbCenter = centerFiles & centerRanks;
-    ASSERT_EQ(bbCenter.state(), BoardCenterBB);
+    ASSERT_EQ(bbCenter.bbs, BoardCenterBB);
 }
 
 TEST(BBTester, IntersectionOfDifferentSetOfRanksGiveTheEmptyBoard)
@@ -188,7 +188,7 @@ TEST(BBTester, IntersectionOfDifferentSetOfRanksGiveTheEmptyBoard)
     BitBoard whiteCamp(RanksBB[r_1] | RanksBB[r_2]);
     BitBoard blackCamp(RanksBB[r_7] | RanksBB[r_8]);
     BitBoard bbEmpty = whiteCamp & blackCamp;
-    ASSERT_EQ(bbEmpty.state(), EmptyBB);
+    ASSERT_EQ(bbEmpty.bbs, EmptyBB);
 }
 
 TEST(BBTester, TestXorOperator)
@@ -209,14 +209,14 @@ TEST(BBTester, TestClearBoardOperation)
 {
     BitBoard bb(AllBlackCellsBB);
     bb.clear();
-    ASSERT_EQ(bb.state(), EmptyBB);
+    ASSERT_EQ(bb.bbs, EmptyBB);
 }
 
 TEST(BBTester, TestCopyOperator)
 {
     BitBoard bb(AllBlackCellsBB);
     BitBoard bb2 = bb;
-    ASSERT_EQ(bb2.state(), AllBlackCellsBB);
+    ASSERT_EQ(bb2.bbs, AllBlackCellsBB);
 }
 
 TEST(BBTester, ShiftWestOfEightPositionReturnsEmptyBoard) {
