@@ -218,7 +218,7 @@ TEST(BBTester, TestCopyOperator)
     ASSERT_EQ(bb2, BitBoard(AllBlackCellsBB));
 }
 
-TEST(BBTester, ShiftWestOfEightPositionReturnsEmptyBoard) {
+TEST(BBTester, ShiftWestOfEightOrMoreFilesReturnsEmptyBoard) {
     BitBoard bb(AllCellsBB);
     ASSERT_EQ(bb.shiftWest(8), EmptyBB);
 }
@@ -226,4 +226,14 @@ TEST(BBTester, ShiftWestOfEightPositionReturnsEmptyBoard) {
 TEST(BBTester, ShiftWestLastFourEastFilesReturnsFourWestFiles) {
     BitBoard bb(FilesBB[f_e] | FilesBB[f_f] | FilesBB[f_g] | FilesBB[f_h]);
     ASSERT_EQ(bb.shiftWest(4), FilesBB[f_a] | FilesBB[f_b] | FilesBB[f_c] | FilesBB[f_d]);
+}
+
+TEST(BBTester, ShiftEastOfEightOrMoreFilesReturnsEmptyBoard) {
+    BitBoard bb(AllCellsBB);
+    ASSERT_EQ(bb.shiftEast(111), EmptyBB);
+}
+
+TEST(BBTester, ShiftEastOfOneFileBlackBoardReturnsWhiteBoardWithFirstFileEmpty) {
+    BitBoard bb(AllBlackCellsBB);
+    ASSERT_EQ(bb.shiftEast(1), (AllWhiteCellsBB & (~FilesBB[f_a])));
 }

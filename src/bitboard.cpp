@@ -5,11 +5,10 @@ namespace cSzd
 {
     BitBoardState BitBoard::shiftWest(unsigned int npos)
     {
-        if (npos > 7)
-            return set(EmptyBB);
-
         // This works:
         //
+        // if (npos > 7)
+        //    return set(EmptyBB);
         //return set((((state() & RanksBB[r_1]) >> npos) & RanksBB[r_1]) |
         //           (((state() & RanksBB[r_2]) >> npos) & RanksBB[r_2]) |
         //           (((state() & RanksBB[r_3]) >> npos) & RanksBB[r_3]) |
@@ -22,6 +21,10 @@ namespace cSzd
         // But we prefer this:
         //
         return set((bbs >> npos) & WestShiftClearMask[npos-1]);
+    }
+    BitBoardState BitBoard::shiftEast(unsigned int npos)
+    {
+        return set((bbs << npos) & EastShiftClearMask[npos-1]);
     }
 
 } // namespace cSzd

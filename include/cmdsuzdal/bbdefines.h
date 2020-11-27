@@ -77,7 +77,18 @@ namespace cSzd
       FilesBB[0] | FilesBB[1] | FilesBB[2],
       FilesBB[0] | FilesBB[1],
       FilesBB[0],
-
+      0
+  };
+  // East shift clear matrix
+  constexpr BitBoardState EastShiftClearMask[] {
+      FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+                   FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+                                FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+                                             FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+                                                          FilesBB[5] | FilesBB[6] | FilesBB[7],
+                                                                       FilesBB[6] | FilesBB[7],
+                                                                                    FilesBB[7],
+                                                                                    0
   };
 
 } // namespace cSzd
