@@ -20,7 +20,7 @@ target_include_directories(${TESTCTGT}
 target_link_libraries(${TESTCTGT} PRIVATE ${CTGT})
 
 target_compile_options(${TESTCTGT} PRIVATE -Werror)
-target_compile_features(${TESTCTGT} PRIVATE cxx_std_11)
+target_compile_features(${TESTCTGT} PRIVATE cxx_std_20)
 
 target_link_libraries(${TESTCTGT} PRIVATE gtest gmock_main)
 add_test(NAME cmdsuzdal_test COMMAND ${TESTCTGT})
