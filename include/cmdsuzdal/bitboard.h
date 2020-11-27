@@ -52,11 +52,13 @@ namespace cSzd
       return bb;
     }
 
-    // In C++ 20 it is possible to define a default comparison operator:
+
+    // In C++ 20 it is possible to define a default three way comparison operator:
     //    bool operator<=>(const BitBoard &) const = default;
     // but we prefer to define only the equality operator because it is
     // not clear that a BitBoard is greater than or less than another
-    bool operator==(const BitBoard &) const = default;
+    // bool operator==(const BitBoard &) const = default;
+    bool operator==(const BitBoard &rhs) const { return bbs == rhs.bbs; }
 
     // -------------------------------------------------------------------------------
     // waiting for apolis comments
