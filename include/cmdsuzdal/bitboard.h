@@ -9,8 +9,7 @@ namespace cSzd
 {
 
   // -------------------------------------------------------------------------
-  // base class for bitboard representation
-  // After some refactoring one question remains: we REALLY need a class??
+  // base struct for bitboard representation
   // -----
   // Currently defined:
   //
@@ -21,28 +20,18 @@ namespace cSzd
   //     - BitBoard(BitBoardState bitbs) - define a bitboard initialized
   //         with the state passed as a parameter
   // - Operators:
-  //     - Union operator ( | ): exists in two flavour:
-  //         - union with another BitBoard
-  //         - union with a BitBoardState
+  //     - Union operator ( | )
   //     - Intersection operator ( & ): exists in two flavour:
-  //         - intersection with another BitBoard
-  //         - intersection with a BitBoardState
   //     - Exclusive OR operator ( ^ ): exists in two flavour:
-  //         - exclusive or with another BitBoard
-  //         - exclusive or with a BitBoardState
   //     - Equality operator ( == ): with the usual two flavour
   //
-  class BitBoard
+  struct BitBoard
   {
-  public:
     BitBoardState bbs {};
 
     BitBoard() = default;
     explicit BitBoard(const std::vector<Cell> &cells) { setCell(cells); }
     explicit BitBoard(BitBoardState bitbs) { bbs = bitbs; }
-
-    BitBoardState clear() { bbs = EmptyBB; return bbs; }
-    BitBoardState set(BitBoardState newBbs) { bbs = newBbs; return bbs; }
 
     // operators
     BitBoard &operator=(const BitBoard &rhs) = default;
@@ -52,19 +41,9 @@ namespace cSzd
       BitBoard bb(bbs | rhs.bbs);
       return bb;
     }
-    BitBoard operator|(BitBoardState rhs) const
-    {
-      BitBoard bb(bbs | rhs);
-      return bb;
-    }
     BitBoard operator&(const BitBoard &rhs) const
     {
       BitBoard bb(bbs & rhs.bbs);
-      return bb;
-    }
-    BitBoard operator&(BitBoardState rhs) const
-    {
-      BitBoard bb(bbs & rhs);
       return bb;
     }
     BitBoard operator^(const BitBoard &rhs) const
@@ -72,28 +51,31 @@ namespace cSzd
       BitBoard bb(bbs ^ rhs.bbs);
       return bb;
     }
-    BitBoard operator^(BitBoardState rhs) const
-    {
-      BitBoard bb(bbs ^ rhs);
-      return bb;
-    }
-    bool operator==(const BitBoard &rhs) const
-    {
-      return bbs == rhs.bbs;
-    }
-    bool operator==(BitBoardState rhs) const
-    {
-      return bbs == rhs;
-    }
 
-    // Shift west (left)
-    BitBoardState shiftWest(unsigned int npos);
+    // In C++ 20 it is possible to define a default comparison operator:
+    //    bool operator<=>(const BitBoard &) const = default;
+    // but we prefer to define only the equality operator because it is
+    // not clear that a BitBoard is greater than or less than another
+    bool operator==(const BitBoard &) const = default;
 
-    // Special BitBoards
-    static BitBoard Center() {return BitBoard(BoardCenterBB); }
-
-    // set cells methods
-    BitBoardState setCell(File f, Rank r) { return (bbs |= 1ULL << (r * 8 + f)); }
+    // -------------------------------------------------------------------------------
+    // waiting for apolis comments
+    // -------------------------------------------------------------------------------
+    // Bitboard modification methods
+    //
+    // Note that all these methods currently returns the BitBoard internal state for
+    // an idea of "supposed efficiency" but I am not really sure that this is the
+    // best solution. Maybe the approach used for the function:
+    //    const BitBoard &setCell(File f, Rank r)
+    // is clearer.... See f.e. test Cell_0_0_CorrespondToA1
+    //
+    // Another approach is not to return anything, like in the case of:
+    //    void resetCell(File f, Rank r)
+    // see test IfACellIsSetAndThenResetBitboardIsEmpty
+    //
+    BitBoardState clear() { bbs = EmptyBB; return bbs; }
+    BitBoardState set(BitBoardState newBbs) { bbs = newBbs; return bbs; }
+    const BitBoard &setCell(File f, Rank r) { (bbs |= 1ULL << (r * 8 + f)); return *this; }
     BitBoardState setCell(Cell c) { return (bbs |= 1ULL << c); }
     BitBoardState setCell(const std::vector<Cell> &cells)
     {
@@ -101,7 +83,7 @@ namespace cSzd
         setCell(c);
       return bbs;
     }
-    BitBoardState resetCell(File f, Rank r) { return (bbs &= ~(1ULL << (r * 8 + f))); }
+    void resetCell(File f, Rank r) { bbs &= ~(1ULL << (r * 8 + f)); }
     BitBoardState resetCell(Cell c) { return (bbs &= ~(1ULL << c)); }
     BitBoardState resetCell(const std::vector<Cell> &cells)
     {
@@ -109,6 +91,11 @@ namespace cSzd
         resetCell(c);
       return bbs;
     }
+
+    // Shift west (left)
+    BitBoardState shiftWest(unsigned int npos);
+    // -------------------------------------------------------------------------------
+
   };
 
 } // namespace cSzd
