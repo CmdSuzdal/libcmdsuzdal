@@ -70,10 +70,8 @@ namespace cSzd
 
   // West shift clear matrix
   constexpr BitBoardState WestShiftClearMask[]{
-      FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] |
-          FilesBB[5] | FilesBB[6],
-      FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] |
-          FilesBB[5],
+      FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6],
+      FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5],
       FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4],
       FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3],
       FilesBB[0] | FilesBB[1] | FilesBB[2],
@@ -81,10 +79,8 @@ namespace cSzd
       FilesBB[0]};
   // East shift clear matrix
   constexpr BitBoardState EastShiftClearMask[]{
-      FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] |
-          FilesBB[6] | FilesBB[7],
-      FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] |
-          FilesBB[7],
+      FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+      FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
       FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
       FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
       FilesBB[5] | FilesBB[6] | FilesBB[7],
@@ -92,10 +88,8 @@ namespace cSzd
       FilesBB[7]};
   // North shift clear matrix
   constexpr BitBoardState NorthShiftClearMask[]{
-      RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] |
-          RanksBB[6] | RanksBB[7],
-      RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] |
-          RanksBB[7],
+      RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
+      RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
       RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
       RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
       RanksBB[5] | RanksBB[6] | RanksBB[7],
@@ -103,10 +97,8 @@ namespace cSzd
       RanksBB[7]};
   // South shift clear matrix
   constexpr BitBoardState SouthShiftClearMask[]{
-      RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] |
-          RanksBB[5] | RanksBB[6],
-      RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] |
-          RanksBB[5],
+      RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6],
+      RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5],
       RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4],
       RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3],
       RanksBB[0] | RanksBB[1] | RanksBB[2],

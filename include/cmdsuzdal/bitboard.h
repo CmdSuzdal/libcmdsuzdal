@@ -52,12 +52,13 @@ namespace cSzd
       return bb;
     }
 
-
     // In C++ 20 it is possible to define a default three way comparison operator:
     //    bool operator<=>(const BitBoard &) const = default;
     // but we prefer to define only the equality operator because it is
-    // not clear that a BitBoard is greater than or less than another
-    // bool operator==(const BitBoard &) const = default;
+    // not clear when a BitBoard is greater than or less than another
+    // NOTE: we cannot currently use the C++20 default comparison operator
+    // to allow compilation in OSX environment (Travis) with AppleCLang 9
+    //    bool operator==(const BitBoard &) const = default;
     bool operator==(const BitBoard &rhs) const { return bbs == rhs.bbs; }
 
     // -------------------------------------------------------------------------------
@@ -103,6 +104,15 @@ namespace cSzd
     // Shift south (bottom)
     BitBoardState shiftSouth(unsigned int npos);
     // -------------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------------
+    // Bitboard utility methods
+
+    // Given a cell, returns File, Rank or File+Rank pair
+    static File file(const Cell &c) { return static_cast<File>(c % 8); }
+    static Rank rank(const Cell &c) { return static_cast<Rank>(c >> 3); }
+    static std::pair<File, Rank> coords(const Cell &c)
+    { return std::make_pair(file(c), rank(c)); }
 
   };
 

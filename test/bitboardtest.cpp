@@ -272,3 +272,23 @@ TEST(BBTester, ShiftRank5FileDCompoSouthOfFourRanksReturnsAFloorWithASpike) {
   BitBoard bb(FilesBB[f_d] | RanksBB[r_5]);
   ASSERT_EQ(bb.shiftSouth(4), FloorWithASpikeBB);
 }
+
+TEST(BBTester, CellToRankAndFileConversionTests)
+{
+    ASSERT_EQ(BitBoard::file(f2), f_f);
+    ASSERT_EQ(BitBoard::rank(f2), r_2);
+    ASSERT_EQ(BitBoard::file(a3), f_a);
+    ASSERT_EQ(BitBoard::rank(a3), r_3);
+    ASSERT_EQ(BitBoard::file(c7), f_c);
+    ASSERT_EQ(BitBoard::rank(c7), r_7);
+    ASSERT_EQ(BitBoard::file(h8), f_h);
+    ASSERT_EQ(BitBoard::rank(h8), r_8);
+    pair<File, Rank> coords;
+    coords = BitBoard::coords(b5);
+    ASSERT_EQ(coords.first, f_b);
+    ASSERT_EQ(coords.second, r_5);
+    coords = BitBoard::coords(e1);
+    ASSERT_EQ(coords.first, f_e);
+    ASSERT_EQ(coords.second, r_1);
+}
+
