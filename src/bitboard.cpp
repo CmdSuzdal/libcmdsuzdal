@@ -20,11 +20,30 @@ namespace cSzd
         //
         // But we prefer this:
         //
+        if (npos > 7)
+          return set(EmptyBB);
         return set((bbs >> npos) & WestShiftClearMask[npos-1]);
     }
     BitBoardState BitBoard::shiftEast(unsigned int npos)
     {
-        return set((bbs << npos) & EastShiftClearMask[npos-1]);
+      if (npos > 7)
+        return set(EmptyBB);
+      return set((bbs << npos) & EastShiftClearMask[npos - 1]);
+    }
+    BitBoardState BitBoard::shiftNorth(unsigned int npos)
+    {
+      if (npos > 7)
+        return set(EmptyBB);
+      set((bbs << (npos * 8)) & NorthShiftClearMask[npos - 1]);
+      // set((bbs << (npos * 8)));
+
+      return bbs;
+    }
+    BitBoardState BitBoard::shiftSouth(unsigned int npos)
+    {
+      if (npos > 7)
+        return set(EmptyBB);
+      return set((bbs >> (npos * 8)) & SouthShiftClearMask[npos - 1]);
     }
 
 } // namespace cSzd

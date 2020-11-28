@@ -98,6 +98,10 @@ namespace cSzd
     BitBoardState shiftWest(unsigned int npos);
     // Shift east (right)
     BitBoardState shiftEast(unsigned int npos);
+    // Shift north (up)
+    BitBoardState shiftNorth(unsigned int npos);
+    // Shift south (bottom)
+    BitBoardState shiftSouth(unsigned int npos);
     // -------------------------------------------------------------------------------
 
   };

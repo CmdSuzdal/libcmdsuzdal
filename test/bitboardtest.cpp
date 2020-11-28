@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include "cmdsuzdal/bitboard.h"
@@ -236,4 +238,37 @@ TEST(BBTester, ShiftEastOfEightOrMoreFilesReturnsEmptyBoard) {
 TEST(BBTester, ShiftEastOfOneFileBlackBoardReturnsWhiteBoardWithFirstFileEmpty) {
     BitBoard bb(AllBlackCellsBB);
     ASSERT_EQ(bb.shiftEast(1), (AllWhiteCellsBB & (~FilesBB[f_a])));
+}
+
+TEST(BBTester, ShiftNorthOfEightOrMoreFilesReturnsEmptyBoard) {
+  BitBoard bb(AllCellsBB);
+  ASSERT_EQ(bb.shiftNorth(9), EmptyBB);
+}
+
+TEST(BBTester, ShiftBothDiagonalNorthOfThreeRanksReturnsAFunnyRoof) {
+  constexpr BitBoardState FunnyRoofBB = {0x1818244281000000ULL};
+  //  ...xx...
+  //  ...xx...
+  //  ..x..x..
+  //  .x....x.
+  //  x......x
+  //  ........
+  //  ........
+  //  ........
+  BitBoard bb(BothDiagonalsBB);
+  ASSERT_EQ(bb.shiftNorth(3), FunnyRoofBB);
+}
+
+TEST(BBTester, ShiftRank5FileDCompoSouthOfFourRanksReturnsAFloorWithASpike) {
+  constexpr BitBoardState FloorWithASpikeBB = {0x00000000080808FFULL};
+  //  ........
+  //  ........
+  //  ........
+  //  ........
+  //  ...x....
+  //  ...x....
+  //  ...x....
+  //  xxxxxxxx
+  BitBoard bb(FilesBB[f_d] | RanksBB[r_5]);
+  ASSERT_EQ(bb.shiftSouth(4), FloorWithASpikeBB);
 }
