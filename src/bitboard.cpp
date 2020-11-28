@@ -7,7 +7,7 @@ namespace cSzd
     {
         if (npos > 7)
             return set(EmptyBB);
-        return set((bbs >> npos) & WestShiftClearMask[npos-1]);
+        return set((bbs >> npos) & WestShiftClearMask[npos - 1]);
     }
     BitBoardState BitBoard::shiftEast(unsigned int npos)
     {
@@ -40,8 +40,8 @@ namespace cSzd
         s = BitBoard::south(c);
         n = BitBoard::north(c);
         return ((FilesBB[w] | FilesBB[f] | FilesBB[e]) &
-                (RanksBB[n] | RanksBB[r] | RanksBB[s]))
-                ^ BitBoard::singleCellState(c);
+                (RanksBB[n] | RanksBB[r] | RanksBB[s])) ^
+               BitBoard::singleCellState(c);
     }
 
 } // namespace cSzd

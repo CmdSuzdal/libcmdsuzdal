@@ -108,17 +108,19 @@ namespace cSzd
     {
         BitBoard bb;
         ASSERT_EQ(bb.setCell({a1, a3, a5, a7, b2, b4, b6, b8,
-                    c1, c3, c5, c7, d2, d4, d6, d8,
-                    e1, e3, e5, e7, f2, f4, f6, f8,
-                    g1, g3, g5, g7, h2, h4, h6, h8}), AllBlackCellsBB);
+                              c1, c3, c5, c7, d2, d4, d6, d8,
+                              e1, e3, e5, e7, f2, f4, f6, f8,
+                              g1, g3, g5, g7, h2, h4, h6, h8}),
+                  AllBlackCellsBB);
     }
     TEST(BBTester, CheckAllWhiteCells)
     {
         BitBoard bb;
         ASSERT_EQ(bb.setCell({a2, a4, a6, a8, b1, b3, b5, b7,
-                    c2, c4, c6, c8, d1, d3, d5, d7,
-                    e2, e4, e6, e8, f1, f3, f5, f7,
-                    g2, g4, g6, g8, h1, h3, h5, h7}), AllWhiteCellsBB);
+                              c2, c4, c6, c8, d1, d3, d5, d7,
+                              e2, e4, e6, e8, f1, f3, f5, f7,
+                              g2, g4, g6, g8, h1, h3, h5, h7}),
+                  AllWhiteCellsBB);
     }
 
     TEST(BBTester, IntersectionBetweenRank3AndFileFIsF3)
@@ -144,7 +146,7 @@ namespace cSzd
     {
         BitBoard bb1(AllBlackCellsBB);
         ASSERT_EQ(bb1, BitBoard(AllBlackCellsBB));
-        BitBoard bb2 {bb1};
+        BitBoard bb2{bb1};
         ASSERT_EQ(bb2, BitBoard(AllBlackCellsBB));
     }
 
@@ -356,51 +358,50 @@ namespace cSzd
 
     TEST(BBTester, NeighboursCellsOfD4AreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::w (d4), c4);
+        ASSERT_EQ(BitBoard::w(d4), c4);
         ASSERT_EQ(BitBoard::nw(d4), c5);
-        ASSERT_EQ(BitBoard::n (d4), d5);
+        ASSERT_EQ(BitBoard::n(d4), d5);
         ASSERT_EQ(BitBoard::ne(d4), e5);
-        ASSERT_EQ(BitBoard::e (d4), e4);
+        ASSERT_EQ(BitBoard::e(d4), e4);
         ASSERT_EQ(BitBoard::se(d4), e3);
-        ASSERT_EQ(BitBoard::s (d4), d3);
+        ASSERT_EQ(BitBoard::s(d4), d3);
         ASSERT_EQ(BitBoard::sw(d4), c3);
     }
 
     TEST(BBTester, NeighboursCellsOfB7AreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::w (b7), a7);
+        ASSERT_EQ(BitBoard::w(b7), a7);
         ASSERT_EQ(BitBoard::nw(b7), a8);
-        ASSERT_EQ(BitBoard::n (b7), b8);
+        ASSERT_EQ(BitBoard::n(b7), b8);
         ASSERT_EQ(BitBoard::ne(b7), c8);
-        ASSERT_EQ(BitBoard::e (b7), c7);
+        ASSERT_EQ(BitBoard::e(b7), c7);
         ASSERT_EQ(BitBoard::se(b7), c6);
-        ASSERT_EQ(BitBoard::s (b7), b6);
+        ASSERT_EQ(BitBoard::s(b7), b6);
         ASSERT_EQ(BitBoard::sw(b7), a6);
     }
 
     TEST(BBTester, NeighboursCellsOfA1AreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::w (a1), InvalidCell);
+        ASSERT_EQ(BitBoard::w(a1), InvalidCell);
         ASSERT_EQ(BitBoard::nw(a1), InvalidCell);
-        ASSERT_EQ(BitBoard::n (a1), a2);
+        ASSERT_EQ(BitBoard::n(a1), a2);
         ASSERT_EQ(BitBoard::ne(a1), b2);
-        ASSERT_EQ(BitBoard::e (a1), b1);
+        ASSERT_EQ(BitBoard::e(a1), b1);
         ASSERT_EQ(BitBoard::se(a1), InvalidCell);
-        ASSERT_EQ(BitBoard::s (a1), InvalidCell);
+        ASSERT_EQ(BitBoard::s(a1), InvalidCell);
         ASSERT_EQ(BitBoard::sw(a1), InvalidCell);
     }
 
     TEST(BBTester, NeighboursCellsOfH3AreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::w (h3), g3);
+        ASSERT_EQ(BitBoard::w(h3), g3);
         ASSERT_EQ(BitBoard::nw(h3), g4);
-        ASSERT_EQ(BitBoard::n (h3), h4);
+        ASSERT_EQ(BitBoard::n(h3), h4);
         ASSERT_EQ(BitBoard::ne(h3), InvalidCell);
-        ASSERT_EQ(BitBoard::e (h3), InvalidCell);
+        ASSERT_EQ(BitBoard::e(h3), InvalidCell);
         ASSERT_EQ(BitBoard::se(h3), InvalidCell);
-        ASSERT_EQ(BitBoard::s (h3), h2);
+        ASSERT_EQ(BitBoard::s(h3), h2);
         ASSERT_EQ(BitBoard::sw(h3), g2);
     }
 
-}  // namespace cSzd
-
+} // namespace cSzd
