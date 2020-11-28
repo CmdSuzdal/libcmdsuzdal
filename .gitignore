@@ -1,2 +1,3 @@
 build*
 .vscode
+.syntastic_cpp_config
