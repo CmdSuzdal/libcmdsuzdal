@@ -124,12 +124,18 @@ namespace cSzd
         // which the given cell is the only one active)
         static BitBoardState singleCellState(const Cell &c) { return (1ULL << c); }
 
-        // Given a cell, returns File, Rank or File+Rank pair
+        // Given a cell, returns File, Rank, Diagonal, AntiDiagonal (and combinations)
         static File file(const Cell &c) { return static_cast<File>(c % 8); }
         static Rank rank(const Cell &c) { return static_cast<Rank>(c >> 3); }
+        static Diagonal diag(const Cell &c) { return static_cast<Diagonal>(file(c) - rank(c) + 7); }
+        static AntiDiagonal antiDiag(const Cell &c) { return static_cast<AntiDiagonal>(file(c) + rank(c)); }
         static std::pair<File, Rank> coords(const Cell &c)
         {
             return std::make_pair(file(c), rank(c));
+        }
+        static std::pair<Diagonal, AntiDiagonal> diagonals(const Cell &c)
+        {
+            return std::make_pair(diag(c), antiDiag(c));
         }
 
         // Given a cell, returns west/east files and south/north ranks
@@ -169,6 +175,10 @@ namespace cSzd
         static BitBoardState fileMask(const Cell &c) { return FilesBB[file(c)]; }
         static BitBoardState rankMask(const Cell &c) { return RanksBB[rank(c)]; }
         static BitBoardState fileRankMask(const Cell &c) { return fileMask(c) | rankMask(c); }
+        static BitBoardState diagMask(const Cell &c) { return DiagsBB[diag(c)]; }
+        static BitBoardState antiDiagMask(const Cell &c) { return AntiDiagsBB[antiDiag(c)]; }
+        static BitBoardState diagonalsMask(const Cell &c) { return diagMask(c) | antiDiagMask(c); }
+        static BitBoardState queenMask(const Cell &c) { return fileMask(c) | rankMask(c) | diagMask(c) | antiDiagMask(c); }
 
     };
 
