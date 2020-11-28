@@ -21,36 +21,38 @@ namespace cSzd
 
   enum File
   {
-    f_a, f_b, f_c, f_d, f_e, f_f, f_g, f_h
+    f_a, f_b, f_c, f_d, f_e, f_f, f_g, f_h, InvalidFile
   };
   enum Rank
   {
-    r_1, r_2, r_3, r_4, r_5, r_6, r_7, r_8
+    r_1, r_2, r_3, r_4, r_5, r_6, r_7, r_8, InvalidRank
   };
 
   // Bitboard important definitions
   constexpr BitBoardState EmptyBB{};
   constexpr BitBoardState Rank1BB{0x00000000000000FFULL};
   constexpr BitBoardState RanksBB[]{
-      Rank1BB,
-      Rank1BB << 8,
-      Rank1BB << 16,
-      Rank1BB << 24,
-      Rank1BB << 32,
-      Rank1BB << 40,
-      Rank1BB << 48,
-      Rank1BB << 56,
+    Rank1BB,
+    Rank1BB << 8,
+    Rank1BB << 16,
+    Rank1BB << 24,
+    Rank1BB << 32,
+    Rank1BB << 40,
+    Rank1BB << 48,
+    Rank1BB << 56,
+    0   // for invalid rank
   };
   constexpr BitBoardState File1BB{0x0101010101010101ULL};
   constexpr BitBoardState FilesBB[]{
-      File1BB,
-      File1BB << 1,
-      File1BB << 2,
-      File1BB << 3,
-      File1BB << 4,
-      File1BB << 5,
-      File1BB << 6,
-      File1BB << 7,
+    File1BB,
+    File1BB << 1,
+    File1BB << 2,
+    File1BB << 3,
+    File1BB << 4,
+    File1BB << 5,
+    File1BB << 6,
+    File1BB << 7,
+    0 // for invalid file
   };
 
   constexpr BitBoardState DiagonalBB{0x8040201008040201ULL};
@@ -64,46 +66,46 @@ namespace cSzd
   // ------
   // center of board can be defined with the intersection of files d,e and ranks 4,5
   constexpr BitBoardState BoardCenterBB{(RanksBB[r_4] | RanksBB[r_5]) &
-                                        (FilesBB[f_d] | FilesBB[f_e])};
+    (FilesBB[f_d] | FilesBB[f_e])};
   //constexpr BitBoardState BoardCenterBB  { 0x0000001818000000ULL };
 
 
   // West shift clear matrix
   constexpr BitBoardState WestShiftClearMask[]{
-      FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6],
-      FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5],
-      FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4],
-      FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3],
-      FilesBB[0] | FilesBB[1] | FilesBB[2],
-      FilesBB[0] | FilesBB[1],
-      FilesBB[0]};
+    FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6],
+    FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5],
+    FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4],
+    FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3],
+    FilesBB[0] | FilesBB[1] | FilesBB[2],
+    FilesBB[0] | FilesBB[1],
+    FilesBB[0]};
   // East shift clear matrix
   constexpr BitBoardState EastShiftClearMask[]{
-      FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
-      FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
-      FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
-      FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
-      FilesBB[5] | FilesBB[6] | FilesBB[7],
-      FilesBB[6] | FilesBB[7],
-      FilesBB[7]};
+    FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+    FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+    FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+    FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
+    FilesBB[5] | FilesBB[6] | FilesBB[7],
+    FilesBB[6] | FilesBB[7],
+    FilesBB[7]};
   // North shift clear matrix
   constexpr BitBoardState NorthShiftClearMask[]{
-      RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
-      RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
-      RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
-      RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
-      RanksBB[5] | RanksBB[6] | RanksBB[7],
-      RanksBB[6] | RanksBB[7],
-      RanksBB[7]};
+    RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
+    RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
+    RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
+    RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
+    RanksBB[5] | RanksBB[6] | RanksBB[7],
+    RanksBB[6] | RanksBB[7],
+    RanksBB[7]};
   // South shift clear matrix
   constexpr BitBoardState SouthShiftClearMask[]{
-      RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6],
-      RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5],
-      RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4],
-      RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3],
-      RanksBB[0] | RanksBB[1] | RanksBB[2],
-      RanksBB[0] | RanksBB[1],
-      RanksBB[0]};
+    RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6],
+    RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5],
+    RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4],
+    RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3],
+    RanksBB[0] | RanksBB[1] | RanksBB[2],
+    RanksBB[0] | RanksBB[1],
+    RanksBB[0]};
 } // namespace cSzd
 
 #endif // if !defined CSZD_BBDEFINES_HEADER

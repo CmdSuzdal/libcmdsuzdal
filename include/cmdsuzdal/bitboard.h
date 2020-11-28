@@ -108,11 +108,19 @@ namespace cSzd
     // -------------------------------------------------------------------------------
     // Bitboard utility methods
 
+    // Given a cell, returns the associated BitBoard state (the BitBoard state on
+    // which the given cell is the only one active)
+    static BitBoardState singleCellState(const Cell &c) { return (1ULL << c); }
+
     // Given a cell, returns File, Rank or File+Rank pair
     static File file(const Cell &c) { return static_cast<File>(c % 8); }
     static Rank rank(const Cell &c) { return static_cast<Rank>(c >> 3); }
     static std::pair<File, Rank> coords(const Cell &c)
     { return std::make_pair(file(c), rank(c)); }
+
+    // Given a cell, returns any sort of "related" cells BitBoard states
+    static BitBoardState neighbour(const Cell &c);
+
 
   };
 
