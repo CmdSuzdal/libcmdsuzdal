@@ -314,7 +314,7 @@ namespace cSzd
         //  ........ = 00
         //  ........ = 00
         BitBoardState n = 0x0000382838000000ULL;
-        ASSERT_EQ(BitBoard::neighbour(e5), n);
+        ASSERT_EQ(BitBoard::neighbourMask(e5), n);
     }
     TEST(BBTester, NeighboursMaskOfB2IsComputedCorrectly)
     {
@@ -327,7 +327,7 @@ namespace cSzd
         //  x.x..... = 05
         //  xxx..... = 07
         BitBoardState n = 0x0000000000070507ULL;
-        ASSERT_EQ(BitBoard::neighbour(b2), n);
+        ASSERT_EQ(BitBoard::neighbourMask(b2), n);
     }
     TEST(BBTester, NeighboursMaskOfH6IsComputedCorrectly)
     {
@@ -340,7 +340,7 @@ namespace cSzd
         //  ........ = 00
         //  ........ = 00
         BitBoardState n = 0x00C040C000000000ULL;
-        ASSERT_EQ(BitBoard::neighbour(h6), n);
+        ASSERT_EQ(BitBoard::neighbourMask(h6), n);
     }
     TEST(BBTester, NeighboursMaskOfH1IsComputedCorrectly)
     {
@@ -353,7 +353,7 @@ namespace cSzd
         //  ......xx = C0
         //  ......x. = 40
         BitBoardState n = 0x000000000000C040ULL;
-        ASSERT_EQ(BitBoard::neighbour(h1), n);
+        ASSERT_EQ(BitBoard::neighbourMask(h1), n);
     }
 
     TEST(BBTester, NeighboursCellsOfD4AreComputedCorrectly)
@@ -403,5 +403,42 @@ namespace cSzd
         ASSERT_EQ(BitBoard::s(h3), h2);
         ASSERT_EQ(BitBoard::sw(h3), g2);
     }
+
+    TEST(BBTester, FileMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(BitBoard::fileMask(a2), FilesBB[f_a]);
+        ASSERT_EQ(BitBoard::fileMask(b1), FilesBB[f_b]);
+        ASSERT_EQ(BitBoard::fileMask(c4), FilesBB[f_c]);
+        ASSERT_EQ(BitBoard::fileMask(d3), FilesBB[f_d]);
+        ASSERT_EQ(BitBoard::fileMask(e6), FilesBB[f_e]);
+        ASSERT_EQ(BitBoard::fileMask(f5), FilesBB[f_f]);
+        ASSERT_EQ(BitBoard::fileMask(g8), FilesBB[f_g]);
+        ASSERT_EQ(BitBoard::fileMask(h7), FilesBB[f_h]);
+    }
+
+    TEST(BBTester, RankMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(BitBoard::rankMask(a6), RanksBB[r_6]);
+        ASSERT_EQ(BitBoard::rankMask(b7), RanksBB[r_7]);
+        ASSERT_EQ(BitBoard::rankMask(c8), RanksBB[r_8]);
+        ASSERT_EQ(BitBoard::rankMask(d1), RanksBB[r_1]);
+        ASSERT_EQ(BitBoard::rankMask(e2), RanksBB[r_2]);
+        ASSERT_EQ(BitBoard::rankMask(f3), RanksBB[r_3]);
+        ASSERT_EQ(BitBoard::rankMask(g4), RanksBB[r_4]);
+        ASSERT_EQ(BitBoard::rankMask(h5), RanksBB[r_5]);
+    }
+
+    TEST(BBTester, FileRankMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(BitBoard::fileRankMask(a6), FilesBB[f_a] | RanksBB[r_6]);
+        ASSERT_EQ(BitBoard::fileRankMask(b7), FilesBB[f_b] | RanksBB[r_7]);
+        ASSERT_EQ(BitBoard::fileRankMask(c8), FilesBB[f_c] | RanksBB[r_8]);
+        ASSERT_EQ(BitBoard::fileRankMask(d1), FilesBB[f_d] | RanksBB[r_1]);
+        ASSERT_EQ(BitBoard::fileRankMask(e2), FilesBB[f_e] | RanksBB[r_2]);
+        ASSERT_EQ(BitBoard::fileRankMask(f3), FilesBB[f_f] | RanksBB[r_3]);
+        ASSERT_EQ(BitBoard::fileRankMask(g4), FilesBB[f_g] | RanksBB[r_4]);
+        ASSERT_EQ(BitBoard::fileRankMask(h5), FilesBB[f_h] | RanksBB[r_5]);
+    }
+
 
 } // namespace cSzd

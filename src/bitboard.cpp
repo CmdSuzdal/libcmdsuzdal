@@ -29,7 +29,7 @@ namespace cSzd
         return set((bbs >> (npos * 8)) & SouthShiftClearMask[npos - 1]);
     }
 
-    BitBoardState BitBoard::neighbour(const Cell &c)
+    BitBoardState BitBoard::neighbourMask(const Cell &c)
     {
         File f, w, e;
         Rank r, s, n;

@@ -165,7 +165,11 @@ namespace cSzd
         static Cell sw(const Cell &c) { return static_cast<Cell>((file(c) > 0 && rank(c) > 0) ? c - 9 : InvalidCell); }
 
         // Given a cell, returns any sort of "related" cells BitBoard states
-        static BitBoardState neighbour(const Cell &c);
+        static BitBoardState neighbourMask(const Cell &c);
+        static BitBoardState fileMask(const Cell &c) { return FilesBB[file(c)]; }
+        static BitBoardState rankMask(const Cell &c) { return RanksBB[rank(c)]; }
+        static BitBoardState fileRankMask(const Cell &c) { return fileMask(c) | rankMask(c); }
+
     };
 
 } // namespace cSzd
