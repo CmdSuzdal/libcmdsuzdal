@@ -35,10 +35,10 @@ namespace cSzd
         Rank r, s, n;
         f = BitBoard::file(c);
         r = BitBoard::rank(c);
-        w = static_cast<File>((f > 0) ? (f - 1) : InvalidFile);
-        e = static_cast<File>((f < 7) ? (f + 1) : InvalidFile);
-        s = static_cast<Rank>((r > 0) ? (r - 1) : InvalidRank);
-        n = static_cast<Rank>((r < 7) ? (r + 1) : InvalidRank);
+        w = BitBoard::west(c);
+        e = BitBoard::east(c);
+        s = BitBoard::south(c);
+        n = BitBoard::north(c);
         return ((FilesBB[w] | FilesBB[f] | FilesBB[e]) &
                 (RanksBB[n] | RanksBB[r] | RanksBB[s]))
                 ^ BitBoard::singleCellState(c);

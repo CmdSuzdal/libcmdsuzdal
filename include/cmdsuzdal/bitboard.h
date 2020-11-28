@@ -118,9 +118,14 @@ namespace cSzd
     static std::pair<File, Rank> coords(const Cell &c)
     { return std::make_pair(file(c), rank(c)); }
 
+    // Given a cell, returns west/east files and south/north ranks
+    static File west(const Cell &c)  { auto f = file(c); return static_cast<File>((f > 0) ? (f - 1) : InvalidFile); }
+    static File east(const Cell &c)  { auto f = file(c); return static_cast<File>((f < 7) ? (f + 1) : InvalidFile); }
+    static Rank south(const Cell &c) { auto r = rank(c); return static_cast<Rank>((r > 0) ? (r - 1) : InvalidRank); }
+    static Rank north(const Cell &c) { auto r = rank(c); return static_cast<Rank>((r < 7) ? (r + 1) : InvalidRank); }
+
     // Given a cell, returns any sort of "related" cells BitBoard states
     static BitBoardState neighbour(const Cell &c);
-
 
   };
 
