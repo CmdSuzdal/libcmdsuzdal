@@ -124,6 +124,16 @@ namespace cSzd
     static Rank south(const Cell &c) { auto r = rank(c); return static_cast<Rank>((r > 0) ? (r - 1) : InvalidRank); }
     static Rank north(const Cell &c) { auto r = rank(c); return static_cast<Rank>((r < 7) ? (r + 1) : InvalidRank); }
 
+    // "Compass rose" methods
+    static Cell w(const Cell &c)  { return static_cast<Cell>((file(c) > 0)                ? c - 1 : InvalidCell); }
+    static Cell nw(const Cell &c) { return static_cast<Cell>((file(c) > 0 && rank(c) < 7) ? c + 7 : InvalidCell); }
+    static Cell n(const Cell &c)  { return static_cast<Cell>(               (rank(c) < 7) ? c + 8 : InvalidCell); }
+    static Cell ne(const Cell &c) { return static_cast<Cell>((file(c) < 7 && rank(c) < 7) ? c + 9 : InvalidCell); }
+    static Cell e(const Cell &c)  { return static_cast<Cell>((file(c) < 7)                ? c + 1 : InvalidCell); }
+    static Cell se(const Cell &c) { return static_cast<Cell>((file(c) < 7 && rank(c) > 0) ? c - 7 : InvalidCell); }
+    static Cell s(const Cell &c)  { return static_cast<Cell>(               (rank(c) > 0) ? c - 8 : InvalidCell); }
+    static Cell sw(const Cell &c) { return static_cast<Cell>((file(c) > 0 && rank(c) > 0) ? c - 9 : InvalidCell); }
+
     // Given a cell, returns any sort of "related" cells BitBoard states
     static BitBoardState neighbour(const Cell &c);
 
