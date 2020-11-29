@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include "cmdsuzdal/bitboard.h"
@@ -541,6 +539,43 @@ namespace cSzd
         ASSERT_EQ(BitBoard::queenMask(g7), FilesBB[f_g] | RanksBB[r_7] | DiagsBB[d_7] | AntiDiagsBB[a_12]);
         ASSERT_EQ(BitBoard::queenMask(g8), FilesBB[f_g] | RanksBB[r_8] | DiagsBB[d_6] | AntiDiagsBB[a_13]);
         ASSERT_EQ(BitBoard::queenMask(h8), FilesBB[f_h] | RanksBB[r_8] | DiagsBB[d_7] | AntiDiagsBB[a_14]);
+    }
+
+    // population count calculation tests
+    TEST(BBTester, OnlyA1PopulationCountIs1)
+    {
+        BitBoard bb(std::vector<Cell>{a1});
+        ASSERT_EQ(bb.popCount(), 1);
+    }
+    TEST(BBTester, BoardCenterPopulationCountIs4)
+    {
+        BitBoard bb(BoardCenterBB);
+        ASSERT_EQ(bb.popCount(), 4);
+    }
+    TEST(BBTester, SingleRankPopulationCountIs8)
+    {
+        BitBoard bb(RanksBB[r_3]);
+        ASSERT_EQ(bb.popCount(), 8);
+    }
+    TEST(BBTester, SingleFilePopulationCountIs8)
+    {
+        BitBoard bb(FilesBB[f_h]);
+        ASSERT_EQ(bb.popCount(), 8);
+    }
+    TEST(BBTester, BoardDiagonalPopulationCountIs8)
+    {
+        BitBoard bb(DiagsBB[d_7]);
+        ASSERT_EQ(bb.popCount(), 8);
+    }
+    TEST(BBTester, QueenMaskOfC3PopulationCountIs24)
+    {
+        BitBoard bb(BitBoard::queenMask(c3));
+        ASSERT_EQ(bb.popCount(), 26);
+    }
+    TEST(BBTester, WhiteCellsPopulationCountIs32)
+    {
+        BitBoard bb(AllWhiteCellsBB);
+        ASSERT_EQ(bb.popCount(), 32);
     }
 
 } // namespace cSzd

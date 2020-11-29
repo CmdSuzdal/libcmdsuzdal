@@ -61,6 +61,9 @@ namespace cSzd
         //    bool operator==(const BitBoard &) const = default;
         bool operator==(const BitBoard &rhs) const { return bbs == rhs.bbs; }
 
+        // Population count
+        unsigned int popCount() const;
+
         // -------------------------------------------------------------------------------
         // waiting for apolis comments
         // -------------------------------------------------------------------------------

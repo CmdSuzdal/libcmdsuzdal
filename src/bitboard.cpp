@@ -3,6 +3,21 @@
 
 namespace cSzd
 {
+
+    unsigned int BitBoard::popCount() const
+    {
+        // Kernigham method, fast for sparsely populated bitboards.
+        // See https://www.chessprogramming.org/Population_Count
+        // for other approaches
+        BitBoardState bbState = bbs;
+        unsigned int pc = 0;
+        while(bbState) {
+            ++pc;
+            bbState &= bbState - 1;   // Reset LS1B (Least Significant One)
+        }
+        return pc;
+    }
+
     BitBoardState BitBoard::shiftWest(unsigned int npos)
     {
         if (npos > 7)
