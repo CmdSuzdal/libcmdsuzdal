@@ -544,7 +544,7 @@ namespace cSzd
     // population count calculation tests
     TEST(BBTester, OnlyA1PopulationCountIs1)
     {
-        BitBoard bb(std::vector<Cell>{a1});
+        BitBoard bb {a1};
         ASSERT_EQ(bb.popCount(), 1);
     }
     TEST(BBTester, BoardCenterPopulationCountIs4)

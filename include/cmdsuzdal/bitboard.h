@@ -30,6 +30,7 @@ namespace cSzd
         BitBoardState bbs{};
 
         BitBoard() = default;
+        explicit BitBoard(const Cell &c) { setCell(c); }
         explicit BitBoard(const std::vector<Cell> &cells) { setCell(cells); }
         explicit BitBoard(BitBoardState bitbs) { bbs = bitbs; }
 
