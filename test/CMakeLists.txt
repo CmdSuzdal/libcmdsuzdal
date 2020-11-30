@@ -10,6 +10,7 @@ set(TESTCTGT testcmdsuzdal)
 
 add_executable(${TESTCTGT}
     bitboardtest.cpp
+    armytest.cpp
 )
 
 # includes the base project includes
