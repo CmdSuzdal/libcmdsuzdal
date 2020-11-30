@@ -577,5 +577,10 @@ namespace cSzd
         BitBoard bb(AllWhiteCellsBB);
         ASSERT_EQ(bb.popCount(), 32);
     }
+    TEST(BBTester, FullBoardPopulationCountIs64)
+    {
+        BitBoard bb(AllCellsBB);
+        ASSERT_EQ(bb.popCount(), 64);
+    }
 
 } // namespace cSzd
