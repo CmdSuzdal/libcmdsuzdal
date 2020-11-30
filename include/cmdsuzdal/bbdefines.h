@@ -129,7 +129,7 @@ namespace cSzd
         0 // for invalid diagonal
     };
 
-    // Antidiagonals Masks --- These are the diagonal indexes of the board:
+    // Antidiagonals Masks --- These are the antidiagonal indexes of the board:
     //     _________________________
     // r8|  7  8  9 10 11 12 13 14 |
     // r7|  6  7  8  9 10 11 12 13 |
