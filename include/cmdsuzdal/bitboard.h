@@ -184,6 +184,9 @@ namespace cSzd
         static BitBoardState diagonalsMask(const Cell &c) { return diagMask(c) | antiDiagMask(c); }
         static BitBoardState queenMask(const Cell &c) { return fileMask(c) | rankMask(c) | diagMask(c) | antiDiagMask(c); }
 
+        // Check functions: return a boolean check on various conditions
+        // returns true if at least one of the cell in the given mask is active
+        bool activeCellsInMask(BitBoardState bbMask) const { return ((bbs & bbMask) != EmptyBB); }
     };
 
 } // namespace cSzd

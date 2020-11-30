@@ -583,4 +583,72 @@ namespace cSzd
         ASSERT_EQ(bb.popCount(), 64);
     }
 
+    // Check funtions tests
+    TEST(BBTester, IfCellE3IsActiveThereAreActiveCellsInRank3AndFileE)
+    {
+        BitBoard bb {e3};
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_3]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_e]));
+
+        ASSERT_FALSE(bb.activeCellsInMask(RanksBB[r_1]));
+        ASSERT_FALSE(bb.activeCellsInMask(RanksBB[r_2]));
+        ASSERT_FALSE(bb.activeCellsInMask(RanksBB[r_4]));
+        ASSERT_FALSE(bb.activeCellsInMask(RanksBB[r_5]));
+        ASSERT_FALSE(bb.activeCellsInMask(RanksBB[r_6]));
+        ASSERT_FALSE(bb.activeCellsInMask(RanksBB[r_7]));
+        ASSERT_FALSE(bb.activeCellsInMask(RanksBB[r_8]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_a]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_b]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_c]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_d]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_f]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_g]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_h]));
+    }
+
+    TEST(BBTester, DiagonalTouchAllRanskAndFiles)
+    {
+        BitBoard bb {DiagonalBB};
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_1]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_2]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_3]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_4]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_5]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_6]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_7]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_8]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_a]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_b]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_c]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_d]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_e]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_f]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_g]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_h]));
+    }
+
+    TEST(BBTester, DiagonalsMaskOfA4DoesNotTouchLastThreeFiles)
+    {
+        BitBoard bb {BitBoard::diagonalsMask(a4)};
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_1]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_2]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_3]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_4]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_5]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_6]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_7]));
+        ASSERT_TRUE(bb.activeCellsInMask(RanksBB[r_8]));
+
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_a]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_b]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_c]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_d]));
+        ASSERT_TRUE(bb.activeCellsInMask(FilesBB[f_e]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_f]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_g]));
+        ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_h]));
+    }
+
+
+
 } // namespace cSzd

@@ -28,9 +28,7 @@ namespace cSzd
         PawnSet(const Cell &c) : bb(c) {};
         PawnSet(const std::vector<Cell> &c) : bb(c) {};
 
-        bool valid() { return noActiveCellsInMask(RanksBB[r_1] | RanksBB[r_8]); }
-
-        bool noActiveCellsInMask(BitBoardState bbs) { return ((bb.bbs & bbs) == EmptyBB); }
+        bool valid() { return !bb.activeCellsInMask(RanksBB[r_1] | RanksBB[r_8]); }
 
         // the bitboard
         BitBoard bb {};
