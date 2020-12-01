@@ -16,6 +16,8 @@ namespace cSzd
         ItemsSet(const Cell &c) : bb(c) {};
         ItemsSet(const std::vector<Cell> &c) : bb(c) {};
 
+        BitBoardState addElems(const std::vector<Cell> &c) { bb.setCell(c); return bb.bbs; }
+
         virtual bool valid() const = 0;
 
         // the bitboard
@@ -42,7 +44,7 @@ namespace cSzd
         PawnsSet(const Cell &c) : ItemsSet(c) {};
         PawnsSet(const std::vector<Cell> &c) : ItemsSet(c) {};
 
-        bool valid() const { return !bb.activeCellsInMask(RanksBB[r_1] | RanksBB[r_8]); }
+        bool valid() const { return !bb.activeCellsInMask(RanksBB[r_1] | RanksBB[r_8]) && bb.popCount() <= 8; }
 
     };
     // -----------------------------------------------
