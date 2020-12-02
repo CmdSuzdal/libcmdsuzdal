@@ -17,7 +17,7 @@ namespace cSzd
         BitBoard pawns;
 
         // --------------------------
-        explicit Army() : Army(WhiteArmy) {};
+        explicit Army() = default;
         explicit Army(ArmyColor c);
 
     };

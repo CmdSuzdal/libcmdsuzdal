@@ -32,13 +32,13 @@ namespace cSzd
         ASSERT_EQ(army.pawns, BitBoard(RanksBB[r_7]));
         ASSERT_EQ(army.pawns.popCount(), 8);
     }
-    TEST(ArmyTester, AfterDefaultInitArmyIsTheWhiteArmy)
+    TEST(ArmyTester, AfterDefaultInitThereIsNoArmy)
     {
         Army army {};
-        ASSERT_EQ(army.king, BitBoard(e1));
-        ASSERT_EQ(army.pawns, BitBoard(RanksBB[r_2]));
-        ASSERT_EQ(army.king.popCount(), 1);
-        ASSERT_EQ(army.pawns.popCount(), 8);
+        ASSERT_EQ(army.king, BitBoard(EmptyBB));
+        ASSERT_EQ(army.pawns, BitBoard(EmptyBB));
+        ASSERT_EQ(army.king.popCount(), 0);
+        ASSERT_EQ(army.pawns.popCount(), 0);
     }
 
 
