@@ -24,6 +24,8 @@ namespace cSzd
         explicit Army() = default;
         explicit Army(ArmyColor c);
 
+        private:
+
     };
     // -----------------------------------------------
 
