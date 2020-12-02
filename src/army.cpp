@@ -8,12 +8,12 @@ namespace cSzd
     {
         switch (c) {
             case WhiteArmy:
-                king.setCell(e1);
-                pawns = BitBoard(RanksBB[r_2]);
+                pieces[King].setCell(e1);
+                pieces[Pawn] = BitBoard(RanksBB[r_2]);
                 break;
             case BlackArmy:
-                king.setCell(e8);
-                pawns = BitBoard(RanksBB[r_7]);
+                pieces[King].setCell(e8);
+                pieces[Pawn] = BitBoard(RanksBB[r_7]);
                 break;
             default:
                 // invalid army.... init empty
