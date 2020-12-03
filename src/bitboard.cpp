@@ -1,4 +1,3 @@
-#include <iostream>
 #include "cmdsuzdal/bitboard.h"
 
 namespace cSzd

@@ -1,8 +1,6 @@
 #if !defined CSZD_ARMY_HEADER
 #define CSZD_ARMY_HEADER
 
-#include <vector>
-
 #include "cmdsuzdal/bitboard.h"
 
 namespace cSzd
@@ -18,7 +16,6 @@ namespace cSzd
     struct Army {
         // --------------------------
         BitBoard pieces[NumPieceTypes] = {};
-        //BitBoard pawns;
 
         // --------------------------
         explicit Army() = default;

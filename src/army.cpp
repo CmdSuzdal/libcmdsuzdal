@@ -1,4 +1,3 @@
-#include <iostream>
 #include "cmdsuzdal/army.h"
 
 namespace cSzd
