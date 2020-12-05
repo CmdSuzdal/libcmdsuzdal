@@ -95,14 +95,38 @@ namespace cSzd
     }
     TEST(FENRecordTester, ExtractArmyPlacementFromVariousPositionIsOK)
     {
-        FENRecord f;
+        FENRecord f; // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR
         ASSERT_EQ(f.extractBitBoard(), BitBoard(RanksBB[r_1] | RanksBB[r_2] | RanksBB[r_7] | RanksBB[r_8]));
-        ASSERT_EQ(f.extractBitBoard(WhiteArmy), BitBoard(RanksBB[r_1] | RanksBB[r_2]));
-        //ASSERT_EQ(f.extractBitBoard(WhiteArmy, King), BitBoard({e1}));
-        ASSERT_EQ(f.extractBitBoard(BlackArmy), BitBoard(RanksBB[r_7] | RanksBB[r_8]));
-        f.fen = FENEmptyChessBoard;
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy),         BitBoard(RanksBB[r_1] | RanksBB[r_2]));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy),         BitBoard(RanksBB[r_7] | RanksBB[r_8]));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, King),   BitBoard({e1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Queen),  BitBoard({d1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Bishop), BitBoard({c1, f1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Knight), BitBoard({b1, g1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Rook),   BitBoard({a1, h1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Pawn),   BitBoard(RanksBB[r_2]));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, King),   BitBoard({e8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Queen),  BitBoard({d8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Bishop), BitBoard({c8, f8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Knight), BitBoard({b8, g8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Rook),   BitBoard({a8, h8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard(RanksBB[r_7]));
+
+        f.fen = FENEmptyChessBoard;    // 8/8/8/8/8/8/8/8
         ASSERT_EQ(f.extractBitBoard(), BitBoard(EmptyBB));
-        ASSERT_EQ(f.extractBitBoard(WhiteArmy), BitBoard(EmptyBB));
-        ASSERT_EQ(f.extractBitBoard(BlackArmy), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy),         BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy),         BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, King),   BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Queen),  BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Bishop), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Knight), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Rook),   BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Pawn),   BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, King),   BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Queen),  BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Bishop), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Knight), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Rook),   BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard(EmptyBB));
     }
 } // namespace cSzd

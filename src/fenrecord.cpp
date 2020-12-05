@@ -41,6 +41,7 @@ namespace cSzd
                         piecesToSearch = "P";
                         break;
                     case InvalidPiece:
+                        // search all white pieces
                         piecesToSearch = "BKNPQR";
                         break;
                     default:
@@ -71,6 +72,7 @@ namespace cSzd
                         piecesToSearch = "p";
                         break;
                     case InvalidPiece:
+                        // search all black pieces
                         piecesToSearch = "bknpqr";
                         break;
                     default:
@@ -90,23 +92,25 @@ namespace cSzd
                 break;
         }
 
-        Cell bbCell = h8;
+        Cell bbCell = a8;
         for (auto c: pp) {
             if (piecesToSearch.find(c) != std::string::npos) {
                 bb.setCell(bbCell);
-                bbCell = static_cast<Cell>(bbCell - 1);
+                bbCell = static_cast<Cell>(bbCell + 1);
             }
             else if (allValidPieces.find(c) != std::string::npos) {
                 // all the other valid pieces shall be skipped
-                bbCell = static_cast<Cell>(bbCell - 1);
+                bbCell = static_cast<Cell>(bbCell + 1);
             }
             else if (skipList.find(c) != std::string::npos) {
                 unsigned int posToSkip = c - '1' + 1;
-                bbCell = static_cast<Cell>(bbCell - posToSkip);
+                bbCell = static_cast<Cell>(bbCell + posToSkip);
             }
-            // ignore any other character (some "/" should be present)
+            else if (c == '/') {
+                // end of rank: restart from previous rank
+                bbCell = static_cast<Cell>(bbCell - 16);
+            }
         }
-
         return bb;
     }
 
