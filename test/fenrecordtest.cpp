@@ -3,7 +3,7 @@
 
 #include "cmdsuzdal/fenrecord.h"
 
-// From Wikipedia:
+// From Wikipedia (https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation):
 // Forsyth–Edwards Notation (FEN) is a standard notation for describing a particular board
 // position of a chess game. The purpose of FEN is to provide all the necessary information
 // to restart a game from a particular position.
@@ -62,7 +62,19 @@ namespace cSzd
         // Starting position:
         // "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         FENRecord f;
-        ASSERT_EQ(f.fen, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        ASSERT_EQ(f.fen, FENInitialStandardPosition);
     }
+    TEST(FENRecordTester, AfterDefaultCnstrPositionIsValid)
+    {
+        FENRecord f;
+        ASSERT_TRUE(f.isValid());
+    }
+    TEST(FENRecordTester, GenericPositionCnstrWithEmptyChessBoardIsOK)
+    {
+        FENRecord f {FENEmptyChessBoard};
+        ASSERT_EQ(f.fen, FENEmptyChessBoard);
+        ASSERT_TRUE(f.isValid()); // this is questionable ??
+    }
+
 
 } // namespace cSzd

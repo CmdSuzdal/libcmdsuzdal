@@ -42,7 +42,7 @@ target_include_directories(${CTGT}
 )
 
 target_compile_options(${CTGT} PRIVATE -Werror)
-target_compile_features(${CTGT} PRIVATE cxx_std_14)
+target_compile_features(${CTGT} PRIVATE cxx_std_17)
 
 # ------------------------------------------------------------------
 # Installation
