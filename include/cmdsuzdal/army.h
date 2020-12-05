@@ -6,10 +6,10 @@
 namespace cSzd
 {
 
-    enum ArmyColor { WhiteArmy, BlackArmy, InvalidArmy };
+    enum ArmyColor : unsigned int { WhiteArmy, BlackArmy, InvalidArmy };
 
     constexpr unsigned int NumPieceTypes = 6;
-    enum Piece { King = 0, Queen = 1, Bishop = 2,
+    enum Piece : unsigned int { King = 0, Queen = 1, Bishop = 2,
                  Knight = 3, Rook = 4 , Pawn = 5 };
 
     // --- The Army ----------------------------------

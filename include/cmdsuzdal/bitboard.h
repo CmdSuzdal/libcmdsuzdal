@@ -27,6 +27,7 @@ namespace cSzd
     //
     struct BitBoard
     {
+
         BitBoardState bbs{};
 
         BitBoard() = default;

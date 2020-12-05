@@ -8,7 +8,12 @@ namespace cSzd
 
     using BitBoardState = std::uint64_t;
 
-    enum Cell
+    // These enums could be moved inside the BitBoard class, but we prefer to
+    // avoid this for the moment to simplify code development. If for example
+    // the Cell enum is moved inside the Cell struct definition, after this
+    // any usage of a cell value (e.g. "e5") shall be replaced by the scope
+    // specification form (e.g. BitBoard::e5)
+    enum Cell : unsigned int
     {
         a1, b1, c1, d1, e1, f1, g1, h1,
         a2, b2, c2, d2, e2, f2, g2, h2,
@@ -21,23 +26,23 @@ namespace cSzd
         InvalidCell
     };
 
-    enum File
+    enum File : unsigned int
     {
         f_a, f_b, f_c, f_d, f_e, f_f, f_g, f_h,
         InvalidFile
     };
-    enum Rank
+    enum Rank : unsigned int
     {
         r_1, r_2, r_3, r_4, r_5, r_6, r_7, r_8,
         InvalidRank
     };
 
-    enum Diagonal
+    enum Diagonal : unsigned int
     {
         d_0, d_1, d_2, d_3, d_4, d_5, d_6, d_7, d_8, d_9, d_10, d_11, d_12, d_13, d_14,
         InvalidDiagonal
     };
-    enum AntiDiagonal
+    enum AntiDiagonal : unsigned int
     {
         a_0, a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9, a_10, a_11, a_12, a_13, a_14,
         InvalidAntiDiagonal

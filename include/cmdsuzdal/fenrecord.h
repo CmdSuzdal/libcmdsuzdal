@@ -22,7 +22,7 @@ namespace cSzd
 
         // -------------------------
         FENRecord() = default;
-        explicit FENRecord(const std::string_view &f) { fen = f;};
+        explicit FENRecord(const std::string_view f) { fen = f;};
 
         // -------------------------
         bool isValid() const { return true; }
