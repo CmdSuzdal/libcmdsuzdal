@@ -86,14 +86,11 @@ namespace cSzd
     }
 
     // Sub-FEN extraction functions
-    TEST(FENRecordTester, ExtractPiecePlacementFromInitialPositionOK)
+    TEST(FENRecordTester, ExtractPiecePlacementFromVariousPositionsOK)
     {
         FENRecord f;
         ASSERT_EQ(f.piecePlacement(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-    }
-    TEST(FENRecordTester, ExtractPiecePlacementFromEmptyChessBoardOK)
-    {
-        FENRecord f {FENEmptyChessBoard};
+        f.fen = FENEmptyChessBoard;
         ASSERT_EQ(f.piecePlacement(), "8/8/8/8/8/8/8/8");
     }
 
