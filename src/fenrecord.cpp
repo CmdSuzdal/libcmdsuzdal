@@ -1,4 +1,4 @@
-#include "cmdsuzdal/fen.h"
+#include "cmdsuzdal/fenrecord.h"
 
 namespace cSzd
 {

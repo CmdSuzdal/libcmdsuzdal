@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include "cmdsuzdal/fen.h"
+
+#include "cmdsuzdal/fenrecord.h"
 
 // From Wikipedia:
 // Forsyth–Edwards Notation (FEN) is a standard notation for describing a particular board
@@ -51,12 +52,17 @@
 using namespace std;
 using namespace testing;
 
+#include "cmdsuzdal/fenrecord.h"
+
 namespace cSzd
 {
 
-    TEST(FENTester, DummyTest)
+    TEST(FENRecordTester, DefaultCnstrPrepareInitialStandardBoard)
     {
-        ASSERT_EQ(1, 1);
+        // Starting position:
+        // "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        FENRecord f;
+        ASSERT_EQ(f.fen, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     }
 
 } // namespace cSzd
