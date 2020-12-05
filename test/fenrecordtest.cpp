@@ -86,12 +86,23 @@ namespace cSzd
     }
 
     // Sub-FEN extraction functions
-    TEST(FENRecordTester, ExtractPiecePlacementFromVariousPositionsOK)
+    TEST(FENRecordTester, ExtractPiecePlacementFromVariousPositionsIsOK)
     {
         FENRecord f;
         ASSERT_EQ(f.piecePlacement(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
         f.fen = FENEmptyChessBoard;
         ASSERT_EQ(f.piecePlacement(), "8/8/8/8/8/8/8/8");
     }
-
+    TEST(FENRecordTester, ExtractArmyPlacementFromVariousPositionIsOK)
+    {
+        FENRecord f;
+        ASSERT_EQ(f.extractBitBoard(), BitBoard(RanksBB[r_1] | RanksBB[r_2] | RanksBB[r_7] | RanksBB[r_8]));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy), BitBoard(RanksBB[r_1] | RanksBB[r_2]));
+        //ASSERT_EQ(f.extractBitBoard(WhiteArmy, King), BitBoard({e1}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy), BitBoard(RanksBB[r_7] | RanksBB[r_8]));
+        f.fen = FENEmptyChessBoard;
+        ASSERT_EQ(f.extractBitBoard(), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy), BitBoard(EmptyBB));
+    }
 } // namespace cSzd

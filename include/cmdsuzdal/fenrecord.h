@@ -27,6 +27,7 @@ namespace cSzd
         // -------------------------
         bool isValid() const { return true; }
         const std::string_view piecePlacement() const;
+        const BitBoard extractBitBoard(ArmyColor c = InvalidArmy, Piece p = InvalidPiece) const;
     };
 
 } // namespace cSzd
