@@ -1,12 +1,19 @@
-# Need these for a more recent CMake on Linux
-sudo: required
-dist: trusty
-
+# Need these for a more recent environment on Linux
 os:
   - linux
   - osx
 
 language: cpp
+
+dist: trusty
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-7
+      - g++-7
 
 before_script:
   - git submodule update --init --recursive
@@ -15,6 +22,10 @@ before_script:
   - cmake ..
 
 script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      export CC=gcc-7 ;
+      export CXX=g++-7 ;
+    fi
   - cmake --build .
 
 after_script:
