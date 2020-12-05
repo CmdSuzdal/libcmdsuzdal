@@ -1,3 +1,4 @@
 build*
 .vscode
 .syntastic_cpp_config
+_parked_code_.cpp
