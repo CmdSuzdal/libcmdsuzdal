@@ -56,6 +56,11 @@ using namespace testing;
 
 namespace cSzd
 {
+    constexpr std::string_view FENExampleE97Position
+     {"r1bq1rk1/pp2n1b1/2ppNnpp/3Ppp2/1PP1P3/2N1BB2/P4PPP/R2QR1K1 b - - 1 14"};
+
+    constexpr BitBoardState exampleE97Position { 0x6D53FC381634E159ULL };
+
 
     TEST(FENRecordTester, DefaultCnstrPrepareInitialStandardBoard)
     {
@@ -92,6 +97,8 @@ namespace cSzd
         ASSERT_EQ(f.piecePlacement(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
         f.fen = FENEmptyChessBoard;
         ASSERT_EQ(f.piecePlacement(), "8/8/8/8/8/8/8/8");
+        f.fen = FENExampleE97Position;
+        ASSERT_EQ(f.piecePlacement(), "r1bq1rk1/pp2n1b1/2ppNnpp/3Ppp2/1PP1P3/2N1BB2/P4PPP/R2QR1K1");
     }
     TEST(FENRecordTester, ExtractArmyPlacementFromVariousPositionIsOK)
     {
@@ -128,5 +135,23 @@ namespace cSzd
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Knight), BitBoard(EmptyBB));
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Rook),   BitBoard(EmptyBB));
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard(EmptyBB));
+
+        f.fen = FENExampleE97Position;
+        ASSERT_EQ(f.extractBitBoard(), BitBoard(exampleE97Position));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy),         BitBoard({g1, d1, e3, f3, c3, e6, a1, e1, a2, b4, c4, d5, e4, f2, g2, h2}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy),         BitBoard({g8, d8, c8, g7, e7, f6, a8, f8, a7, b7, c6, d6, e5, f5, g6, h6}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, King),   BitBoard({g1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Queen),  BitBoard({d1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Bishop), BitBoard({e3, f3}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Knight), BitBoard({c3, e6}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Rook),   BitBoard({a1, e1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Pawn),   BitBoard({a2, b4, c4, d5, e4, f2, g2, h2}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, King),   BitBoard({g8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Queen),  BitBoard({d8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Bishop), BitBoard({c8, g7}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Knight), BitBoard({e7, f6}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Rook),   BitBoard({a8, f8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard({a7, b7, c6, d6, e5, f5, g6, h6}));
+
     }
 } // namespace cSzd
