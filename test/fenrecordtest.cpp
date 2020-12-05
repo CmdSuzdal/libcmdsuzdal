@@ -76,6 +76,15 @@ namespace cSzd
         ASSERT_TRUE(f.isValid()); // this is questionable !?
     }
 
+    // Change position function
+    TEST(FENRecordTester, ChangePositionToEmptyWorksOK)
+    {
+        FENRecord f;
+        ASSERT_EQ(f.fen, FENInitialStandardPosition);
+        f.fen = FENEmptyChessBoard;
+        ASSERT_EQ(f.fen, FENEmptyChessBoard);
+    }
+
     // Sub-FEN extraction functions
     TEST(FENRecordTester, ExtractPiecePlacementFromInitialPositionOK)
     {
