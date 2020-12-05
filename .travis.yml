@@ -16,16 +16,16 @@ addons:
       - g++-7
 
 before_script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      export CC=gcc-7 ;
+      export CXX=g++-7 ;
+    fi
   - git submodule update --init --recursive
   - mkdir build
   - cd build
   - cmake ..
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      export CC=gcc-7 ;
-      export CXX=g++-7 ;
-    fi
   - cmake --build .
 
 after_script:
