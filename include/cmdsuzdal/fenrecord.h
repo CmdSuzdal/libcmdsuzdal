@@ -4,12 +4,14 @@
 #include <string>
 #include <string_view>
 
+#include "cmdsuzdal/army.h"
+
 namespace cSzd
 {
-    const std::string_view FENInitialStandardPosition
+    constexpr std::string_view FENDelim {" "};
+    constexpr std::string_view FENInitialStandardPosition
        {"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"};
-
-    const std::string_view FENEmptyChessBoard
+    constexpr std::string_view FENEmptyChessBoard
        {"8/8/8/8/8/8/8/8 - - - 0 1"};
 
     // -------------------------------------------------------------------------
@@ -24,6 +26,7 @@ namespace cSzd
 
         // -------------------------
         bool isValid() const { return true; }
+        const std::string_view piecePlacement() const;
     };
 
 } // namespace cSzd

@@ -73,8 +73,19 @@ namespace cSzd
     {
         FENRecord f {FENEmptyChessBoard};
         ASSERT_EQ(f.fen, FENEmptyChessBoard);
-        ASSERT_TRUE(f.isValid()); // this is questionable ??
+        ASSERT_TRUE(f.isValid()); // this is questionable !?
     }
 
+    // Sub-FEN extraction functions
+    TEST(FENRecordTester, ExtractPiecePlacementFromInitialPositionOK)
+    {
+        FENRecord f;
+        ASSERT_EQ(f.piecePlacement(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+    }
+    TEST(FENRecordTester, ExtractPiecePlacementFromEmptyChessBoardOK)
+    {
+        FENRecord f {FENEmptyChessBoard};
+        ASSERT_EQ(f.piecePlacement(), "8/8/8/8/8/8/8/8");
+    }
 
 } // namespace cSzd
