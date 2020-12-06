@@ -25,7 +25,7 @@ namespace cSzd
         if ((wK.popCount() != 1) || (bK.popCount() != 1)) return false;
 
         // kings shall not be in contact
-        if (wK.activeCellsInMask(BitBoard::neighbourMask(a8))) return false;
+        if (wK.activeCellsInMask(bK.neighbourCells().bbs)) return false;
 
         return true;
     }

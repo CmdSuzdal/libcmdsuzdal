@@ -194,6 +194,29 @@ namespace cSzd
     {
         FENRecord f { "kK6/8/8/8/8/8/8/8 w - - 0 1" };
         ASSERT_FALSE(f.isValid());
+        f.fen = "k7/K7/8/8/8/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "k7/1K6/8/8/8/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "k7/2K5/8/8/8/8/8/8 w - - 0 1";
+        ASSERT_TRUE(f.isValid());
+
+        f.fen = "8/8/8/2kK4/8/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "8/8/8/3Kk3/8/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "8/8/2k5/3K4/8/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "8/8/3k4/3K4/8/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "8/8/4k3/3K4/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "8/8/8/3K4/2k5/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "8/8/8/3K4/3k4/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        f.fen = "8/8/8/3K4/4k3/8/8/8 w - - 0 1";
+        ASSERT_FALSE(f.isValid());
     }
 
 
