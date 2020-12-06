@@ -16,13 +16,16 @@ namespace cSzd
     // Evaluates if the FEN string represent a valid chess position
     bool FENRecord::isValid() const
     {
-        if (extractBitBoard() == BitBoard(EmptyBB)) {
-            return false;
-        }
-        if ((extractBitBoard(WhiteArmy, King).popCount() != 1) ||
-            (extractBitBoard(BlackArmy, King).popCount() != 1)){
-            return false;
-        }
+        // Kings are quite important for validate positions,
+        // so we extract the bitboards
+        BitBoard wK = extractBitBoard(WhiteArmy, King);
+        BitBoard bK = extractBitBoard(BlackArmy, King);
+
+        // One and only one king per army shall be present in the board
+        if ((wK.popCount() != 1) || (bK.popCount() != 1)) return false;
+
+        // kings shall not be in contact
+        if (wK.activeCellsInMask(BitBoard::neighbourMask(a8))) return false;
 
         return true;
     }

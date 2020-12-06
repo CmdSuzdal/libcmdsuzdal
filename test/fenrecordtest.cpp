@@ -175,7 +175,7 @@ namespace cSzd
         ASSERT_TRUE(f.isValid());
     }
 
-    // No more that one king per side
+    // If more that one king per side are present, position is not valid
     TEST(FENRecordTester, IsMoreThanOneArmyKingIsPresentPositionIsNotValid)
     {
         // Initial position with one additional white king
@@ -188,5 +188,13 @@ namespace cSzd
         f.fen = "rnbqkbnr/pppppppp/8/1k6/2K2k2/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         ASSERT_FALSE(f.isValid());
     }
+
+    // If kings are "in contact" position is not valid
+    TEST(FENRecordTester, IfKingsAreInContactPositionIsNotValid)
+    {
+        FENRecord f { "kK6/8/8/8/8/8/8/8 w - - 0 1" };
+        ASSERT_FALSE(f.isValid());
+    }
+
 
 } // namespace cSzd
