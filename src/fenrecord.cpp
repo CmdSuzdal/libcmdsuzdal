@@ -16,7 +16,14 @@ namespace cSzd
     // Evaluates if the FEN string represent a valid chess position
     bool FENRecord::isValid() const
     {
-        if (extractBitBoard() == BitBoard(EmptyBB)) { return false; }
+        if (extractBitBoard() == BitBoard(EmptyBB)) {
+            return false;
+        }
+        if ((extractBitBoard(WhiteArmy, King).popCount() != 1) ||
+            (extractBitBoard(BlackArmy, King).popCount() != 1)){
+            return false;
+        }
+
         return true;
     }
 

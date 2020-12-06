@@ -138,6 +138,7 @@ namespace cSzd
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard(EmptyBB));
 
         f.fen = FENExampleE97Position;
+        ASSERT_TRUE(f.isValid());
         ASSERT_EQ(f.extractBitBoard(), BitBoard(exampleE97Position));
         ASSERT_EQ(f.extractBitBoard(WhiteArmy),         BitBoard({g1, d1, e3, f3, c3, e6, a1, e1, a2, b4, c4, d5, e4, f2, g2, h2}));
         ASSERT_EQ(f.extractBitBoard(BlackArmy),         BitBoard({g8, d8, c8, g7, e7, f6, a8, f8, a7, b7, c6, d6, e5, f5, g6, h6}));
@@ -155,4 +156,37 @@ namespace cSzd
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard({a7, b7, c6, d6, e5, f5, g6, h6}));
 
     }
+
+    // --- isValid() method tests -------------------------------------------------------
+    // If one king is missing position is not valid
+    TEST(FENRecordTester, IsKingsAreMissingPositionIsNotValid)
+    {
+        // Initial position, missing white king
+        FENRecord f {"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w kq - 0 1"};
+        ASSERT_FALSE(f.isValid());
+        // Initial position, missing black king
+        f.fen = "rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ - 0 1";
+        ASSERT_FALSE(f.isValid());
+        // Initial position, missing both kings
+        f.fen = "rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w - - 0 1";
+        ASSERT_FALSE(f.isValid());
+        // only kings in initial position, everything ok
+        f.fen = "4k3/8/8/8/8/8/8/4K3 w - - 0 1";
+        ASSERT_TRUE(f.isValid());
+    }
+
+    // No more that one king per side
+    TEST(FENRecordTester, IsMoreThanOneArmyKingIsPresentPositionIsNotValid)
+    {
+        // Initial position with one additional white king
+        FENRecord f {"rnbqkbnr/pppppppp/8/8/8/8/PPKPPPPP/RNBQKBNR w KQkq - 0 1"};
+        ASSERT_FALSE(f.isValid());
+        // Initial position with one additional black king
+        f.fen = "rnbqkbnr/pppppppp/8/1k6/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        ASSERT_FALSE(f.isValid());
+        // Initial position with one additional king per side
+        f.fen = "rnbqkbnr/pppppppp/8/1k6/2K2k2/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        ASSERT_FALSE(f.isValid());
+    }
+
 } // namespace cSzd
