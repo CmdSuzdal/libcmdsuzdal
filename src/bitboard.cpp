@@ -17,6 +17,19 @@ namespace cSzd
         return pc;
     }
 
+    BitBoard BitBoard::neighbourCells() const
+    {
+        BitBoard nb;
+        BitBoardState checkMask = 1;
+        for (auto ndx = 0; ndx < 64; ndx++) {
+            if (bbs & checkMask) {
+                nb = nb | BitBoard(neighbourMask(static_cast<Cell>(ndx)));
+            }
+            checkMask <<= 1;
+        }
+        return nb;
+    }
+
     BitBoardState BitBoard::shiftWest(unsigned int npos)
     {
         if (npos > 7)

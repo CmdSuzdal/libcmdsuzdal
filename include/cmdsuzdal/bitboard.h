@@ -123,6 +123,14 @@ namespace cSzd
         // -------------------------------------------------------------------------------
 
         // -------------------------------------------------------------------------------
+        // Bitboard generation methods
+        // Returns a BitBoard object composed by the neighbour cells of the current object
+        // active cells
+        BitBoard neighbourCells() const;
+        // -------------------------------------------------------------------------------
+
+
+        // -------------------------------------------------------------------------------
         // Bitboard utility methods
 
         // Given a cell, returns the associated BitBoard state (the BitBoard state on

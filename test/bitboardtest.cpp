@@ -311,8 +311,9 @@ namespace cSzd
         //  ........ = 00
         //  ........ = 00
         //  ........ = 00
+        BitBoard bb(e5);
         BitBoardState n = 0x0000382838000000ULL;
-        ASSERT_EQ(BitBoard::neighbourMask(e5), n);
+        ASSERT_EQ(bb.neighbourCells(), BitBoard(n));
     }
     TEST(BBTester, NeighboursMaskOfB2IsComputedCorrectly)
     {
@@ -324,8 +325,9 @@ namespace cSzd
         //  xxx..... = 07
         //  x.x..... = 05
         //  xxx..... = 07
+        BitBoard bb(b2);
         BitBoardState n = 0x0000000000070507ULL;
-        ASSERT_EQ(BitBoard::neighbourMask(b2), n);
+        ASSERT_EQ(bb.neighbourCells(), BitBoard(n));
     }
     TEST(BBTester, NeighboursMaskOfH6IsComputedCorrectly)
     {
@@ -337,8 +339,9 @@ namespace cSzd
         //  ........ = 00
         //  ........ = 00
         //  ........ = 00
+        BitBoard bb(h6);
         BitBoardState n = 0x00C040C000000000ULL;
-        ASSERT_EQ(BitBoard::neighbourMask(h6), n);
+        ASSERT_EQ(bb.neighbourCells(), BitBoard(n));
     }
     TEST(BBTester, NeighboursMaskOfH1IsComputedCorrectly)
     {
@@ -350,8 +353,9 @@ namespace cSzd
         //  ........ = 00
         //  ......xx = C0
         //  ......x. = 40
+        BitBoard bb(h1);
         BitBoardState n = 0x000000000000C040ULL;
-        ASSERT_EQ(BitBoard::neighbourMask(h1), n);
+        ASSERT_EQ(bb.neighbourCells(), BitBoard(n));
     }
 
     TEST(BBTester, NeighboursCellsOfD4AreComputedCorrectly)
