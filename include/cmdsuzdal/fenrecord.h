@@ -25,7 +25,7 @@ namespace cSzd
         explicit FENRecord(const std::string_view f) { fen = f;};
 
         // -------------------------
-        bool isValid() const { return true; }
+        bool isValid() const;
         const std::string_view piecePlacement() const;
         const BitBoard extractBitBoard(ArmyColor c = InvalidArmy, Piece p = InvalidPiece) const;
 

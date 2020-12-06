@@ -74,11 +74,12 @@ namespace cSzd
         FENRecord f;
         ASSERT_TRUE(f.isValid());
     }
-    TEST(FENRecordTester, GenericPositionCnstrWithEmptyChessBoardIsOK)
+    TEST(FENRecordTester, GenericPositionCnstrWithEmptyChessBoardIsNotOK)
     {
         FENRecord f {FENEmptyChessBoard};
         ASSERT_EQ(f.fen, FENEmptyChessBoard);
-        ASSERT_TRUE(f.isValid()); // this is questionable !?
+        // An empty chessboard is not a valid chess position
+        ASSERT_FALSE(f.isValid());
     }
 
     // Change position function

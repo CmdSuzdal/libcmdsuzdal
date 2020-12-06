@@ -13,6 +13,14 @@ namespace cSzd
     }
 
     // -------------------------------------------------------------
+    // Evaluates if the FEN string represent a valid chess position
+    bool FENRecord::isValid() const
+    {
+        if (extractBitBoard() == BitBoard(EmptyBB)) { return false; }
+        return true;
+    }
+
+    // -------------------------------------------------------------
     // Returns the bitboard with the placement of the specified pieces
     // For example, if Army = WhiteArmy and Piece = King, returns
     // the bitboard with the position of the white King.
