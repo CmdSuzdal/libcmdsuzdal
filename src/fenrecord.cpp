@@ -7,10 +7,72 @@ namespace cSzd
 {
 
     // -------------------------------------------------------------
-    // Returns the Piece Placement section of the FEN Record
-    const std::string_view FENRecord::piecePlacement() const
+    FENRecord::FENRecord() : FENRecord(FENInitialStandardPosition) {}
+
+    // -------------------------------------------------------------
+    FENRecord::FENRecord(const std::string_view f)
     {
-        return std::string_view {fen.c_str(), fen.find_first_of(FENDelim)};
+        loadPosition(f);
+    }
+
+    // -------------------------------------------------------------
+    void FENRecord::loadPosition(const std::string_view f)
+    {
+        fen = f;
+        activeArmy = InvalidArmy;
+        cstlAvail = BitBoard(EmptyBB);
+        enPassantCell = BitBoard(EmptyBB);
+
+        // extracts the subfields
+        std::istringstream ss(fen);
+        std::string fld;
+
+        // pieces placement
+        pPlacement = std::string_view {fen.c_str(), fen.find_first_of(FENDelim)};
+
+        // active army
+        ss >> fld;  // skip first field
+        ss >> fld;
+        if (fld == "w") {
+            activeArmy = WhiteArmy;
+        }
+        else if (fld == "b") {
+            activeArmy = BlackArmy;
+        }
+
+        // castling availability
+        ss >> fld;
+        if (fld.find('Q') != std::string::npos) {
+            cstlAvail.setCell(b1);
+        }
+        if (fld.find('K') != std::string::npos) {
+            cstlAvail.setCell(g1);
+        }
+        if (fld.find('q') != std::string::npos) {
+            cstlAvail.setCell(b8);
+        }
+        if (fld.find('k') != std::string::npos) {
+            cstlAvail.setCell(g8);
+        }
+
+        // En passant target cell
+        ss >> fld;
+        if (fld.size() == 2) {
+            // FIXME --- TODO Improve the check!
+            enPassantCell.setCell(
+                static_cast<File>(fld[0] - 'a'),
+                static_cast<Rank>(fld[1] - '1'));
+        }
+
+        // half move clock
+        ss >> fld;
+        // FIXME --- TODO --- Check for exceptions
+        hmc = std::stoul(fld);;
+
+        // full move number
+        ss >> fld;
+        // FIXME --- TODO --- Check for exceptions
+        fm = std::stoul(fld);;
     }
 
     // -------------------------------------------------------------
@@ -66,95 +128,6 @@ namespace cSzd
             }
         }
         return bb;
-    }
-
-    // ----------------------------------------------------------
-    ArmyColor FENRecord::sideToMove() const
-    {
-        // Extracts the side to move field from the FEN record
-        // (the second field)
-        std::istringstream ss(fen);
-        std::string fld;
-        ss >> fld; // skip the first field (the piece placement)
-        ss >> fld;
-        if (fld == "w") {
-            return WhiteArmy;
-        }
-        else if (fld == "b") {
-            return BlackArmy;
-        }
-        return InvalidArmy;
-    }
-
-    // ----------------------------------------------------------
-    BitBoard FENRecord::castlingAvailability() const
-    {
-        std::istringstream ss(fen);
-        std::string fld;
-        BitBoard bb;
-        ss >> fld; // skip the first field (the piece placement)
-        ss >> fld; // skip the 2nd field (active side)
-        ss >> fld;
-        if (fld.find('Q') != std::string::npos) {
-            bb.setCell(b1);
-        }
-        if (fld.find('K') != std::string::npos) {
-            bb.setCell(g1);
-        }
-        if (fld.find('q') != std::string::npos) {
-            bb.setCell(b8);
-        }
-        if (fld.find('k') != std::string::npos) {
-            bb.setCell(g8);
-        }
-        return bb;
-    }
-
-    // ----------------------------------------------------------
-    BitBoard FENRecord::enPassantTargetSquare() const
-    {
-        std::istringstream ss(fen);
-        std::string fld;
-        BitBoard bb;
-        ss >> fld; // skip the first field (the piece placement)
-        ss >> fld; // skip the 2nd field (active side)
-        ss >> fld; // skip the 3rd field (castling availability)
-        ss >> fld;
-        if (fld == "-" || fld.size() != 2) {
-            return BitBoard(EmptyBB);
-        }
-        return
-            bb.setCell(static_cast<File>(fld[0] - 'a'),
-                       static_cast<Rank>(fld[1] - '1'));
-    }
-
-    // ----------------------------------------------------------
-    unsigned int FENRecord::halfMoveClock() const
-    {
-        std::istringstream ss(fen);
-        std::string fld;
-        unsigned int bb;
-        ss >> fld; // skip the first field (the piece placement)
-        ss >> fld; // skip the 2nd field (active side)
-        ss >> fld; // skip the 3rd field (castling availability)
-        ss >> fld; // skip the 4th field (en passant target square)
-        ss >> fld;
-        return std::stoul(fld);
-    }
-
-    // ----------------------------------------------------------
-    unsigned int FENRecord::fullMoves() const
-    {
-        std::istringstream ss(fen);
-        std::string fld;
-        unsigned int bb;
-        ss >> fld; // skip the first field (the piece placement)
-        ss >> fld; // skip the 2nd field (active side)
-        ss >> fld; // skip the 3rd field (castling availability)
-        ss >> fld; // skip the 4th field (en passant target square)
-        ss >> fld; // skip the 5th field (half move clock)
-        ss >> fld;
-        return std::stoul(fld);
     }
 
     // ----------------------------------------------------------

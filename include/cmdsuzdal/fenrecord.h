@@ -18,26 +18,35 @@ namespace cSzd
     // base struct for FEN Record representation
     struct FENRecord
     {
-        std::string fen {FENInitialStandardPosition};
 
         // -------------------------
-        FENRecord() = default;
-        explicit FENRecord(const std::string_view f) { fen = f;};
+        explicit FENRecord();
+        explicit FENRecord(const std::string_view f);
+
+        void loadPosition(const std::string_view f);
 
         // -------------------------
         bool isValid() const;
-        const std::string_view piecePlacement() const;
-        ArmyColor sideToMove() const;
-        BitBoard castlingAvailability() const;
-        BitBoard enPassantTargetSquare() const;
-        unsigned int halfMoveClock() const;
-        unsigned int fullMoves() const;
+        const std::string_view value() { return std::string_view {fen.c_str()}; }
+        const std::string_view piecePlacement() const { return pPlacement; }
+        ArmyColor sideToMove() const { return activeArmy; }
+        BitBoard castlingAvailability() const { return cstlAvail; }
+        BitBoard enPassantTargetSquare() const { return enPassantCell; }
+        unsigned int halfMoveClock() const { return hmc; }
+        unsigned int fullMoves() const { return fm; }
 
         const BitBoard extractBitBoard(ArmyColor c = InvalidArmy, Piece p = InvalidPiece) const;
 
     private:
         static const std::string pieceSetFENCharacters(ArmyColor c, Piece p);
 
+        std::string fen {FENInitialStandardPosition};
+        std::string_view pPlacement;
+        ArmyColor activeArmy;
+        BitBoard cstlAvail;
+        BitBoard enPassantCell;
+        unsigned int hmc;
+        unsigned int fm;
     };
 
 } // namespace cSzd
