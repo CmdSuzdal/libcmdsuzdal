@@ -9,6 +9,10 @@ namespace cSzd
     }
 
     // -----------------------------------------------------------------
+    ChessBoard::ChessBoard(const std::string &fenStr)
+        : ChessBoard(FENRecord(fenStr)) {}
+
+    // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)
     {
         whiteArmy.pieces[King]   = fen.extractBitBoard(WhiteArmy, King);
@@ -28,6 +32,11 @@ namespace cSzd
         enPassantTargetSquare = fen.enPassantTargetSquare();
         halfMoveClock = fen.halfMoveClock();
         fullMoves = fen.fullMoves();
+    }
+    // -----------------------------------------------------------------
+    void ChessBoard::loadPosition(const std::string &fenStr)
+    {
+        loadPosition(FENRecord(fenStr));
     }
 
     // -----------------------------------------------------------------

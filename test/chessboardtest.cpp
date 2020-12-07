@@ -82,16 +82,16 @@ namespace cSzd
     TEST(ChessBoardTester, IfKingsAreMissingPositionIsNotValid)
     {
         // Initial position, missing white king
-        ChessBoard cb {FENRecord("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w kq - 0 1")};
+        ChessBoard cb {"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w kq - 0 1"};
         ASSERT_FALSE(cb.isValid());
         // Initial position, missing black king
-        cb.loadPosition(FENRecord("rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ - 0 1"));
+        cb.loadPosition("rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ - 0 1");
         ASSERT_FALSE(cb.isValid());
         // Initial position, missing both kings
-        cb.loadPosition(FENRecord("rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w - - 0 1"));
+        cb.loadPosition("rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w - - 0 1");
         ASSERT_FALSE(cb.isValid());
         // only kings in initial position, everything ok
-        cb.loadPosition(FENRecord("4k3/8/8/8/8/8/8/4K3 w - - 0 1"));
+        cb.loadPosition("4k3/8/8/8/8/8/8/4K3 w - - 0 1");
         ASSERT_TRUE(cb.isValid());
     }
 
