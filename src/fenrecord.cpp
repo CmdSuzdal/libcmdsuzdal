@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "cmdsuzdal/fenrecord.h"
 
@@ -65,6 +66,24 @@ namespace cSzd
             }
         }
         return bb;
+    }
+
+    // ----------------------------------------------------------
+    ArmyColor FENRecord::sideToMove() const
+    {
+        // Extracts the side to move field from the FEN record
+        // (the second field)
+        std::istringstream ss(fen);
+        std::string fld;
+        ss >> fld; // skip the first field (the piece placement)
+        ss >> fld;
+        if (fld == "w") {
+            return WhiteArmy;
+        }
+        else if (fld == "b") {
+            return BlackArmy;
+        }
+        return InvalidArmy;
     }
 
     // ----------------------------------------------------------
