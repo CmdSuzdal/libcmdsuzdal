@@ -27,9 +27,13 @@ namespace cSzd
         // -------------------------
         bool isValid() const;
         const std::string_view piecePlacement() const;
-        const BitBoard extractBitBoard(ArmyColor c = InvalidArmy, Piece p = InvalidPiece) const;
         ArmyColor sideToMove() const;
         BitBoard castlingAvailability() const;
+        BitBoard enPassantTargetSquare() const;
+        unsigned int halfMoveClock() const;
+        unsigned int fullMoves() const;
+
+        const BitBoard extractBitBoard(ArmyColor c = InvalidArmy, Piece p = InvalidPiece) const;
 
     private:
         static const std::string pieceSetFENCharacters(ArmyColor c, Piece p);

@@ -86,6 +86,7 @@ namespace cSzd
         return InvalidArmy;
     }
 
+    // ----------------------------------------------------------
     BitBoard FENRecord::castlingAvailability() const
     {
         std::istringstream ss(fen);
@@ -107,6 +108,53 @@ namespace cSzd
             bb.setCell(g8);
         }
         return bb;
+    }
+
+    // ----------------------------------------------------------
+    BitBoard FENRecord::enPassantTargetSquare() const
+    {
+        std::istringstream ss(fen);
+        std::string fld;
+        BitBoard bb;
+        ss >> fld; // skip the first field (the piece placement)
+        ss >> fld; // skip the 2nd field (active side)
+        ss >> fld; // skip the 3rd field (castling availability)
+        ss >> fld;
+        if (fld == "-" || fld.size() != 2) {
+            return BitBoard(EmptyBB);
+        }
+        return
+            bb.setCell(static_cast<File>(fld[0] - 'a'),
+                       static_cast<Rank>(fld[1] - '1'));
+    }
+
+    // ----------------------------------------------------------
+    unsigned int FENRecord::halfMoveClock() const
+    {
+        std::istringstream ss(fen);
+        std::string fld;
+        unsigned int bb;
+        ss >> fld; // skip the first field (the piece placement)
+        ss >> fld; // skip the 2nd field (active side)
+        ss >> fld; // skip the 3rd field (castling availability)
+        ss >> fld; // skip the 4th field (en passant target square)
+        ss >> fld;
+        return std::stoul(fld);
+    }
+
+    // ----------------------------------------------------------
+    unsigned int FENRecord::fullMoves() const
+    {
+        std::istringstream ss(fen);
+        std::string fld;
+        unsigned int bb;
+        ss >> fld; // skip the first field (the piece placement)
+        ss >> fld; // skip the 2nd field (active side)
+        ss >> fld; // skip the 3rd field (castling availability)
+        ss >> fld; // skip the 4th field (en passant target square)
+        ss >> fld; // skip the 5th field (half move clock)
+        ss >> fld;
+        return std::stoul(fld);
     }
 
     // ----------------------------------------------------------

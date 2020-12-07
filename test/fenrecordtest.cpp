@@ -59,8 +59,12 @@ namespace cSzd
     constexpr std::string_view FENExampleE97Position
      {"r1bq1rk1/pp2n1b1/2ppNnpp/3Ppp2/1PP1P3/2N1BB2/P4PPP/R2QR1K1 b - - 1 14"};
 
-    constexpr BitBoardState exampleE97Position { 0x6D53FC381634E159ULL };
+    constexpr std::string_view FENExampleCastlingEnPassantTest
+    {"rnbqkr2/ppp1ppbp/3p1n2/8/1PPPPPp1/P1N5/6PP/1RBQKBNR b Kq f3 0 8"};
 
+
+    constexpr BitBoardState exampleE97Position           { 0x6D53FC381634E159ULL };
+    constexpr BitBoardState exampleCastlingEnPassantTest { 0x3FF728007E05C0FEULL };
 
     TEST(FENRecordTester, DefaultCnstrPrepareInitialStandardBoard)
     {
@@ -98,15 +102,32 @@ namespace cSzd
         ASSERT_EQ(f.piecePlacement(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
         ASSERT_EQ(f.sideToMove(), WhiteArmy);
         ASSERT_EQ(f.castlingAvailability(), BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(f.enPassantTargetSquare(), BitBoard(EmptyBB));
+        ASSERT_EQ(f.halfMoveClock(), 0);
+        ASSERT_EQ(f.fullMoves(), 1);
         f.fen = FENEmptyChessBoard;
         ASSERT_EQ(f.piecePlacement(), "8/8/8/8/8/8/8/8");
         ASSERT_EQ(f.sideToMove(), InvalidArmy);
         ASSERT_EQ(f.castlingAvailability(), BitBoard(EmptyBB));
+        ASSERT_EQ(f.enPassantTargetSquare(), BitBoard(EmptyBB));
+        ASSERT_EQ(f.halfMoveClock(), 0);
+        ASSERT_EQ(f.fullMoves(), 1);
         f.fen = FENExampleE97Position;
         ASSERT_EQ(f.piecePlacement(), "r1bq1rk1/pp2n1b1/2ppNnpp/3Ppp2/1PP1P3/2N1BB2/P4PPP/R2QR1K1");
         ASSERT_EQ(f.sideToMove(), BlackArmy);
         ASSERT_EQ(f.castlingAvailability(), BitBoard(EmptyBB));
+        ASSERT_EQ(f.enPassantTargetSquare(), BitBoard(EmptyBB));
+        ASSERT_EQ(f.halfMoveClock(), 1);
+        ASSERT_EQ(f.fullMoves(), 14);
+        f.fen = FENExampleCastlingEnPassantTest;
+        ASSERT_EQ(f.piecePlacement(), "rnbqkr2/ppp1ppbp/3p1n2/8/1PPPPPp1/P1N5/6PP/1RBQKBNR");
+        ASSERT_EQ(f.sideToMove(), BlackArmy);
+        ASSERT_EQ(f.castlingAvailability(), BitBoard({g1, b8}));
+        ASSERT_EQ(f.enPassantTargetSquare(), BitBoard({f3}));
+        ASSERT_EQ(f.halfMoveClock(), 0);
+        ASSERT_EQ(f.fullMoves(), 8);
     }
+
     TEST(FENRecordTester, ExtractArmyPlacementFromVariousPositionIsOK)
     {
         FENRecord f; // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR
@@ -161,6 +182,23 @@ namespace cSzd
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Rook),   BitBoard({a8, f8}));
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard({a7, b7, c6, d6, e5, f5, g6, h6}));
 
+        f.fen = FENExampleCastlingEnPassantTest;
+        ASSERT_TRUE(f.isValid());
+        ASSERT_EQ(f.extractBitBoard(), BitBoard(exampleCastlingEnPassantTest));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy),         BitBoard({e1, d1, c1, f1, c3, g1, b1, h1, a3, b4, c4, d4, e4, f4, g2, h2}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy),         BitBoard({e8, d8, c8, g7, b8, f6, a8, f8, a7, b7, c7, d6, e7, f7, g4, h7}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, King),   BitBoard({e1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Queen),  BitBoard({d1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Bishop), BitBoard({c1, f1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Knight), BitBoard({c3, g1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Rook),   BitBoard({b1, h1}));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, Pawn),   BitBoard({a3, b4, c4, d4, e4, f4, g2, h2}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, King),   BitBoard({e8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Queen),  BitBoard({d8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Bishop), BitBoard({c8, g7}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Knight), BitBoard({b8, f6}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Rook),   BitBoard({a8, f8}));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard({a7, b7, c7, d6, e7, f7, g4, h7}));
     }
 
     // --- isValid() method tests -------------------------------------------------------
