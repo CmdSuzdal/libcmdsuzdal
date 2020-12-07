@@ -45,11 +45,14 @@ namespace cSzd
         Army whiteArmy = Army(WhiteArmy);
         Army blackArmy = Army(BlackArmy);
         ArmyColor sideToMove = WhiteArmy;
+        BitBoard castlingAvailability = BitBoard({b1, g1, b8, g8});
+        BitBoard enPassantTargetSquare;
         unsigned int halfMoveClock = 0;
         unsigned int fullMoves = 1;
 
         // --------------------------
         explicit ChessBoard() = default;
+        explicit ChessBoard(const FENRecord &fen);
 
     };
     // -----------------------------------------------
