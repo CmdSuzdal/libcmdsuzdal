@@ -54,6 +54,10 @@ namespace cSzd
         explicit ChessBoard() = default;
         explicit ChessBoard(const FENRecord &fen);
 
+        // --------------------------
+        void loadPosition(const FENRecord &fen);
+        bool isValid() const;
+
     };
     // -----------------------------------------------
 

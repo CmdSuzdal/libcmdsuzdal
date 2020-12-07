@@ -2,7 +2,14 @@
 
 namespace cSzd
 {
+    // -----------------------------------------------------------------
     ChessBoard::ChessBoard(const FENRecord &fen)
+    {
+        loadPosition(fen);
+    }
+
+    // -----------------------------------------------------------------
+    void ChessBoard::loadPosition(const FENRecord &fen)
     {
         whiteArmy.pieces[King]   = fen.extractBitBoard(WhiteArmy, King);
         whiteArmy.pieces[Queen]  = fen.extractBitBoard(WhiteArmy, Queen);
@@ -22,5 +29,21 @@ namespace cSzd
         halfMoveClock = fen.halfMoveClock();
         fullMoves = fen.fullMoves();
     }
+
+    // -----------------------------------------------------------------
+    bool ChessBoard::isValid() const
+    {
+        // One and only one king per army shall be present in the board
+        if ((whiteArmy.pieces[King].popCount() != 1) ||
+            (blackArmy.pieces[King].popCount() != 1)) {
+            return false;
+        }
+        // kings shall not be in contact
+        if (whiteArmy.pieces[King].activeCellsInMask(
+            blackArmy.pieces[King].neighbourCells().bbs)) return false;
+
+        return true;
+    }
+
 
 } // namespace cSzd
