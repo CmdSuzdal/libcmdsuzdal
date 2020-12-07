@@ -76,24 +76,6 @@ namespace cSzd
     }
 
     // -------------------------------------------------------------
-    // Evaluates if the FEN string represent a valid chess position
-    bool FENRecord::isValid() const
-    {
-        // Kings are quite important for validate positions,
-        // so we extract the bitboards
-        BitBoard wK = extractBitBoard(WhiteArmy, King);
-        BitBoard bK = extractBitBoard(BlackArmy, King);
-
-        // One and only one king per army shall be present in the board
-        if ((wK.popCount() != 1) || (bK.popCount() != 1)) return false;
-
-        // kings shall not be in contact
-        if (wK.activeCellsInMask(bK.neighbourCells().bbs)) return false;
-
-        return true;
-    }
-
-    // -------------------------------------------------------------
     // Returns the bitboard with the placement of the specified pieces
     // For example, if Army = WhiteArmy and Piece = King, returns
     // the bitboard with the position of the white King.

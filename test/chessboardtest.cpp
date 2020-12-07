@@ -78,6 +78,20 @@ namespace cSzd
     }
 
     // ---- Chess board validity tests ------------------------------------
+    // After default constructor position is valid
+    TEST(ChessBoardTester, AfterDefaultConstructurPositionIsValid)
+    {
+        ChessBoard cb;
+        ASSERT_TRUE(cb.isValid());
+    }
+
+    // An empty chessboard is not valid
+    TEST(ChessBoardTester, AnEmptyChessBoardIsNotValid)
+    {
+        ChessBoard cb {FENEmptyChessBoard};
+        ASSERT_FALSE(cb.isValid());
+    }
+
     // If one king is missing position is not valid
     TEST(ChessBoardTester, IfKingsAreMissingPositionIsNotValid)
     {
@@ -93,6 +107,50 @@ namespace cSzd
         // only kings in initial position, everything ok
         cb.loadPosition("4k3/8/8/8/8/8/8/4K3 w - - 0 1");
         ASSERT_TRUE(cb.isValid());
+    }
+
+    // If more that one king per side are present, position is not valid
+    TEST(ChessBoardTester, IsMoreThanOneArmyKingIsPresentPositionIsNotValid)
+    {
+        // Initial position with one additional white king
+        ChessBoard cb {"rnbqkbnr/pppppppp/8/8/8/8/PPKPPPPP/RNBQKBNR w KQkq - 0 1"};
+        ASSERT_FALSE(cb.isValid());
+        // Initial position with one additional black king
+        cb.loadPosition("rnbqkbnr/pppppppp/8/1k6/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        // Initial position with one additional king per side
+        cb.loadPosition("rnbqkbnr/pppppppp/8/1k6/2K2k2/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        ASSERT_FALSE(cb.isValid());
+    }
+
+    // If kings are "in contact" position is not valid
+    TEST(ChessBoardTester, IfKingsAreInContactPositionIsNotValid)
+    {
+        ChessBoard cb { "kK6/8/8/8/8/8/8/8 w - - 0 1" };
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("k7/K7/8/8/8/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("k7/1K6/8/8/8/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("k7/2K5/8/8/8/8/8/8 w - - 0 1");
+        ASSERT_TRUE(cb.isValid());
+
+        cb.loadPosition("8/8/8/2kK4/8/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("8/8/8/3Kk3/8/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("8/8/2k5/3K4/8/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("8/8/3k4/3K4/8/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("8/8/4k3/3K4/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("8/8/8/3K4/2k5/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("8/8/8/3K4/3k4/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("8/8/8/3K4/4k3/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
     }
 
 } // namespace cSzd

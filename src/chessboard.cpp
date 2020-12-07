@@ -9,7 +9,7 @@ namespace cSzd
     }
 
     // -----------------------------------------------------------------
-    ChessBoard::ChessBoard(const std::string &fenStr)
+    ChessBoard::ChessBoard(const std::string_view fenStr)
         : ChessBoard(FENRecord(fenStr)) {}
 
     // -----------------------------------------------------------------
@@ -34,7 +34,7 @@ namespace cSzd
         fullMoves = fen.fullMoves();
     }
     // -----------------------------------------------------------------
-    void ChessBoard::loadPosition(const std::string &fenStr)
+    void ChessBoard::loadPosition(const std::string_view fenStr)
     {
         loadPosition(FENRecord(fenStr));
     }

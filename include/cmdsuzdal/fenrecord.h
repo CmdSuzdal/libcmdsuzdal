@@ -26,7 +26,6 @@ namespace cSzd
         void loadPosition(const std::string_view f);
 
         // -------------------------
-        bool isValid() const;
         const std::string_view value() { return std::string_view {fen.c_str()}; }
         const std::string_view piecePlacement() const { return pPlacement; }
         ArmyColor sideToMove() const { return activeArmy; }

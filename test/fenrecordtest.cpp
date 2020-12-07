@@ -73,17 +73,10 @@ namespace cSzd
         FENRecord f;
         ASSERT_EQ(f.value(), FENInitialStandardPosition);
     }
-    TEST(FENRecordTester, AfterDefaultCnstrPositionIsValid)
-    {
-        FENRecord f;
-        ASSERT_TRUE(f.isValid());
-    }
     TEST(FENRecordTester, GenericPositionCnstrWithEmptyChessBoardIsNotOK)
     {
         FENRecord f {FENEmptyChessBoard};
         ASSERT_EQ(f.value(), FENEmptyChessBoard);
-        // An empty chessboard is not a valid chess position
-        ASSERT_FALSE(f.isValid());
     }
 
     // Change position function
@@ -165,7 +158,6 @@ namespace cSzd
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard(EmptyBB));
 
         f.loadPosition(FENExampleE97Position);
-        ASSERT_TRUE(f.isValid());
         ASSERT_EQ(f.extractBitBoard(), BitBoard(exampleE97Position));
         ASSERT_EQ(f.extractBitBoard(WhiteArmy),         BitBoard({g1, d1, e3, f3, c3, e6, a1, e1, a2, b4, c4, d5, e4, f2, g2, h2}));
         ASSERT_EQ(f.extractBitBoard(BlackArmy),         BitBoard({g8, d8, c8, g7, e7, f6, a8, f8, a7, b7, c6, d6, e5, f5, g6, h6}));
@@ -183,7 +175,6 @@ namespace cSzd
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard({a7, b7, c6, d6, e5, f5, g6, h6}));
 
         f.loadPosition(FENExampleCastlingEnPassantTest);
-        ASSERT_TRUE(f.isValid());
         ASSERT_EQ(f.extractBitBoard(), BitBoard(exampleCastlingEnPassantTest));
         ASSERT_EQ(f.extractBitBoard(WhiteArmy),         BitBoard({e1, d1, c1, f1, c3, g1, b1, h1, a3, b4, c4, d4, e4, f4, g2, h2}));
         ASSERT_EQ(f.extractBitBoard(BlackArmy),         BitBoard({e8, d8, c8, g7, b8, f6, a8, f8, a7, b7, c7, d6, e7, f7, g4, h7}));
@@ -200,68 +191,5 @@ namespace cSzd
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Rook),   BitBoard({a8, f8}));
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard({a7, b7, c7, d6, e7, f7, g4, h7}));
     }
-
-    // --- isValid() method tests -------------------------------------------------------
-    // If one king is missing position is not valid
-    TEST(FENRecordTester, IsKingsAreMissingPositionIsNotValid)
-    {
-        // Initial position, missing white king
-        FENRecord f {"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w kq - 0 1"};
-        ASSERT_FALSE(f.isValid());
-        // Initial position, missing black king
-        f.loadPosition("rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ - 0 1");
-        ASSERT_FALSE(f.isValid());
-        // Initial position, missing both kings
-        f.loadPosition("rnbq1bnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQ1BNR w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        // only kings in initial position, everything ok
-        f.loadPosition("4k3/8/8/8/8/8/8/4K3 w - - 0 1");
-        ASSERT_TRUE(f.isValid());
-    }
-
-    // If more that one king per side are present, position is not valid
-    TEST(FENRecordTester, IsMoreThanOneArmyKingIsPresentPositionIsNotValid)
-    {
-        // Initial position with one additional white king
-        FENRecord f {"rnbqkbnr/pppppppp/8/8/8/8/PPKPPPPP/RNBQKBNR w KQkq - 0 1"};
-        ASSERT_FALSE(f.isValid());
-        // Initial position with one additional black king
-        f.loadPosition("rnbqkbnr/pppppppp/8/1k6/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        ASSERT_FALSE(f.isValid());
-        // Initial position with one additional king per side
-        f.loadPosition("rnbqkbnr/pppppppp/8/1k6/2K2k2/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        ASSERT_FALSE(f.isValid());
-    }
-
-    // If kings are "in contact" position is not valid
-    TEST(FENRecordTester, IfKingsAreInContactPositionIsNotValid)
-    {
-        FENRecord f { "kK6/8/8/8/8/8/8/8 w - - 0 1" };
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("k7/K7/8/8/8/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("k7/1K6/8/8/8/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("k7/2K5/8/8/8/8/8/8 w - - 0 1");
-        ASSERT_TRUE(f.isValid());
-
-        f.loadPosition("8/8/8/2kK4/8/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("8/8/8/3Kk3/8/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("8/8/2k5/3K4/8/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("8/8/3k4/3K4/8/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("8/8/4k3/3K4/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("8/8/8/3K4/2k5/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("8/8/8/3K4/3k4/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-        f.loadPosition("8/8/8/3K4/4k3/8/8/8 w - - 0 1");
-        ASSERT_FALSE(f.isValid());
-    }
-
 
 } // namespace cSzd
