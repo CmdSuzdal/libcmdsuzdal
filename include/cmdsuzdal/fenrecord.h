@@ -29,6 +29,7 @@ namespace cSzd
         const std::string_view piecePlacement() const;
         const BitBoard extractBitBoard(ArmyColor c = InvalidArmy, Piece p = InvalidPiece) const;
         ArmyColor sideToMove() const;
+        BitBoard castlingAvailability() const;
 
     private:
         static const std::string pieceSetFENCharacters(ArmyColor c, Piece p);

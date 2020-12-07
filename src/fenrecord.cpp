@@ -86,6 +86,29 @@ namespace cSzd
         return InvalidArmy;
     }
 
+    BitBoard FENRecord::castlingAvailability() const
+    {
+        std::istringstream ss(fen);
+        std::string fld;
+        BitBoard bb;
+        ss >> fld; // skip the first field (the piece placement)
+        ss >> fld; // skip the 2nd field (active side)
+        ss >> fld;
+        if (fld.find('Q') != std::string::npos) {
+            bb.setCell(b1);
+        }
+        if (fld.find('K') != std::string::npos) {
+            bb.setCell(g1);
+        }
+        if (fld.find('q') != std::string::npos) {
+            bb.setCell(b8);
+        }
+        if (fld.find('k') != std::string::npos) {
+            bb.setCell(g8);
+        }
+        return bb;
+    }
+
     // ----------------------------------------------------------
     // Build a string with the FEN characters of the specified pieces.
     // Used by extractBitBoard()
