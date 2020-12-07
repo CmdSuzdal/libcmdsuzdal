@@ -12,6 +12,7 @@ add_executable(${TESTCTGT}
     bitboardtest.cpp
     armytest.cpp
     fenrecordtest.cpp
+    chessboardtest.cpp
 )
 
 # includes the base project includes
