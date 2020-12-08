@@ -21,6 +21,9 @@ namespace cSzd
         explicit Army() = default;
         explicit Army(ArmyColor c);
 
+        // --------------------------
+        unsigned int numPieces() const;
+
         private:
 
     };

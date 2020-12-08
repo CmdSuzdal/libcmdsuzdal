@@ -97,4 +97,21 @@ namespace cSzd
         ASSERT_EQ(army.pieces[Pawn].popCount(), 0);
     }
 
+    // numPieces() method testing
+    TEST(ArmyTester, AfterDefaultInitThereAreNoPieces)
+    {
+        Army a {};
+        ASSERT_EQ(a.numPieces(), 0);
+    }
+    TEST(ArmyTester, AfterWhiteArmyInitThereAre16Pieces)
+    {
+        Army a { WhiteArmy };
+        ASSERT_EQ(a.numPieces(), 16);
+    }
+    TEST(ArmyTester, AfterBlackArmyInitThereAre16Pieces)
+    {
+        Army a { BlackArmy };
+        ASSERT_EQ(a.numPieces(), 16);
+    }
+
 } // namespace cSzd

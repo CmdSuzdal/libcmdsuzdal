@@ -3,6 +3,7 @@
 namespace cSzd
 {
 
+    // --------------------------------------------------------
     Army::Army(ArmyColor c)
     {
         switch (c) {
@@ -29,6 +30,16 @@ namespace cSzd
         }
     }
 
+    // --------------------------------------------------------
+    unsigned int Army::numPieces() const
+    {
+        return  pieces[King].popCount()    +
+                pieces[Queen].popCount()   +
+                pieces[Pawn].popCount()    +
+                pieces[Bishop].popCount()  +
+                pieces[Knight].popCount()  +
+                pieces[Rook].popCount();
+    }
 
 
 } // namespace cSzd
