@@ -168,4 +168,27 @@ namespace cSzd
         ASSERT_FALSE(cb.isValid());
     }
 
+    // No more than 16 pieces (including pawns) per army can be on
+    // the board. This rule take into account promotions.
+    // Examples of other rules that shall be honored to have a
+    // valid position (unfortunately not exaustive):
+    // Num(pieces) <= 16
+    // Num(Pawns) + Num(Queens) <= 9
+    // Num(Pawns) + Num(Rooks) <= 10
+    // Num(Pawns) + Num(Knights) <= 10
+    // Num(Pawns) + Num(Bishops) <= 10
+    // (is in any case really strange that a player promotes to
+    // something different from a Queen and a Knight)
+    // Additionally there are position that are impossible for
+    // other reasons
+    TEST(ChessBoardTester, InvalidPositionsDueToNumberOfPieces)
+    {
+        // too many white pieces (one additional pawn)
+        ChessBoard cb {"rnbqkbnr/pppppppp/8/3P4/8/8/PPPPPPPP/RNBQKBNR w kq - 0 1"};
+        ASSERT_FALSE(cb.isValid());
+        // too many black pieces (three additional pawn)
+        cb.loadPosition("rnbqkbnr/pppppppp/8/3ppp2/8/8/PPPPPPPP/RNBQKBNR w kq - 0 1");
+        ASSERT_FALSE(cb.isValid());
+    }
+
 } // namespace cSzd

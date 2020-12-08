@@ -57,6 +57,10 @@ namespace cSzd
         if (blackArmy.pieces[Pawn].activeCellsInMask(
             RanksBB[r_1] | RanksBB[r_8])) return false;
 
+        // More that 16 pieces for army
+        if (whiteArmy.numPieces() > 16) return false;
+        if (blackArmy.numPieces() > 16) return false;
+
         return true;
     }
 
