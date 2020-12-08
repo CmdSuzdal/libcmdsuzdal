@@ -51,6 +51,12 @@ namespace cSzd
         if (whiteArmy.pieces[King].activeCellsInMask(
             blackArmy.pieces[King].neighbourCells().bbs)) return false;
 
+        // No pawns (of any color) in 1st or 8th ranks
+        if (whiteArmy.pieces[Pawn].activeCellsInMask(
+            RanksBB[r_1] | RanksBB[r_8])) return false;
+        if (blackArmy.pieces[Pawn].activeCellsInMask(
+            RanksBB[r_1] | RanksBB[r_8])) return false;
+
         return true;
     }
 

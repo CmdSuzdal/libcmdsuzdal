@@ -153,4 +153,19 @@ namespace cSzd
         ASSERT_FALSE(cb.isValid());
     }
 
+    // If pawns (of any color) in 1st or 8th rank, position is not valid
+    TEST(ChessBoardTester, IfPawnsIn1stOr8thRankPositionIsNotValid)
+    {
+        ChessBoard cb { "p3k3/8/8/8/8/8/8/4K3 w - - 0 1" };
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("4k3/8/8/8/8/8/8/2p1K3 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("PP2kPPP/8/8/8/8/8/8/4K3 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("4k3/8/8/8/8/8/8/2PPK2P w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("PpPpPpPp/4k3/8/8/8/8/4K3/pPpPpPpP w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+    }
+
 } // namespace cSzd
