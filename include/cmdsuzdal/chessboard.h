@@ -60,6 +60,10 @@ namespace cSzd
         void loadPosition(const std::string_view fenStr);
         bool isValid() const;
 
+    private:
+        bool checkEnPassantTargetSquareValidity() const;
+
+
     };
     // -----------------------------------------------
 

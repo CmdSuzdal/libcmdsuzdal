@@ -191,4 +191,30 @@ namespace cSzd
         ASSERT_FALSE(cb.isValid());
     }
 
+    // En passant check: a cell can be marked as an en passant target only if:
+    //   - it is in the 3rd rank for white or in the 6th for black
+    //   - if it is in the 3rd rank, the side to move shall be black
+    //   - if it is in the 6th rank, the side to move shall be the white
+    //   - if it is in the 3rd rank (file "x") the cell "x4" shall be
+    //     occupied by a white pawn and the cell x2 shall be empty
+    //   - if it is in the 6th rank (file "x") the cell "x5" shall be
+    //     occupied by a black pawn and the cell x7 shall be empty
+    //   - Additionally, Only one cell can be marked as en passant target
+    TEST(ChessBoardTester, EnPassantMoveCanOnlyBeOn3rdOr6thRanks)
+    {
+        // initial position after e2-e4 has an e.p. target square in e3
+        ChessBoard cb {"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"};
+        ASSERT_TRUE(cb.isValid());
+        // sicilian defense: after first black move (c7-c5) e.p.t.s. is c6
+        cb.loadPosition("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 1");
+        ASSERT_TRUE(cb.isValid());
+
+        // initial position with incorrectly placed en passant cell
+        cb.loadPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e5 0 1");
+        ASSERT_FALSE(cb.isValid());
+        cb.loadPosition("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq d3 0 1");
+        ASSERT_FALSE(cb.isValid());
+    }
+
+
 } // namespace cSzd
