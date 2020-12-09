@@ -54,15 +54,6 @@ namespace cSzd
             return bb;
         }
 
-        // In C++ 20 it is possible to define a default three way comparison operator:
-        //    bool operator<=>(const BitBoard &) const = default;
-        // but we prefer to define only the equality operator because it is
-        // not clear when a BitBoard is greater than or less than another
-        // NOTE: we cannot currently use the C++20 default comparison operator
-        // to allow compilation in OSX environment (Travis) with AppleCLang 9
-        //    bool operator==(const BitBoard &) const = default;
-        bool operator==(const BitBoard &rhs) const { return bbs == rhs.bbs; }
-
         // Population count
         unsigned int popCount() const;
 
@@ -197,6 +188,16 @@ namespace cSzd
         // returns true if at least one of the cell in the given mask is active
         bool activeCellsInMask(BitBoardState bbMask) const { return ((bbs & bbMask) != EmptyBB); }
     };
+
+    // In C++ 20 it is possible to define a default three way comparison operator:
+    //    bool operator<=>(const BitBoard &) const = default;
+    // but we prefer to define only the equality operator because it is
+    // not clear when a BitBoard is greater than or less than another
+    // NOTE: we cannot currently use the C++20 default comparison operator
+    // to allow compilation in OSX environment (Travis) with AppleCLang 9
+    //    bool operator==(const BitBoard &) const = default;
+    inline bool operator==(const BitBoard &lhs, const BitBoard &rhs) { return lhs.bbs == rhs.bbs; }
+    inline bool operator!=(const BitBoard &lhs, const BitBoard &rhs) { return !operator==(lhs, rhs); }
 
 } // namespace cSzd
 
