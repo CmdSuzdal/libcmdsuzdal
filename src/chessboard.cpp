@@ -28,6 +28,20 @@ namespace cSzd
     }
 
     // -----------------------------------------------------------------
+    BitBoard ChessBoard::controlledCells(ArmyColor a) const
+     {
+         BitBoard bb;
+
+         // The cell controlled by the king are the neighbour cells.
+         // No check of cells occupancy by friends or foes is necessary
+         bb |= armies[a].pieces[King].neighbourCells();
+
+        // to be completed...
+
+         return bb;
+     }
+
+    // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)
     {
         armies[WhiteArmy].pieces[King]   = fen.extractBitBoard(WhiteArmy, King);

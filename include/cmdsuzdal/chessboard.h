@@ -55,6 +55,7 @@ namespace cSzd
         explicit ChessBoard(const std::string_view fenStr);
 
         BitBoard wholeArmyBitBoard(ArmyColor a = InvalidArmy) const;
+        BitBoard controlledCells(ArmyColor a) const;
 
         // --------------------------
         void loadPosition(const FENRecord &fen);

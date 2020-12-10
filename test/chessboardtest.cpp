@@ -226,5 +226,14 @@ namespace cSzd
         ASSERT_FALSE(cb.isValid());
     }
 
+    // ------------------------------------------------------------------------
+    // Controlled Cells Tests
+    TEST(ChessBoardTester, ChecksCellsControlledByWhiteKingInE5AndBlackKingInG7)
+    {
+        ChessBoard cb {"8/5k2/8/4K3/8/8/8/8 w - - 0 1"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.controlledCells(WhiteArmy), BitBoard({d4, e4, f4, d5, f5, d6, e6, f6}));
+    }
+
 
 } // namespace cSzd
