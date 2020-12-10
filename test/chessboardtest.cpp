@@ -230,9 +230,17 @@ namespace cSzd
     // Controlled Cells Tests
     TEST(ChessBoardTester, ChecksCellsControlledByWhiteKingInE5AndBlackKingInG7)
     {
-        ChessBoard cb {"8/5k2/8/4K3/8/8/8/8 w - - 0 1"};
+        ChessBoard cb {"8/6k1/8/4K3/8/8/8/8 w - - 0 1"};
         ASSERT_TRUE(cb.isValid());
         ASSERT_EQ(cb.controlledCells(WhiteArmy), BitBoard({d4, e4, f4, d5, f5, d6, e6, f6}));
+        ASSERT_EQ(cb.controlledCells(BlackArmy), BitBoard({f6, g6, h6, f7, h7, f8, g8, h8}));
+    }
+    TEST(ChessBoardTester, ChecksCellsControlledByWhiteKingInA1AndBlackKingInH8)
+    {
+        ChessBoard cb {"7k/8/8/8/8/8/8/K7 b - - 0 1"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.controlledCells(WhiteArmy), BitBoard({b1, a2, b2}));
+        ASSERT_EQ(cb.controlledCells(BlackArmy), BitBoard({g7, h7, g8}));
     }
 
 
