@@ -13,6 +13,31 @@ namespace cSzd
         : ChessBoard(FENRecord(fenStr)) {}
 
     // -----------------------------------------------------------------
+    BitBoard ChessBoard::wholeArmyBitBoard(ArmyColor a) const
+    {
+        switch (a) {
+            case WhiteArmy:
+                return whiteArmy.pieces[King] | whiteArmy.pieces[Queen] |
+                    whiteArmy.pieces[Bishop] | whiteArmy.pieces[Knight] |
+                    whiteArmy.pieces[Rook] | whiteArmy.pieces[Pawn];
+                break;
+            case BlackArmy:
+                return blackArmy.pieces[King] | blackArmy.pieces[Queen] |
+                    blackArmy.pieces[Bishop] | blackArmy.pieces[Knight] |
+                    blackArmy.pieces[Rook] | blackArmy.pieces[Pawn];
+                break;
+            case InvalidArmy:
+                return wholeArmyBitBoard(WhiteArmy) |
+                        wholeArmyBitBoard(BlackArmy);
+                break;
+            default:
+                return BitBoard(EmptyBB);
+                break;
+        }
+        return BitBoard(EmptyBB);
+    }
+
+    // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)
     {
         whiteArmy.pieces[King]   = fen.extractBitBoard(WhiteArmy, King);

@@ -30,6 +30,16 @@ namespace cSzd
         ASSERT_EQ(cb.fullMoves, 1);
     }
 
+    TEST(ChessBoardTester, WholeWhiteArmyAtInitialStandardPositionOccupy1stAnd2ndRank)
+    {
+        ChessBoard cb {};
+        ASSERT_EQ(cb.wholeArmyBitBoard(WhiteArmy), BitBoard(RanksBB[r_1] | RanksBB[r_2]));
+        ASSERT_EQ(cb.wholeArmyBitBoard(BlackArmy), BitBoard(RanksBB[r_7] | RanksBB[r_8]));
+        ASSERT_EQ(cb.wholeArmyBitBoard(), BitBoard(RanksBB[r_1] | RanksBB[r_2] |
+                                                    RanksBB[r_7] | RanksBB[r_8]));
+    }
+
+
     // Test on acquisition of position from a FEN Record
     // 1. Initial standard position
     TEST(ChessBoardTester, FENLoad_InitialStandardPosition)

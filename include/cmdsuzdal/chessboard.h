@@ -55,6 +55,8 @@ namespace cSzd
         explicit ChessBoard(const FENRecord &fen);
         explicit ChessBoard(const std::string_view fenStr);
 
+        BitBoard wholeArmyBitBoard(ArmyColor a = InvalidArmy) const;
+
         // --------------------------
         void loadPosition(const FENRecord &fen);
         void loadPosition(const std::string_view fenStr);
