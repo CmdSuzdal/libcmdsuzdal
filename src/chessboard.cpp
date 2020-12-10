@@ -15,24 +15,14 @@ namespace cSzd
     // -----------------------------------------------------------------
     BitBoard ChessBoard::wholeArmyBitBoard(ArmyColor a) const
     {
-        switch (a) {
-            case WhiteArmy:
-                return whiteArmy.pieces[King] | whiteArmy.pieces[Queen] |
-                    whiteArmy.pieces[Bishop] | whiteArmy.pieces[Knight] |
-                    whiteArmy.pieces[Rook] | whiteArmy.pieces[Pawn];
-                break;
-            case BlackArmy:
-                return blackArmy.pieces[King] | blackArmy.pieces[Queen] |
-                    blackArmy.pieces[Bishop] | blackArmy.pieces[Knight] |
-                    blackArmy.pieces[Rook] | blackArmy.pieces[Pawn];
-                break;
-            case InvalidArmy:
-                return wholeArmyBitBoard(WhiteArmy) |
-                        wholeArmyBitBoard(BlackArmy);
-                break;
-            default:
-                return BitBoard(EmptyBB);
-                break;
+        if (a == WhiteArmy || a == BlackArmy) {
+            return armies[a].pieces[King] | armies[a].pieces[Queen] |
+                armies[a].pieces[Bishop] | armies[a].pieces[Knight] |
+                armies[a].pieces[Rook] | armies[a].pieces[Pawn];
+        }
+        else if (a == InvalidArmy) {
+            return wholeArmyBitBoard(WhiteArmy) |
+                wholeArmyBitBoard(BlackArmy);
         }
         return BitBoard(EmptyBB);
     }
@@ -40,18 +30,18 @@ namespace cSzd
     // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)
     {
-        whiteArmy.pieces[King]   = fen.extractBitBoard(WhiteArmy, King);
-        whiteArmy.pieces[Queen]  = fen.extractBitBoard(WhiteArmy, Queen);
-        whiteArmy.pieces[Rook]   = fen.extractBitBoard(WhiteArmy, Rook);
-        whiteArmy.pieces[Knight] = fen.extractBitBoard(WhiteArmy, Knight);
-        whiteArmy.pieces[Bishop] = fen.extractBitBoard(WhiteArmy, Bishop);
-        whiteArmy.pieces[Pawn]   = fen.extractBitBoard(WhiteArmy, Pawn);
-        blackArmy.pieces[King]   = fen.extractBitBoard(BlackArmy, King);
-        blackArmy.pieces[Queen]  = fen.extractBitBoard(BlackArmy, Queen);
-        blackArmy.pieces[Rook]   = fen.extractBitBoard(BlackArmy, Rook);
-        blackArmy.pieces[Knight] = fen.extractBitBoard(BlackArmy, Knight);
-        blackArmy.pieces[Bishop] = fen.extractBitBoard(BlackArmy, Bishop);
-        blackArmy.pieces[Pawn]   = fen.extractBitBoard(BlackArmy, Pawn);
+        armies[WhiteArmy].pieces[King]   = fen.extractBitBoard(WhiteArmy, King);
+        armies[WhiteArmy].pieces[Queen]  = fen.extractBitBoard(WhiteArmy, Queen);
+        armies[WhiteArmy].pieces[Rook]   = fen.extractBitBoard(WhiteArmy, Rook);
+        armies[WhiteArmy].pieces[Knight] = fen.extractBitBoard(WhiteArmy, Knight);
+        armies[WhiteArmy].pieces[Bishop] = fen.extractBitBoard(WhiteArmy, Bishop);
+        armies[WhiteArmy].pieces[Pawn]   = fen.extractBitBoard(WhiteArmy, Pawn);
+        armies[BlackArmy].pieces[King]   = fen.extractBitBoard(BlackArmy, King);
+        armies[BlackArmy].pieces[Queen]  = fen.extractBitBoard(BlackArmy, Queen);
+        armies[BlackArmy].pieces[Rook]   = fen.extractBitBoard(BlackArmy, Rook);
+        armies[BlackArmy].pieces[Knight] = fen.extractBitBoard(BlackArmy, Knight);
+        armies[BlackArmy].pieces[Bishop] = fen.extractBitBoard(BlackArmy, Bishop);
+        armies[BlackArmy].pieces[Pawn]   = fen.extractBitBoard(BlackArmy, Pawn);
         sideToMove = fen.sideToMove();
         castlingAvailability = fen.castlingAvailability();
         enPassantTargetSquare = fen.enPassantTargetSquare();
@@ -68,23 +58,23 @@ namespace cSzd
     bool ChessBoard::isValid() const
     {
         // One and only one king per army shall be present in the board
-        if ((whiteArmy.pieces[King].popCount() != 1) ||
-            (blackArmy.pieces[King].popCount() != 1)) {
+        if ((armies[WhiteArmy].pieces[King].popCount() != 1) ||
+            (armies[BlackArmy].pieces[King].popCount() != 1)) {
             return false;
         }
         // kings shall not be in contact
-        if (whiteArmy.pieces[King].activeCellsInMask(
-            blackArmy.pieces[King].neighbourCells().bbs)) return false;
+        if (armies[WhiteArmy].pieces[King].activeCellsInMask(
+            armies[BlackArmy].pieces[King].neighbourCells().bbs)) return false;
 
         // No pawns (of any color) in 1st or 8th ranks
-        if (whiteArmy.pieces[Pawn].activeCellsInMask(
+        if (armies[WhiteArmy].pieces[Pawn].activeCellsInMask(
             RanksBB[r_1] | RanksBB[r_8])) return false;
-        if (blackArmy.pieces[Pawn].activeCellsInMask(
+        if (armies[BlackArmy].pieces[Pawn].activeCellsInMask(
             RanksBB[r_1] | RanksBB[r_8])) return false;
 
         // More that 16 pieces for army
-        if (whiteArmy.numPieces() > 16) return false;
-        if (blackArmy.numPieces() > 16) return false;
+        if (armies[WhiteArmy].numPieces() > 16) return false;
+        if (armies[BlackArmy].numPieces() > 16) return false;
 
         // lastly check en passant cell validity
         return checkEnPassantTargetSquareValidity();
@@ -120,7 +110,7 @@ namespace cSzd
             if (sideToMove == BlackArmy) {
                 frontCell.shiftNorth(1);
                 backCell.shiftSouth(1);
-                if ((whiteArmy.pieces[Pawn] & frontCell) == BitBoard(EmptyBB))
+                if ((armies[WhiteArmy].pieces[Pawn] & frontCell) == BitBoard(EmptyBB))
                     return false;
                 if ((wholeArmyBitBoard() & backCell) != BitBoard(EmptyBB))
                     return false;
@@ -136,7 +126,7 @@ namespace cSzd
             if (sideToMove == WhiteArmy) {
                 frontCell.shiftSouth(1);
                 backCell.shiftNorth(1);
-                if ((blackArmy.pieces[Pawn] & frontCell) == BitBoard(EmptyBB))
+                if ((armies[BlackArmy].pieces[Pawn] & frontCell) == BitBoard(EmptyBB))
                     return false;
                 if ((wholeArmyBitBoard() & backCell) != BitBoard(EmptyBB))
                     return false;

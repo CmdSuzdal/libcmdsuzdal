@@ -15,7 +15,7 @@ namespace cSzd
     //
     // ChessBoard
     //   |
-    //   ├─ Army whiteArmy;
+    //   ├─ Army armies[WhiteArmy];
     //   |    └─ BitBoard pieces[NumPieceTypes]
     //   |       ├─ pieces[King]  : BitBoard with the position of the white king
     //   |       ├─ pieces[Queen] : BitBoard with the position of the white queen(s)
@@ -23,7 +23,7 @@ namespace cSzd
     //   |       ├─ pieces[Knight]: BitBoard with the position of the white knight(s)
     //   |       ├─ pieces[Rook]  : BitBoard with the position of the white rook(s)
     //   |       └─ pieces[Pawn]  : BitBoard with the position of the white pawn(s)
-    //   ├─ Army blackArmy;
+    //   ├─ Army armies[BlackArmy];
     //   |    └─ BitBoard pieces[NumPieceTypes]
     //   |       ├─ pieces[King]  : BitBoard with the position of the black king
     //   |       ├─ pieces[Queen] : BitBoard with the position of the black queen(s)
@@ -42,8 +42,7 @@ namespace cSzd
     // --- The ChessBoard -----------------------------
     struct ChessBoard {
         // --------------------------
-        Army whiteArmy = Army(WhiteArmy);
-        Army blackArmy = Army(BlackArmy);
+        Army armies[2] = { Army(WhiteArmy), Army(BlackArmy) };
         ArmyColor sideToMove = WhiteArmy;
         BitBoard castlingAvailability = BitBoard({b1, g1, b8, g8});
         BitBoard enPassantTargetSquare;
