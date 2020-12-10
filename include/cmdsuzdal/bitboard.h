@@ -38,20 +38,38 @@ namespace cSzd
         // operators
         BitBoard &operator=(const BitBoard &rhs) = default;
 
-        BitBoard operator|(const BitBoard &rhs) const
+
+        BitBoard &operator|=(const BitBoard &rhs)
         {
-            BitBoard bb(bbs | rhs.bbs);
-            return bb;
+            bbs |= rhs.bbs;
+            return *this;
         }
-        BitBoard operator&(const BitBoard &rhs) const
+        friend BitBoard operator|(BitBoard lhs, const BitBoard &rhs)
         {
-            BitBoard bb(bbs & rhs.bbs);
-            return bb;
+            lhs |= rhs;
+            return lhs;
         }
-        BitBoard operator^(const BitBoard &rhs) const
+
+        BitBoard &operator&=(const BitBoard &rhs)
         {
-            BitBoard bb(bbs ^ rhs.bbs);
-            return bb;
+            bbs &= rhs.bbs;
+            return *this;
+        }
+        friend BitBoard operator&(BitBoard lhs, const BitBoard &rhs)
+        {
+            lhs &= rhs;
+            return lhs;
+        }
+
+        BitBoard &operator^=(const BitBoard &rhs)
+        {
+            bbs ^= rhs.bbs;
+            return *this;
+        }
+        friend BitBoard operator^(BitBoard lhs, const BitBoard &rhs)
+        {
+            lhs ^= rhs;
+            return lhs;
         }
 
         // Population count
