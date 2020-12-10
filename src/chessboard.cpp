@@ -115,24 +115,14 @@ namespace cSzd
         BitBoard backCell = enPassantTargetSquare;
         if (enPassantTargetSquare.activeCellsInMask(RanksBB[r_3])) {
             // e.p. target square is in 3rd row. Side to move shall
-            // be the black, North cell shall be occupied by a pawn
-            // and South cell shall be empty
+            // be the black, front (north) cell shall be occupied by
+            // a white pawn and back (south) cell shall be empty
             if (sideToMove == BlackArmy) {
                 frontCell.shiftNorth(1);
                 backCell.shiftSouth(1);
                 if ((whiteArmy.pieces[Pawn] & frontCell) == BitBoard(EmptyBB))
                     return false;
-                if ((whiteArmy.pieces[Pawn] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((whiteArmy.pieces[King] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((whiteArmy.pieces[Queen] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((whiteArmy.pieces[Rook] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((whiteArmy.pieces[Bishop] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((whiteArmy.pieces[Knight] & backCell) != BitBoard(EmptyBB))
+                if ((wholeArmyBitBoard() & backCell) != BitBoard(EmptyBB))
                     return false;
             }
             else {
@@ -141,24 +131,14 @@ namespace cSzd
         }
         else {
             // e.p. target square is in 6th row. Side to move shall
-            // be the white, South cell shall be occupied by a pawn
-            // and North cell shall be empty
+            // be the white, front (south) cell shall be occupied by
+            // a black pawn and back (north) cell shall be empty
             if (sideToMove == WhiteArmy) {
                 frontCell.shiftSouth(1);
                 backCell.shiftNorth(1);
                 if ((blackArmy.pieces[Pawn] & frontCell) == BitBoard(EmptyBB))
                     return false;
-                if ((blackArmy.pieces[Pawn] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((blackArmy.pieces[King] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((blackArmy.pieces[Queen] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((blackArmy.pieces[Rook] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((blackArmy.pieces[Bishop] & backCell) != BitBoard(EmptyBB))
-                    return false;
-                if ((blackArmy.pieces[Knight] & backCell) != BitBoard(EmptyBB))
+                if ((wholeArmyBitBoard() & backCell) != BitBoard(EmptyBB))
                     return false;
             }
             else {
