@@ -128,7 +128,9 @@ namespace cSzd
     }
 
     // ------------------------------------------------------------------------
-    // Controlled Cells Tests
+    // --- Controlled Cells Tests ---
+
+    // King alone ---
     TEST(ArmyTester, ControlledCellsOfAnEmptyArmyIsEmpty)
     {
         Army a {};
@@ -164,6 +166,7 @@ namespace cSzd
         ASSERT_EQ(a.controlledCells(), BitBoard({g7, h7, g8}));
     }
 
+    // Pawns alone ---
     TEST(ArmyTester, ChecksCellsControlledByInitialRowOfWhitePawns)
     {
         Army a {};
@@ -208,5 +211,13 @@ namespace cSzd
         ASSERT_EQ(a.controlledCells(), BitBoard({e5, g5, g1}));
     }
 
+    // Knights ---
+    TEST(ArmyTester, DISABLED_ChecksCellsControlledByWhiteKnightsInInitialPosition)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Knight] = BitBoard({b1, g1});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a3, c3, d2, e2, f3, h3}));
+    }
 
 } // namespace cSzd

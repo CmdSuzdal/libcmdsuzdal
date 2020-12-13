@@ -26,8 +26,13 @@ namespace cSzd
         unsigned int numPieces() const;
         BitBoard controlledCells() const;
 
-        private:
-
+    private:
+        BitBoard kingControlledCells() const;
+        BitBoard pawnsControlledCells() const;
+        BitBoard knightsControlledCells() const;
+        BitBoard bishopsControlledCells() const;
+        BitBoard rooksControlledCells() const;
+        BitBoard queensControlledCells() const;
     };
     // -----------------------------------------------
 

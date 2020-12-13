@@ -46,16 +46,29 @@ namespace cSzd
     // --------------------------------------------------------
     BitBoard Army::controlledCells() const
     {
-        BitBoard bb;
+        return pawnsControlledCells() |
+               knightsControlledCells() |
+               bishopsControlledCells() |
+               rooksControlledCells() |
+               queensControlledCells() |
+               kingControlledCells();
+    }
 
-        // --------------------------- KING ---------------------------------
+    // ---------------------------------------------------------------
+    // Returns a BitBoard with the cells controlled by the king of the army
+    BitBoard Army::kingControlledCells() const
+    {
         // The cell controlled by the king are the neighbour cells.
         // No check of cells occupancy by friends or foes is necessary
-        bb |= pieces[King].neighbourCells();
+        return pieces[King].neighbourCells();
+    }
 
-        // --------------------------- PAWNS --------------------------------
+    // Returns a BitBoard with the cells controlled by the pawns of the army
+    BitBoard Army::pawnsControlledCells() const
+    {
         // The cell controlled by pawns are the front left and front right
         // of each pawn. Front is north for white army, and south for black
+        BitBoard bb;
         auto foundCells = 0;
         for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Pawn].popCount()); ndx++) {
             if (pieces[Pawn].bbs[ndx] != 0) {
@@ -71,10 +84,31 @@ namespace cSzd
                 }
             }
         }
-
-        // to be completed...
         return bb;
     }
 
+    // Returns a BitBoard with the cells controlled by the knights of the army
+    BitBoard Army::knightsControlledCells() const
+    {
+        return BitBoard(EmptyBB);
+    }
+
+    // Returns a BitBoard with the cells controlled by the bishops of the army
+    BitBoard Army::bishopsControlledCells() const
+    {
+        return BitBoard(EmptyBB);
+    }
+
+    // Returns a BitBoard with the cells controlled by the rooks of the army
+    BitBoard Army::rooksControlledCells() const
+    {
+        return BitBoard(EmptyBB);
+    }
+
+    // Returns a BitBoard with the cells controlled by the queens of the army
+    BitBoard Army::queensControlledCells() const
+    {
+        return BitBoard(EmptyBB);
+    }
 
 } // namespace cSzd
