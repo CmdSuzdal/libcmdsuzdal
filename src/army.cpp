@@ -8,6 +8,7 @@ namespace cSzd
     {
         switch (c) {
             case WhiteArmy:
+                color = WhiteArmy;
                 pieces[King].setCell(e1);
                 pieces[Queen].setCell(d1);
                 pieces[Pawn] = BitBoard(RanksBB[r_2]);
@@ -16,6 +17,7 @@ namespace cSzd
                 pieces[Rook] = BitBoard({a1, h1});
                 break;
             case BlackArmy:
+                color = BlackArmy;
                 pieces[King].setCell(e8);
                 pieces[Queen].setCell(d8);
                 pieces[Pawn] = BitBoard(RanksBB[r_7]);

@@ -16,6 +16,7 @@ namespace cSzd
     struct Army {
         // --------------------------
         BitBoard pieces[NumPieceTypes] = {};
+        ArmyColor color = InvalidArmy;
 
         // --------------------------
         explicit Army() = default;
