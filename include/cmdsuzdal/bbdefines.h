@@ -1,12 +1,12 @@
 #if !defined CSZD_BBDEFINES_HEADER
 #define CSZD_BBDEFINES_HEADER
 
-#include <cstdint> // for uint64_t
+#include <bitset>
 
 namespace cSzd
 {
 
-    using BitBoardState = std::uint64_t;
+    using BitBoardState = std::bitset<64>;
 
     // These enums could be moved inside the BitBoard class, but we prefer to
     // avoid this for the moment to simplify code development. If for example
@@ -49,7 +49,7 @@ namespace cSzd
     };
 
     // Bitboard important definitions
-    constexpr BitBoardState EmptyBB{};
+    const BitBoardState EmptyBB{};
 
     // Ranks Masks --- These are the rank indexes of the board:
     //     _________________________
@@ -63,16 +63,15 @@ namespace cSzd
     // r1|  0  0  0  0  0  0  0  0 |
     //     -------------------------
     //     fa fb fc fd fe ff fg fh
-    constexpr BitBoardState Rank1BB{0x00000000000000FFULL};
-    constexpr BitBoardState RanksBB[]{
-        Rank1BB,
-        Rank1BB << 8,
-        Rank1BB << 16,
-        Rank1BB << 24,
-        Rank1BB << 32,
-        Rank1BB << 40,
-        Rank1BB << 48,
-        Rank1BB << 56,
+    const BitBoardState RanksBB[]{
+        0x00000000000000FFULL,
+        0x00000000000000FFULL << 8,
+        0x00000000000000FFULL << 16,
+        0x00000000000000FFULL << 24,
+        0x00000000000000FFULL << 32,
+        0x00000000000000FFULL << 40,
+        0x00000000000000FFULL << 48,
+        0x00000000000000FFULL << 56,
         0 // for invalid rank
     };
 
@@ -88,16 +87,15 @@ namespace cSzd
     // r1|  0  1  2  3  4  5  6  7 |
     //    -------------------------
     //     fa fb fc fd fe ff fg fh
-    constexpr BitBoardState File1BB{0x0101010101010101ULL};
-    constexpr BitBoardState FilesBB[]{
-        File1BB,
-        File1BB << 1,
-        File1BB << 2,
-        File1BB << 3,
-        File1BB << 4,
-        File1BB << 5,
-        File1BB << 6,
-        File1BB << 7,
+    const BitBoardState FilesBB[]{
+        0x0101010101010101ULL,
+        0x0101010101010101ULL << 1,
+        0x0101010101010101ULL << 2,
+        0x0101010101010101ULL << 3,
+        0x0101010101010101ULL << 4,
+        0x0101010101010101ULL << 5,
+        0x0101010101010101ULL << 6,
+        0x0101010101010101ULL << 7,
         0 // for invalid file
     };
 
@@ -115,7 +113,7 @@ namespace cSzd
     //     fa fb fc fd fe ff fg fh
     // and can be computed with the following formula:
     //   file_index - rank_index + 7
-    constexpr BitBoardState DiagsBB[]{
+    const BitBoardState DiagsBB[]{
         0x0100000000000000ULL, //  0
         0x0201000000000000ULL, //  1
         0x0402010000000000ULL, //  2
@@ -148,7 +146,7 @@ namespace cSzd
     //     fa fb fc fd fe ff fg fh
     // and can be computed with the following formula:
     //   file_index + rank_index
-    constexpr BitBoardState AntiDiagsBB[]{
+    const BitBoardState AntiDiagsBB[]{
         0x0000000000000001ULL, //  0
         0x0000000000000102ULL, //  1
         0x0000000000010204ULL, //  2
@@ -167,22 +165,22 @@ namespace cSzd
         0 // for invalid antidiagonal
     };
 
-    constexpr BitBoardState DiagonalBB{0x8040201008040201ULL};
-    constexpr BitBoardState AntiDiagonalBB{0x0102040810204080ULL};
-    constexpr BitBoardState BothDiagonalsBB{DiagonalBB | AntiDiagonalBB};
+    const BitBoardState DiagonalBB{0x8040201008040201ULL};
+    const BitBoardState AntiDiagonalBB{0x0102040810204080ULL};
+    const BitBoardState BothDiagonalsBB{DiagonalBB | AntiDiagonalBB};
 
-    constexpr BitBoardState AllCellsBB{0xFFFFFFFFFFFFFFFFULL};
-    constexpr BitBoardState AllBlackCellsBB{0xAA55AA55AA55AA55ULL};
-    constexpr BitBoardState AllWhiteCellsBB{~AllBlackCellsBB};
+    const BitBoardState AllCellsBB{0xFFFFFFFFFFFFFFFFULL};
+    const BitBoardState AllBlackCellsBB{0xAA55AA55AA55AA55ULL};
+    const BitBoardState AllWhiteCellsBB = ~AllBlackCellsBB;
 
     // ------
     // center of board can be defined with the intersection of files d,e and ranks 4,5
-    constexpr BitBoardState BoardCenterBB{(RanksBB[r_4] | RanksBB[r_5]) &
-                                          (FilesBB[f_d] | FilesBB[f_e])};
+    const BitBoardState BoardCenterBB = (RanksBB[r_4] | RanksBB[r_5]) &
+                                          (FilesBB[f_d] | FilesBB[f_e]);
     //constexpr BitBoardState BoardCenterBB  { 0x0000001818000000ULL };
 
     // West shift clear matrix
-    constexpr BitBoardState WestShiftClearMask[]{
+    const BitBoardState WestShiftClearMask[]{
         FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6],
         FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5],
         FilesBB[0] | FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4],
@@ -191,7 +189,7 @@ namespace cSzd
         FilesBB[0] | FilesBB[1],
         FilesBB[0]};
     // East shift clear matrix
-    constexpr BitBoardState EastShiftClearMask[]{
+    const BitBoardState EastShiftClearMask[]{
         FilesBB[1] | FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
         FilesBB[2] | FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
         FilesBB[3] | FilesBB[4] | FilesBB[5] | FilesBB[6] | FilesBB[7],
@@ -200,7 +198,7 @@ namespace cSzd
         FilesBB[6] | FilesBB[7],
         FilesBB[7]};
     // North shift clear matrix
-    constexpr BitBoardState NorthShiftClearMask[]{
+    const BitBoardState NorthShiftClearMask[]{
         RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
         RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
         RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6] | RanksBB[7],
@@ -209,7 +207,7 @@ namespace cSzd
         RanksBB[6] | RanksBB[7],
         RanksBB[7]};
     // South shift clear matrix
-    constexpr BitBoardState SouthShiftClearMask[]{
+    const BitBoardState SouthShiftClearMask[]{
         RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5] | RanksBB[6],
         RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4] | RanksBB[5],
         RanksBB[0] | RanksBB[1] | RanksBB[2] | RanksBB[3] | RanksBB[4],
