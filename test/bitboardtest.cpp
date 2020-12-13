@@ -34,6 +34,16 @@ namespace cSzd
         ASSERT_EQ(bb, BitBoard({e1, f5, h8}));
     }
 
+    // --------------------------------------------------------
+    TEST(BBTester, SetOfInvalidCellsHasNoImpactsOnBitBoard)
+    {
+        BitBoard bb;
+        bb.setCell({InvalidCell, c7, InvalidCell, d5});
+        bb.setCell(InvalidCell);
+        bb.setCell(g2);
+        ASSERT_EQ(bb, BitBoard({c7, d5, g2}));
+    }
+
     TEST(BBTester, Cell_0_0_CorrespondToA1)
     {
         BitBoard bb;
