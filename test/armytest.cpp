@@ -212,12 +212,42 @@ namespace cSzd
     }
 
     // Knights ---
-    TEST(ArmyTester, DISABLED_ChecksCellsControlledByWhiteKnightsInInitialPosition)
+    TEST(ArmyTester, ChecksCellsControlledByWhiteKnightsInInitialPosition)
     {
         Army a {};
         a.color = WhiteArmy;
         a.pieces[Knight] = BitBoard({b1, g1});
         ASSERT_EQ(a.controlledCells(), BitBoard({a3, c3, d2, e2, f3, h3}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByBlackKnightsInInitialPosition)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Knight] = BitBoard({b8, g8});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a6, c6, d7, e7, f6, h6}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByWhiteKnightsInD4)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Knight] = BitBoard({d4});
+        ASSERT_EQ(a.controlledCells(), BitBoard({e6, f5, f3, e2, c2, b3, b5, c6}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByWhiteKnightsInH8)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[Knight] = BitBoard({h8});
+        ASSERT_EQ(a.controlledCells(), BitBoard({f7, g6}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByWhiteKnightsOnAllTheCellsOfTheDiagonal)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Knight] = BitBoard({a1, b2, c3, d4, e5, f6, g7, h8});
+        ASSERT_EQ(a.controlledCells(), BitBoard(
+            {b1, d1, a2, c2, e2, b3, d3, f3, a4, c4, e4, g4,
+             b5, d5, f5, h5, c6, e6, g6, d7, f7, h7, e8, g8}));
     }
 
 } // namespace cSzd

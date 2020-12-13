@@ -90,7 +90,25 @@ namespace cSzd
     // Returns a BitBoard with the cells controlled by the knights of the army
     BitBoard Army::knightsControlledCells() const
     {
-        return BitBoard(EmptyBB);
+        BitBoard bb;
+        auto foundCells = 0;
+        for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Knight].popCount()); ndx++) {
+            if (pieces[Knight].bbs[ndx] != 0) {
+                // knight in position ndx
+                foundCells++;
+                // FIXME --- This can be do probably better using the BitBoard shift functions
+                Cell c = static_cast<const Cell>(ndx);
+                bb |= BitBoard({BitBoard::calcCellAfterSteps(c,  2,  1),
+                                BitBoard::calcCellAfterSteps(c,  1,  2),
+                                BitBoard::calcCellAfterSteps(c, -1,  2),
+                                BitBoard::calcCellAfterSteps(c, -2,  1),
+                                BitBoard::calcCellAfterSteps(c, -2, -1),
+                                BitBoard::calcCellAfterSteps(c, -1, -2),
+                                BitBoard::calcCellAfterSteps(c,  1, -2),
+                                BitBoard::calcCellAfterSteps(c,  2, -1)});
+            }
+        }
+        return bb;
     }
 
     // Returns a BitBoard with the cells controlled by the bishops of the army
