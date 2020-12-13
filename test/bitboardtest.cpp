@@ -13,6 +13,26 @@ namespace cSzd
         BitBoard bb;
         ASSERT_EQ(bb, BitBoard(EmptyBB));
     }
+    // --------------------------------------------------------
+    TEST(BBTester, AfterInitializationWithAnInvalidCellBitBoardIsEmpty)
+    {
+        BitBoard bb{InvalidCell};
+        ASSERT_EQ(bb, BitBoard(EmptyBB));
+    }
+
+    // --------------------------------------------------------
+    TEST(BBTester, AfterInitializationWithAnInvalidCellsArrayBitBoardIsEmpty)
+    {
+        BitBoard bb({InvalidCell, InvalidCell, InvalidCell});
+        ASSERT_EQ(bb, BitBoard(EmptyBB));
+    }
+
+    // --------------------------------------------------------
+    TEST(BBTester, AfterInitializationWithGoodAndInvalidCellsArrayBitBoardIsOK)
+    {
+        BitBoard bb({InvalidCell, e1, InvalidCell, f5, InvalidCell, h8});
+        ASSERT_EQ(bb, BitBoard({e1, f5, h8}));
+    }
 
     TEST(BBTester, Cell_0_0_CorrespondToA1)
     {

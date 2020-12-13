@@ -105,7 +105,12 @@ namespace cSzd
             (bbs |= 1ULL << (r * 8 + f));
             return *this;
         }
-        BitBoardState setCell(Cell c) { return (bbs |= 1ULL << c); }
+        BitBoardState setCell(Cell c)
+        {
+            if (c != InvalidCell)
+                bbs |= 1ULL << c;
+            return bbs;
+        }
         BitBoardState setCell(const std::vector<Cell> &cells)
         {
             for (auto &c : cells)
