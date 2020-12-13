@@ -127,4 +127,35 @@ namespace cSzd
         ASSERT_EQ(a.numPieces(), 16);
     }
 
+    // ------------------------------------------------------------------------
+    // Controlled Cells Tests
+    TEST(ArmyTester, ChecksCellsControlledByWhiteKingInE5)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[King] = BitBoard{e5};
+        ASSERT_EQ(a.controlledCells(), BitBoard({d4, e4, f4, d5, f5, d6, e6, f6}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByBlackKingInG7)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[King] = BitBoard{g7};
+        ASSERT_EQ(a.controlledCells(), BitBoard({f6, g6, h6, f7, h7, f8, g8, h8}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByWhiteKingInA1)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[King] = BitBoard{a1};
+        ASSERT_EQ(a.controlledCells(), BitBoard({b1, a2, b2}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByBlackKingInH8)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[King] = BitBoard{h8};
+        ASSERT_EQ(a.controlledCells(), BitBoard({g7, h7, g8}));
+    }
+
 } // namespace cSzd

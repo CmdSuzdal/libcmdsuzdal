@@ -43,5 +43,19 @@ namespace cSzd
                 pieces[Rook].popCount();
     }
 
+    // --------------------------------------------------------
+    BitBoard Army::controlledCells() const
+    {
+         BitBoard bb;
+
+         // The cell controlled by the king are the neighbour cells.
+         // No check of cells occupancy by friends or foes is necessary
+         bb |= pieces[King].neighbourCells();
+
+        // to be completed...
+
+        return bb;
+    }
+
 
 } // namespace cSzd
