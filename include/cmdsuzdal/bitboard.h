@@ -196,6 +196,7 @@ namespace cSzd
         static Cell se(const Cell &c) { return static_cast<Cell>((file(c) < 7 && rank(c) > 0) ? c - 7 : InvalidCell); }
         static Cell s(const Cell &c) { return static_cast<Cell>((rank(c) > 0) ? c - 8 : InvalidCell); }
         static Cell sw(const Cell &c) { return static_cast<Cell>((file(c) > 0 && rank(c) > 0) ? c - 9 : InvalidCell); }
+        static Cell calcCellAfterSteps(const Cell &c, int stepNorth, int stepEast);
 
         // Given a cell, returns any sort of "related" cells BitBoard states
         static BitBoardState neighbourMask(const Cell &c);

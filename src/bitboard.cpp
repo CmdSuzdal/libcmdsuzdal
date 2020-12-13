@@ -42,6 +42,20 @@ namespace cSzd
         return set((bbs >> (npos * 8)) & SouthShiftClearMask[npos - 1]);
     }
 
+    Cell BitBoard::calcCellAfterSteps(const Cell &c, int stepNorth, int stepEast)
+    {
+        // Computes the position of the cells reached starting from Cell c
+        // and performing stepNorth steps towards north and stepEast steps
+        // towards east. If stepNorth is negative the steps are done towards
+        // south, if stepEast is negative, the steps are done towards west
+        auto newRank = (static_cast<int>(rank(c)) + stepNorth);
+        auto newFile = (static_cast<int>(file(c)) + stepEast);
+        if (newFile < 0 || newFile > 7 || newRank < 0 || newRank > 7)
+            return InvalidCell;
+
+        return static_cast<Cell>(c + stepEast + (stepNorth * 8));
+    }
+
     BitBoardState BitBoard::neighbourMask(const Cell &c)
     {
         File f, w, e;

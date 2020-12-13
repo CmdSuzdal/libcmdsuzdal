@@ -683,6 +683,30 @@ namespace cSzd
         ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_h]));
     }
 
+    // Tests for calcCellAfterSteps methods
+    TEST(BBTester, calcCellAfterStepsTest)
+    {
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(a1,  5,  0), a6);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(a1,  0,  5), f1);
+
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4,  2,  1), e6);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4,  1,  2), f5);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4, -1,  2), f3);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4, -2,  1), e2);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4, -2, -1), c2);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4, -1, -2), b3);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4,  1, -2), b5);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4,  2, -1), c6);
+
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(c2,  6, -2), a8);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(c2,  1, -3), InvalidCell);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(b7,  1,  3), e8);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(b7,  2, -1), InvalidCell);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(f5,  3,  2), h8);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(f5,  1,  3), InvalidCell);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d2,  -1,  -3), a1);
+        ASSERT_EQ(BitBoard::calcCellAfterSteps(d2,  -2,  -1), InvalidCell);
+    }
 
 
 } // namespace cSzd
