@@ -179,4 +179,34 @@ namespace cSzd
         ASSERT_EQ(a.controlledCells(), BitBoard({a6, b6, c6, d6, e6, f6, g6, h6}));
     }
 
+    TEST(ArmyTester, AdditionalTestsForCellsControlledByPawns1)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Pawn] = BitBoard({a4});
+        ASSERT_EQ(a.controlledCells(), BitBoard({b5}));
+    }
+    TEST(ArmyTester, AdditionalTestsForCellsControlledByPawns2)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[Pawn] = BitBoard({a4});
+        ASSERT_EQ(a.controlledCells(), BitBoard({b3}));
+    }
+    TEST(ArmyTester, AdditionalTestsForCellsControlledByPawns3)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Pawn] = BitBoard({b5, h7});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a6, c6, g8}));
+    }
+    TEST(ArmyTester, AdditionalTestsForCellsControlledByPawns4)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[Pawn] = BitBoard({f6, h2});
+        ASSERT_EQ(a.controlledCells(), BitBoard({e5, g5, g1}));
+    }
+
+
 } // namespace cSzd
