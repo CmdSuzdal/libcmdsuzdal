@@ -46,14 +46,33 @@ namespace cSzd
     // --------------------------------------------------------
     BitBoard Army::controlledCells() const
     {
-         BitBoard bb;
+        BitBoard bb;
 
-         // The cell controlled by the king are the neighbour cells.
-         // No check of cells occupancy by friends or foes is necessary
-         bb |= pieces[King].neighbourCells();
+        // --------------------------- KING ---------------------------------
+        // The cell controlled by the king are the neighbour cells.
+        // No check of cells occupancy by friends or foes is necessary
+        bb |= pieces[King].neighbourCells();
+
+        // --------------------------- PAWNS --------------------------------
+        // The cell controlled by pawns are the front left and front right
+        // of each pawn. Front is north for white army, and south for black
+        auto foundCells = 0;
+        for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Pawn].popCount()); ndx++) {
+            if (pieces[Pawn].bbs[ndx] != 0) {
+                // pawn in position ndx
+                foundCells++;
+                if (color == WhiteArmy) {
+                    bb |= BitBoard(BitBoard::ne(static_cast<const Cell>(ndx)));
+                    bb |= BitBoard(BitBoard::nw(static_cast<const Cell>(ndx)));
+                }
+                else if (color == BlackArmy) {
+                    bb |= BitBoard(BitBoard::se(static_cast<const Cell>(ndx)));
+                    bb |= BitBoard(BitBoard::sw(static_cast<const Cell>(ndx)));
+                }
+            }
+        }
 
         // to be completed...
-
         return bb;
     }
 

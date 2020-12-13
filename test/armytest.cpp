@@ -129,6 +129,12 @@ namespace cSzd
 
     // ------------------------------------------------------------------------
     // Controlled Cells Tests
+    TEST(ArmyTester, ControlledCellsOfAnEmptyArmyIsEmpty)
+    {
+        Army a {};
+        ASSERT_EQ(a.controlledCells(), BitBoard(EmptyBB));
+    }
+
     TEST(ArmyTester, ChecksCellsControlledByWhiteKingInE5)
     {
         Army a {};
@@ -156,6 +162,21 @@ namespace cSzd
         a.color = BlackArmy;
         a.pieces[King] = BitBoard{h8};
         ASSERT_EQ(a.controlledCells(), BitBoard({g7, h7, g8}));
+    }
+
+    TEST(ArmyTester, ChecksCellsControlledByInitialRowOfWhitePawns)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Pawn] = BitBoard({a2, b2, c2, d2, e2, f2, g2, h2});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a3, b3, c3, d3, e3, f3, g3, h3}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByInitialRowOfBlackPawns)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[Pawn] = BitBoard({a7, b7, c7, d7, e7, f7, g7, h7});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a6, b6, c6, d6, e6, f6, g6, h6}));
     }
 
 } // namespace cSzd
