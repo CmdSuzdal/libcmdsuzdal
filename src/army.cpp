@@ -114,19 +114,25 @@ namespace cSzd
     // Returns a BitBoard with the cells controlled by the bishops of the army
     BitBoard Army::bishopsControlledCells() const
     {
-        return BitBoard(EmptyBB);
+        // ********* FIXME --- To Be Completed: ***************
+        // to take into account interference of other pieces ---
+        return pieces[Bishop].diagonalsCells();
     }
 
     // Returns a BitBoard with the cells controlled by the rooks of the army
     BitBoard Army::rooksControlledCells() const
     {
-        return BitBoard(EmptyBB);
+        // ********* FIXME --- To Be Completed: ***************
+        // to take into account interference of other pieces ---
+        return pieces[Rook].fileRankCells();
     }
 
     // Returns a BitBoard with the cells controlled by the queens of the army
     BitBoard Army::queensControlledCells() const
     {
-        return BitBoard(EmptyBB);
+        // ********* FIXME --- To Be Completed: ***************
+        // to take into account interference of other pieces ---
+        return pieces[Queen].fileRankDiagonalsCells();
     }
 
 } // namespace cSzd

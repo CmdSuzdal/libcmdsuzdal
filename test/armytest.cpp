@@ -250,4 +250,52 @@ namespace cSzd
              b5, d5, f5, h5, c6, e6, g6, d7, f7, h7, e8, g8}));
     }
 
+    // Bishops ---
+    TEST(ArmyTester, ChecksCellsControlledByWhiteBishopsInInitialPosition)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Bishop] = BitBoard({c1, f1});
+        ASSERT_EQ(a.controlledCells(), BitBoard({b2, d2, e2, g2, a3, d3, e3, h3, c4, f4, b5, g5, a6, h6}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByBlackBishopsInInitialPosition)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[Bishop] = BitBoard({c8, f8});
+        ASSERT_EQ(a.controlledCells(), BitBoard({b7, d7, e7, g7, a6, d6, e6, h6, c5, f5, b4, g4, a3, h3}));
+    }
+
+    // Rooks ---
+    TEST(ArmyTester, ChecksCellsControlledByWhiteRooksInInitialPosition)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Rook] = BitBoard({a1, h1});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a1, b1, c1, d1, e1, f1, g1, h1, a2, h2, a3, h3, a4, h4, a5, h5, a6, h6, a7, h7, a8, h8}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByBlackRookInInitialPosition)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[Rook] = BitBoard({a8, h8});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a1, h1, a2, h2, a3, h3, a4, h4, a5, h5, a6, h6, a7, h7, a8, b8, c8, d8, e8, f8, g8, h8}));
+    }
+
+    // Queens ---
+    TEST(ArmyTester, ChecksCellsControlledByWhiteQueenInInitialPosition)
+    {
+        Army a {};
+        a.color = WhiteArmy;
+        a.pieces[Queen] = BitBoard({d1});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a1, b1, c1, e1, f1, g1, h1, c2, d2, e2, b3, d3, f3, a4, d4, g4, d5, h5, d6, d7, d8}));
+    }
+    TEST(ArmyTester, ChecksCellsControlledByBlackQueenInInitialPosition)
+    {
+        Army a {};
+        a.color = BlackArmy;
+        a.pieces[Queen] = BitBoard({d8});
+        ASSERT_EQ(a.controlledCells(), BitBoard({a8, b8, c8, e8, f8, g8, h8, c7, d7, e7, b6, d6, f6, a5, d5, g5, d4, h4, d3, d2, d1}));
+    }
+
 } // namespace cSzd
