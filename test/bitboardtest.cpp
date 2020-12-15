@@ -508,6 +508,7 @@ namespace cSzd
         ASSERT_EQ(BitBoard::diagMask(g2), BitBoard(DiagsBB[d_12]));
         ASSERT_EQ(BitBoard::diagMask(g1), BitBoard(DiagsBB[d_13]));
         ASSERT_EQ(BitBoard::diagMask(h1), BitBoard(DiagsBB[d_14]));
+        ASSERT_EQ(BitBoard::diagMask(f5), BitBoard({b1, c2, d3, e4, f5, g6, h7}));
     }
 
     TEST(BBTester, AntiDiagonalMasksAreComputedCorrectly)
@@ -527,11 +528,13 @@ namespace cSzd
         ASSERT_EQ(BitBoard::antiDiagMask(g7), BitBoard(AntiDiagsBB[a_12]));
         ASSERT_EQ(BitBoard::antiDiagMask(g8), BitBoard(AntiDiagsBB[a_13]));
         ASSERT_EQ(BitBoard::antiDiagMask(h8), BitBoard(AntiDiagsBB[a_14]));
+        ASSERT_EQ(BitBoard::antiDiagMask(f5), BitBoard({h3, g4, f5, e6, d7, c8}));
     }
 
     TEST(BBTester, DiagonalAntiDiagonalMasksAreComputedCorrectly)
     {
         ASSERT_EQ(BitBoard::diagonalsMask(a6), BitBoard(DiagsBB[d_2] | AntiDiagsBB[a_5]));
+        ASSERT_EQ(BitBoard::diagonalsMask(a6), BitBoard({f1, e2, d3, c4, b5, a6, b7, c8}));
         ASSERT_EQ(BitBoard::diagonalsMask(b7), BitBoard(DiagsBB[d_2] | AntiDiagsBB[a_7]));
         ASSERT_EQ(BitBoard::diagonalsMask(c8), BitBoard(DiagsBB[d_2] | AntiDiagsBB[a_9]));
         ASSERT_EQ(BitBoard::diagonalsMask(d1), BitBoard(DiagsBB[d_10] | AntiDiagsBB[a_3]));
@@ -706,6 +709,54 @@ namespace cSzd
         ASSERT_EQ(BitBoard::calcCellAfterSteps(f5,  1,  3), InvalidCell);
         ASSERT_EQ(BitBoard::calcCellAfterSteps(d2,  -1,  -3), a1);
         ASSERT_EQ(BitBoard::calcCellAfterSteps(d2,  -2,  -1), InvalidCell);
+    }
+
+    // Evaluations of file/rank/diagonals evaluation
+    TEST(BBTester, evalDiagonalOfActiveCellInE4)
+    {
+        BitBoard bb {e4};
+        ASSERT_EQ(bb.diagonalsCells(), BitBoard({b1, h1, c2, g2, d3, f3, d5, f5, c6, g6, b7, h7, a8}));
+    }
+    TEST(BBTester, evalFileRankOfActiveCellInE4)
+    {
+        BitBoard bb {e4};
+        ASSERT_EQ(bb.fileRankCells(), BitBoard({e1, e2, e3, a4, b4, c4, d4, f4, g4, h4, e5, e6, e7, e8}));
+    }
+    TEST(BBTester, evalFileRankDiagonalsOfActiveCellInE4)
+    {
+        BitBoard bb {e4};
+        ASSERT_EQ(bb.fileRankDiagonalsCells(), BitBoard({b1, h1, c2, g2, d3, f3, d5, f5, c6, g6, b7, h7, a8,
+                                                e1, e2, e3, a4, b4, c4, d4, f4, g4, h4, e5, e6, e7, e8}));
+    }
+    TEST(BBTester, evalDiagonalsOfActiveCellInC3)
+    {
+        BitBoard bb {c3};
+        ASSERT_EQ(bb.diagonalsCells(), BitBoard({a1, e1, b2, d2, b4, d4, a5, e5, f6, g7, h8}));
+    }
+    TEST(BBTester, evalDiagonalsOfActiveCellInF5)
+    {
+        BitBoard bb {f5};
+        ASSERT_EQ(bb.diagonalsCells(), BitBoard({b1, c2, d3, h3, e4, g4, e6, g6, d7, h7, c8}));
+    }
+    TEST(BBTester, evalDiagonalsOfActiveCellsInC3AndF5)
+    {
+        BitBoard bb ({c3, f5});
+        ASSERT_EQ(bb.diagonalsCells(), BitBoard({a1, b1, e1, b2, c2, d2, d3, h3, b4, d4, e4, g4,
+                                                 a5, e5, e6, f6, g6, d7, g7, h7, c8, h8}));
+    }
+    TEST(BBTester, evalFilesRanksOfActiveCellsInC3AndE5)
+    {
+        BitBoard bb ({c3, f5});
+        ASSERT_EQ(bb.fileRankCells(), BitBoard({c1, f1, c2, f2, a3, b3, d3, e3, f3, g3, h3, c4, f4,
+                                                a5, b5, c5, d5, e5, g5, h5, c6, f6, c7, f7, c8, f8}));
+    }
+    TEST(BBTester, evalFilesRanksDiagonalsOfActiveCellInC3AndE5)
+    {
+        BitBoard bb ({c3, f5});
+        ASSERT_EQ(bb.fileRankDiagonalsCells(), BitBoard({a1, b1, e1, b2, c2, d2, d3, h3, b4, d4, e4, g4,
+                                                a5, e5, e6, f6, g6, d7, g7, h7, c8, h8, c1, f1,
+                                                f2, a3, b3, e3, f3, g3, c4, f4, b5, c5, d5, g5,
+                                                h5, c6, c7, f7, f8}));
     }
 
 

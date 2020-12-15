@@ -6,14 +6,42 @@ namespace cSzd
     BitBoard BitBoard::neighbourCells() const
     {
         BitBoard nb;
-        BitBoardState checkMask = 1;
-        for (auto ndx = 0; ndx < 64; ndx++) {
-            if ((bbs & checkMask) != EmptyBB) {
+        auto foundCells = 0;
+        for (auto ndx = 0; (ndx < 64) && (foundCells < popCount()); ndx++) {
+            if (bbs[ndx] != 0) {
+                foundCells++;
                 nb = nb | neighbour(static_cast<Cell>(ndx));
             }
-            checkMask <<= 1;
         }
         return nb;
+    }
+    BitBoard BitBoard::diagonalsCells() const
+    {
+        BitBoard nb;
+        auto foundCells = 0;
+        for (auto ndx = 0; (ndx < 64) && (foundCells < popCount()); ndx++) {
+            if (bbs[ndx] != 0) {
+                foundCells++;
+                nb = nb | (diagonalsMask(static_cast<Cell>(ndx)) ^ singlecell(static_cast<Cell>(ndx)));
+            }
+        }
+        return nb;
+    }
+    BitBoard BitBoard::fileRankCells() const
+    {
+        BitBoard nb;
+        auto foundCells = 0;
+        for (auto ndx = 0; (ndx < 64) && (foundCells < popCount()); ndx++) {
+            if (bbs[ndx] != 0) {
+                foundCells++;
+                nb = nb | (fileRankMask(static_cast<Cell>(ndx)) ^ singlecell(static_cast<Cell>(ndx)));
+            }
+        }
+        return nb;
+    }
+    BitBoard BitBoard::fileRankDiagonalsCells() const
+    {
+        return diagonalsCells() | fileRankCells();
     }
 
     BitBoardState BitBoard::shiftWest(unsigned int npos)

@@ -137,15 +137,7 @@ namespace cSzd
         // -------------------------------------------------------------------------------
 
         // -------------------------------------------------------------------------------
-        // Bitboard generation methods
-        // Returns a BitBoard object composed by the neighbour cells of the current object
-        // active cells
-        BitBoard neighbourCells() const;
-        // -------------------------------------------------------------------------------
-
-        // -------------------------------------------------------------------------------
         // Bitboard utility methods
-
 
         // Given a cell, returns File, Rank, Diagonal, AntiDiagonal (and combinations)
         static File file(const Cell &c) { return static_cast<File>(c % 8); }
@@ -204,6 +196,26 @@ namespace cSzd
         static BitBoard antiDiagMask(const Cell &c) { return BitBoard(AntiDiagsBB[antiDiag(c)]); }
         static BitBoard diagonalsMask(const Cell &c) { return diagMask(c) | antiDiagMask(c); }
         static BitBoard queenMask(const Cell &c) { return fileMask(c) | rankMask(c) | diagMask(c) | antiDiagMask(c); }
+
+        // -------------------------------------------------------------------------------
+        // Bitboard generation methods: returns a BitBoard object composed by cells generated
+        // by the current object active cells
+
+        // - Neighbours cells ('king')
+        BitBoard neighbourCells() const;
+
+        // - Diagonals cells ('bishop')
+        BitBoard diagonalsCells() const;
+
+        // - File & Rank cells ('rook')
+        BitBoard fileRankCells() const;
+
+        // - File + Rank + Diagonals cells ('queen')
+        BitBoard fileRankDiagonalsCells() const;
+        // -------------------------------------------------------------------------------
+
+
+
 
         // Check functions: return a boolean check on various conditions
         // returns true if at least one of the cell in the given mask is active
