@@ -143,13 +143,9 @@ namespace cSzd
         BitBoard neighbourCells() const;
         // -------------------------------------------------------------------------------
 
-
         // -------------------------------------------------------------------------------
         // Bitboard utility methods
 
-        // Given a cell, returns the associated BitBoard state (the BitBoard state on
-        // which the given cell is the only one active)
-        static BitBoardState singleCellState(const Cell &c) { return (1ULL << c); }
 
         // Given a cell, returns File, Rank, Diagonal, AntiDiagonal (and combinations)
         static File file(const Cell &c) { return static_cast<File>(c % 8); }
@@ -199,14 +195,15 @@ namespace cSzd
         static Cell calcCellAfterSteps(const Cell &c, int stepNorth, int stepEast);
 
         // Given a cell, returns any sort of "related" cells BitBoard states
-        static BitBoardState neighbourMask(const Cell &c);
-        static BitBoardState fileMask(const Cell &c) { return FilesBB[file(c)]; }
-        static BitBoardState rankMask(const Cell &c) { return RanksBB[rank(c)]; }
-        static BitBoardState fileRankMask(const Cell &c) { return fileMask(c) | rankMask(c); }
-        static BitBoardState diagMask(const Cell &c) { return DiagsBB[diag(c)]; }
-        static BitBoardState antiDiagMask(const Cell &c) { return AntiDiagsBB[antiDiag(c)]; }
-        static BitBoardState diagonalsMask(const Cell &c) { return diagMask(c) | antiDiagMask(c); }
-        static BitBoardState queenMask(const Cell &c) { return fileMask(c) | rankMask(c) | diagMask(c) | antiDiagMask(c); }
+        static BitBoard singlecell(const Cell &c) { return BitBoard(1ULL << c); }
+        static BitBoard neighbour(const Cell &c);
+        static BitBoard fileMask(const Cell &c) { return BitBoard(FilesBB[file(c)]); }
+        static BitBoard rankMask(const Cell &c) { return BitBoard(RanksBB[rank(c)]); }
+        static BitBoard fileRankMask(const Cell &c) { return fileMask(c) | rankMask(c); }
+        static BitBoard diagMask(const Cell &c) { return BitBoard(DiagsBB[diag(c)]); }
+        static BitBoard antiDiagMask(const Cell &c) { return BitBoard(AntiDiagsBB[antiDiag(c)]); }
+        static BitBoard diagonalsMask(const Cell &c) { return diagMask(c) | antiDiagMask(c); }
+        static BitBoard queenMask(const Cell &c) { return fileMask(c) | rankMask(c) | diagMask(c) | antiDiagMask(c); }
 
         // Check functions: return a boolean check on various conditions
         // returns true if at least one of the cell in the given mask is active

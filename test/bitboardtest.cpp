@@ -438,38 +438,38 @@ namespace cSzd
 
     TEST(BBTester, FileMasksAreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::fileMask(a2), FilesBB[f_a]);
-        ASSERT_EQ(BitBoard::fileMask(b1), FilesBB[f_b]);
-        ASSERT_EQ(BitBoard::fileMask(c4), FilesBB[f_c]);
-        ASSERT_EQ(BitBoard::fileMask(d3), FilesBB[f_d]);
-        ASSERT_EQ(BitBoard::fileMask(e6), FilesBB[f_e]);
-        ASSERT_EQ(BitBoard::fileMask(f5), FilesBB[f_f]);
-        ASSERT_EQ(BitBoard::fileMask(g8), FilesBB[f_g]);
-        ASSERT_EQ(BitBoard::fileMask(h7), FilesBB[f_h]);
+        ASSERT_EQ(BitBoard::fileMask(a2), BitBoard(FilesBB[f_a]));
+        ASSERT_EQ(BitBoard::fileMask(b1), BitBoard(FilesBB[f_b]));
+        ASSERT_EQ(BitBoard::fileMask(c4), BitBoard(FilesBB[f_c]));
+        ASSERT_EQ(BitBoard::fileMask(d3), BitBoard(FilesBB[f_d]));
+        ASSERT_EQ(BitBoard::fileMask(e6), BitBoard(FilesBB[f_e]));
+        ASSERT_EQ(BitBoard::fileMask(f5), BitBoard(FilesBB[f_f]));
+        ASSERT_EQ(BitBoard::fileMask(g8), BitBoard(FilesBB[f_g]));
+        ASSERT_EQ(BitBoard::fileMask(h7), BitBoard(FilesBB[f_h]));
     }
 
     TEST(BBTester, RankMasksAreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::rankMask(a6), RanksBB[r_6]);
-        ASSERT_EQ(BitBoard::rankMask(b7), RanksBB[r_7]);
-        ASSERT_EQ(BitBoard::rankMask(c8), RanksBB[r_8]);
-        ASSERT_EQ(BitBoard::rankMask(d1), RanksBB[r_1]);
-        ASSERT_EQ(BitBoard::rankMask(e2), RanksBB[r_2]);
-        ASSERT_EQ(BitBoard::rankMask(f3), RanksBB[r_3]);
-        ASSERT_EQ(BitBoard::rankMask(g4), RanksBB[r_4]);
-        ASSERT_EQ(BitBoard::rankMask(h5), RanksBB[r_5]);
+        ASSERT_EQ(BitBoard::rankMask(a6), BitBoard(RanksBB[r_6]));
+        ASSERT_EQ(BitBoard::rankMask(b7), BitBoard(RanksBB[r_7]));
+        ASSERT_EQ(BitBoard::rankMask(c8), BitBoard(RanksBB[r_8]));
+        ASSERT_EQ(BitBoard::rankMask(d1), BitBoard(RanksBB[r_1]));
+        ASSERT_EQ(BitBoard::rankMask(e2), BitBoard(RanksBB[r_2]));
+        ASSERT_EQ(BitBoard::rankMask(f3), BitBoard(RanksBB[r_3]));
+        ASSERT_EQ(BitBoard::rankMask(g4), BitBoard(RanksBB[r_4]));
+        ASSERT_EQ(BitBoard::rankMask(h5), BitBoard(RanksBB[r_5]));
     }
 
     TEST(BBTester, FileRankMasksAreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::fileRankMask(a6), FilesBB[f_a] | RanksBB[r_6]);
-        ASSERT_EQ(BitBoard::fileRankMask(b7), FilesBB[f_b] | RanksBB[r_7]);
-        ASSERT_EQ(BitBoard::fileRankMask(c8), FilesBB[f_c] | RanksBB[r_8]);
-        ASSERT_EQ(BitBoard::fileRankMask(d1), FilesBB[f_d] | RanksBB[r_1]);
-        ASSERT_EQ(BitBoard::fileRankMask(e2), FilesBB[f_e] | RanksBB[r_2]);
-        ASSERT_EQ(BitBoard::fileRankMask(f3), FilesBB[f_f] | RanksBB[r_3]);
-        ASSERT_EQ(BitBoard::fileRankMask(g4), FilesBB[f_g] | RanksBB[r_4]);
-        ASSERT_EQ(BitBoard::fileRankMask(h5), FilesBB[f_h] | RanksBB[r_5]);
+        ASSERT_EQ(BitBoard::fileRankMask(a6), BitBoard(FilesBB[f_a] | RanksBB[r_6]));
+        ASSERT_EQ(BitBoard::fileRankMask(b7), BitBoard(FilesBB[f_b] | RanksBB[r_7]));
+        ASSERT_EQ(BitBoard::fileRankMask(c8), BitBoard(FilesBB[f_c] | RanksBB[r_8]));
+        ASSERT_EQ(BitBoard::fileRankMask(d1), BitBoard(FilesBB[f_d] | RanksBB[r_1]));
+        ASSERT_EQ(BitBoard::fileRankMask(e2), BitBoard(FilesBB[f_e] | RanksBB[r_2]));
+        ASSERT_EQ(BitBoard::fileRankMask(f3), BitBoard(FilesBB[f_f] | RanksBB[r_3]));
+        ASSERT_EQ(BitBoard::fileRankMask(g4), BitBoard(FilesBB[f_g] | RanksBB[r_4]));
+        ASSERT_EQ(BitBoard::fileRankMask(h5), BitBoard(FilesBB[f_h] | RanksBB[r_5]));
     }
 
     TEST(BBTester, CellToDiagonalsConversionTests)
@@ -493,86 +493,86 @@ namespace cSzd
 
     TEST(BBTester, DiagonalMasksAreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::diagMask(a8), DiagsBB[d_0]);
-        ASSERT_EQ(BitBoard::diagMask(b8), DiagsBB[d_1]);
-        ASSERT_EQ(BitBoard::diagMask(a6), DiagsBB[d_2]);
-        ASSERT_EQ(BitBoard::diagMask(d8), DiagsBB[d_3]);
-        ASSERT_EQ(BitBoard::diagMask(d7), DiagsBB[d_4]);
-        ASSERT_EQ(BitBoard::diagMask(e7), DiagsBB[d_5]);
-        ASSERT_EQ(BitBoard::diagMask(c4), DiagsBB[d_6]);
-        ASSERT_EQ(BitBoard::diagMask(f6), DiagsBB[d_7]);
-        ASSERT_EQ(BitBoard::diagMask(b1), DiagsBB[d_8]);
-        ASSERT_EQ(BitBoard::diagMask(h6), DiagsBB[d_9]);
-        ASSERT_EQ(BitBoard::diagMask(d1), DiagsBB[d_10]);
-        ASSERT_EQ(BitBoard::diagMask(e1), DiagsBB[d_11]);
-        ASSERT_EQ(BitBoard::diagMask(g2), DiagsBB[d_12]);
-        ASSERT_EQ(BitBoard::diagMask(g1), DiagsBB[d_13]);
-        ASSERT_EQ(BitBoard::diagMask(h1), DiagsBB[d_14]);
+        ASSERT_EQ(BitBoard::diagMask(a8), BitBoard(DiagsBB[d_0]));
+        ASSERT_EQ(BitBoard::diagMask(b8), BitBoard(DiagsBB[d_1]));
+        ASSERT_EQ(BitBoard::diagMask(a6), BitBoard(DiagsBB[d_2]));
+        ASSERT_EQ(BitBoard::diagMask(d8), BitBoard(DiagsBB[d_3]));
+        ASSERT_EQ(BitBoard::diagMask(d7), BitBoard(DiagsBB[d_4]));
+        ASSERT_EQ(BitBoard::diagMask(e7), BitBoard(DiagsBB[d_5]));
+        ASSERT_EQ(BitBoard::diagMask(c4), BitBoard(DiagsBB[d_6]));
+        ASSERT_EQ(BitBoard::diagMask(f6), BitBoard(DiagsBB[d_7]));
+        ASSERT_EQ(BitBoard::diagMask(b1), BitBoard(DiagsBB[d_8]));
+        ASSERT_EQ(BitBoard::diagMask(h6), BitBoard(DiagsBB[d_9]));
+        ASSERT_EQ(BitBoard::diagMask(d1), BitBoard(DiagsBB[d_10]));
+        ASSERT_EQ(BitBoard::diagMask(e1), BitBoard(DiagsBB[d_11]));
+        ASSERT_EQ(BitBoard::diagMask(g2), BitBoard(DiagsBB[d_12]));
+        ASSERT_EQ(BitBoard::diagMask(g1), BitBoard(DiagsBB[d_13]));
+        ASSERT_EQ(BitBoard::diagMask(h1), BitBoard(DiagsBB[d_14]));
     }
 
     TEST(BBTester, AntiDiagonalMasksAreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::antiDiagMask(a1), AntiDiagsBB[a_0]);
-        ASSERT_EQ(BitBoard::antiDiagMask(a2), AntiDiagsBB[a_1]);
-        ASSERT_EQ(BitBoard::antiDiagMask(c1), AntiDiagsBB[a_2]);
-        ASSERT_EQ(BitBoard::antiDiagMask(b3), AntiDiagsBB[a_3]);
-        ASSERT_EQ(BitBoard::antiDiagMask(b4), AntiDiagsBB[a_4]);
-        ASSERT_EQ(BitBoard::antiDiagMask(d3), AntiDiagsBB[a_5]);
-        ASSERT_EQ(BitBoard::antiDiagMask(f2), AntiDiagsBB[a_6]);
-        ASSERT_EQ(BitBoard::antiDiagMask(a8), AntiDiagsBB[a_7]);
-        ASSERT_EQ(BitBoard::antiDiagMask(e5), AntiDiagsBB[a_8]);
-        ASSERT_EQ(BitBoard::antiDiagMask(h3), AntiDiagsBB[a_9]);
-        ASSERT_EQ(BitBoard::antiDiagMask(g5), AntiDiagsBB[a_10]);
-        ASSERT_EQ(BitBoard::antiDiagMask(e8), AntiDiagsBB[a_11]);
-        ASSERT_EQ(BitBoard::antiDiagMask(g7), AntiDiagsBB[a_12]);
-        ASSERT_EQ(BitBoard::antiDiagMask(g8), AntiDiagsBB[a_13]);
-        ASSERT_EQ(BitBoard::antiDiagMask(h8), AntiDiagsBB[a_14]);
+        ASSERT_EQ(BitBoard::antiDiagMask(a1), BitBoard(AntiDiagsBB[a_0]));
+        ASSERT_EQ(BitBoard::antiDiagMask(a2), BitBoard(AntiDiagsBB[a_1]));
+        ASSERT_EQ(BitBoard::antiDiagMask(c1), BitBoard(AntiDiagsBB[a_2]));
+        ASSERT_EQ(BitBoard::antiDiagMask(b3), BitBoard(AntiDiagsBB[a_3]));
+        ASSERT_EQ(BitBoard::antiDiagMask(b4), BitBoard(AntiDiagsBB[a_4]));
+        ASSERT_EQ(BitBoard::antiDiagMask(d3), BitBoard(AntiDiagsBB[a_5]));
+        ASSERT_EQ(BitBoard::antiDiagMask(f2), BitBoard(AntiDiagsBB[a_6]));
+        ASSERT_EQ(BitBoard::antiDiagMask(a8), BitBoard(AntiDiagsBB[a_7]));
+        ASSERT_EQ(BitBoard::antiDiagMask(e5), BitBoard(AntiDiagsBB[a_8]));
+        ASSERT_EQ(BitBoard::antiDiagMask(h3), BitBoard(AntiDiagsBB[a_9]));
+        ASSERT_EQ(BitBoard::antiDiagMask(g5), BitBoard(AntiDiagsBB[a_10]));
+        ASSERT_EQ(BitBoard::antiDiagMask(e8), BitBoard(AntiDiagsBB[a_11]));
+        ASSERT_EQ(BitBoard::antiDiagMask(g7), BitBoard(AntiDiagsBB[a_12]));
+        ASSERT_EQ(BitBoard::antiDiagMask(g8), BitBoard(AntiDiagsBB[a_13]));
+        ASSERT_EQ(BitBoard::antiDiagMask(h8), BitBoard(AntiDiagsBB[a_14]));
     }
 
     TEST(BBTester, DiagonalAntiDiagonalMasksAreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::diagonalsMask(a6), DiagsBB[d_2] | AntiDiagsBB[a_5]);
-        ASSERT_EQ(BitBoard::diagonalsMask(b7), DiagsBB[d_2] | AntiDiagsBB[a_7]);
-        ASSERT_EQ(BitBoard::diagonalsMask(c8), DiagsBB[d_2] | AntiDiagsBB[a_9]);
-        ASSERT_EQ(BitBoard::diagonalsMask(d1), DiagsBB[d_10] | AntiDiagsBB[a_3]);
-        ASSERT_EQ(BitBoard::diagonalsMask(e2), DiagsBB[d_10] | AntiDiagsBB[a_5]);
-        ASSERT_EQ(BitBoard::diagonalsMask(f3), DiagsBB[d_10] | AntiDiagsBB[a_7]);
-        ASSERT_EQ(BitBoard::diagonalsMask(g4), DiagsBB[d_10] | AntiDiagsBB[a_9]);
-        ASSERT_EQ(BitBoard::diagonalsMask(h5), DiagsBB[d_10] | AntiDiagsBB[a_11]);
+        ASSERT_EQ(BitBoard::diagonalsMask(a6), BitBoard(DiagsBB[d_2] | AntiDiagsBB[a_5]));
+        ASSERT_EQ(BitBoard::diagonalsMask(b7), BitBoard(DiagsBB[d_2] | AntiDiagsBB[a_7]));
+        ASSERT_EQ(BitBoard::diagonalsMask(c8), BitBoard(DiagsBB[d_2] | AntiDiagsBB[a_9]));
+        ASSERT_EQ(BitBoard::diagonalsMask(d1), BitBoard(DiagsBB[d_10] | AntiDiagsBB[a_3]));
+        ASSERT_EQ(BitBoard::diagonalsMask(e2), BitBoard(DiagsBB[d_10] | AntiDiagsBB[a_5]));
+        ASSERT_EQ(BitBoard::diagonalsMask(f3), BitBoard(DiagsBB[d_10] | AntiDiagsBB[a_7]));
+        ASSERT_EQ(BitBoard::diagonalsMask(g4), BitBoard(DiagsBB[d_10] | AntiDiagsBB[a_9]));
+        ASSERT_EQ(BitBoard::diagonalsMask(h5), BitBoard(DiagsBB[d_10] | AntiDiagsBB[a_11]));
     }
 
     TEST(BBTester, QueenMasksAreComputedCorrectly)
     {
-        ASSERT_EQ(BitBoard::queenMask(a8), FilesBB[f_a] | RanksBB[r_8] | DiagsBB[d_0]  | AntiDiagsBB[a_7]);
-        ASSERT_EQ(BitBoard::queenMask(b8), FilesBB[f_b] | RanksBB[r_8] | DiagsBB[d_1]  | AntiDiagsBB[a_8]);
-        ASSERT_EQ(BitBoard::queenMask(a6), FilesBB[f_a] | RanksBB[r_6] | DiagsBB[d_2]  | AntiDiagsBB[a_5]);
-        ASSERT_EQ(BitBoard::queenMask(d8), FilesBB[f_d] | RanksBB[r_8] | DiagsBB[d_3]  | AntiDiagsBB[a_10]);
-        ASSERT_EQ(BitBoard::queenMask(d7), FilesBB[f_d] | RanksBB[r_7] | DiagsBB[d_4]  | AntiDiagsBB[a_9]);
-        ASSERT_EQ(BitBoard::queenMask(e7), FilesBB[f_e] | RanksBB[r_7] | DiagsBB[d_5]  | AntiDiagsBB[a_10]);
-        ASSERT_EQ(BitBoard::queenMask(c4), FilesBB[f_c] | RanksBB[r_4] | DiagsBB[d_6]  | AntiDiagsBB[a_5]);
-        ASSERT_EQ(BitBoard::queenMask(f6), FilesBB[f_f] | RanksBB[r_6] | DiagsBB[d_7]  | AntiDiagsBB[a_10]);
-        ASSERT_EQ(BitBoard::queenMask(b1), FilesBB[f_b] | RanksBB[r_1] | DiagsBB[d_8]  | AntiDiagsBB[a_1]);
-        ASSERT_EQ(BitBoard::queenMask(h6), FilesBB[f_h] | RanksBB[r_6] | DiagsBB[d_9]  | AntiDiagsBB[a_12]);
-        ASSERT_EQ(BitBoard::queenMask(d1), FilesBB[f_d] | RanksBB[r_1] | DiagsBB[d_10] | AntiDiagsBB[a_3]);
-        ASSERT_EQ(BitBoard::queenMask(e1), FilesBB[f_e] | RanksBB[r_1] | DiagsBB[d_11] | AntiDiagsBB[a_4]);
-        ASSERT_EQ(BitBoard::queenMask(g2), FilesBB[f_g] | RanksBB[r_2] | DiagsBB[d_12] | AntiDiagsBB[a_7]);
-        ASSERT_EQ(BitBoard::queenMask(g1), FilesBB[f_g] | RanksBB[r_1] | DiagsBB[d_13] | AntiDiagsBB[a_6]);
-        ASSERT_EQ(BitBoard::queenMask(h1), FilesBB[f_h] | RanksBB[r_1] | DiagsBB[d_14] | AntiDiagsBB[a_7]);
-        ASSERT_EQ(BitBoard::queenMask(a1), FilesBB[f_a] | RanksBB[r_1] | DiagsBB[d_7]  | AntiDiagsBB[a_0]);
-        ASSERT_EQ(BitBoard::queenMask(a2), FilesBB[f_a] | RanksBB[r_2] | DiagsBB[d_6]  | AntiDiagsBB[a_1]);
-        ASSERT_EQ(BitBoard::queenMask(c1), FilesBB[f_c] | RanksBB[r_1] | DiagsBB[d_9]  | AntiDiagsBB[a_2]);
-        ASSERT_EQ(BitBoard::queenMask(b3), FilesBB[f_b] | RanksBB[r_3] | DiagsBB[d_6]  | AntiDiagsBB[a_3]);
-        ASSERT_EQ(BitBoard::queenMask(b4), FilesBB[f_b] | RanksBB[r_4] | DiagsBB[d_5]  | AntiDiagsBB[a_4]);
-        ASSERT_EQ(BitBoard::queenMask(d3), FilesBB[f_d] | RanksBB[r_3] | DiagsBB[d_8]  | AntiDiagsBB[a_5]);
-        ASSERT_EQ(BitBoard::queenMask(f2), FilesBB[f_f] | RanksBB[r_2] | DiagsBB[d_11]  | AntiDiagsBB[a_6]);
-        ASSERT_EQ(BitBoard::queenMask(a8), FilesBB[f_a] | RanksBB[r_8] | DiagsBB[d_14]  | AntiDiagsBB[a_7]);
-        ASSERT_EQ(BitBoard::queenMask(e5), FilesBB[f_e] | RanksBB[r_5] | DiagsBB[d_7]  | AntiDiagsBB[a_8]);
-        ASSERT_EQ(BitBoard::queenMask(h3), FilesBB[f_h] | RanksBB[r_3] | DiagsBB[d_12]  | AntiDiagsBB[a_9]);
-        ASSERT_EQ(BitBoard::queenMask(g5), FilesBB[f_g] | RanksBB[r_5] | DiagsBB[d_9] | AntiDiagsBB[a_10]);
-        ASSERT_EQ(BitBoard::queenMask(e8), FilesBB[f_e] | RanksBB[r_8] | DiagsBB[d_4] | AntiDiagsBB[a_11]);
-        ASSERT_EQ(BitBoard::queenMask(g7), FilesBB[f_g] | RanksBB[r_7] | DiagsBB[d_7] | AntiDiagsBB[a_12]);
-        ASSERT_EQ(BitBoard::queenMask(g8), FilesBB[f_g] | RanksBB[r_8] | DiagsBB[d_6] | AntiDiagsBB[a_13]);
-        ASSERT_EQ(BitBoard::queenMask(h8), FilesBB[f_h] | RanksBB[r_8] | DiagsBB[d_7] | AntiDiagsBB[a_14]);
+        ASSERT_EQ(BitBoard::queenMask(a8), BitBoard(FilesBB[f_a] | RanksBB[r_8] | DiagsBB[d_0]  | AntiDiagsBB[a_7]));
+        ASSERT_EQ(BitBoard::queenMask(b8), BitBoard(FilesBB[f_b] | RanksBB[r_8] | DiagsBB[d_1]  | AntiDiagsBB[a_8]));
+        ASSERT_EQ(BitBoard::queenMask(a6), BitBoard(FilesBB[f_a] | RanksBB[r_6] | DiagsBB[d_2]  | AntiDiagsBB[a_5]));
+        ASSERT_EQ(BitBoard::queenMask(d8), BitBoard(FilesBB[f_d] | RanksBB[r_8] | DiagsBB[d_3]  | AntiDiagsBB[a_10]));
+        ASSERT_EQ(BitBoard::queenMask(d7), BitBoard(FilesBB[f_d] | RanksBB[r_7] | DiagsBB[d_4]  | AntiDiagsBB[a_9]));
+        ASSERT_EQ(BitBoard::queenMask(e7), BitBoard(FilesBB[f_e] | RanksBB[r_7] | DiagsBB[d_5]  | AntiDiagsBB[a_10]));
+        ASSERT_EQ(BitBoard::queenMask(c4), BitBoard(FilesBB[f_c] | RanksBB[r_4] | DiagsBB[d_6]  | AntiDiagsBB[a_5]));
+        ASSERT_EQ(BitBoard::queenMask(f6), BitBoard(FilesBB[f_f] | RanksBB[r_6] | DiagsBB[d_7]  | AntiDiagsBB[a_10]));
+        ASSERT_EQ(BitBoard::queenMask(b1), BitBoard(FilesBB[f_b] | RanksBB[r_1] | DiagsBB[d_8]  | AntiDiagsBB[a_1]));
+        ASSERT_EQ(BitBoard::queenMask(h6), BitBoard(FilesBB[f_h] | RanksBB[r_6] | DiagsBB[d_9]  | AntiDiagsBB[a_12]));
+        ASSERT_EQ(BitBoard::queenMask(d1), BitBoard(FilesBB[f_d] | RanksBB[r_1] | DiagsBB[d_10] | AntiDiagsBB[a_3]));
+        ASSERT_EQ(BitBoard::queenMask(e1), BitBoard(FilesBB[f_e] | RanksBB[r_1] | DiagsBB[d_11] | AntiDiagsBB[a_4]));
+        ASSERT_EQ(BitBoard::queenMask(g2), BitBoard(FilesBB[f_g] | RanksBB[r_2] | DiagsBB[d_12] | AntiDiagsBB[a_7]));
+        ASSERT_EQ(BitBoard::queenMask(g1), BitBoard(FilesBB[f_g] | RanksBB[r_1] | DiagsBB[d_13] | AntiDiagsBB[a_6]));
+        ASSERT_EQ(BitBoard::queenMask(h1), BitBoard(FilesBB[f_h] | RanksBB[r_1] | DiagsBB[d_14] | AntiDiagsBB[a_7]));
+        ASSERT_EQ(BitBoard::queenMask(a1), BitBoard(FilesBB[f_a] | RanksBB[r_1] | DiagsBB[d_7]  | AntiDiagsBB[a_0]));
+        ASSERT_EQ(BitBoard::queenMask(a2), BitBoard(FilesBB[f_a] | RanksBB[r_2] | DiagsBB[d_6]  | AntiDiagsBB[a_1]));
+        ASSERT_EQ(BitBoard::queenMask(c1), BitBoard(FilesBB[f_c] | RanksBB[r_1] | DiagsBB[d_9]  | AntiDiagsBB[a_2]));
+        ASSERT_EQ(BitBoard::queenMask(b3), BitBoard(FilesBB[f_b] | RanksBB[r_3] | DiagsBB[d_6]  | AntiDiagsBB[a_3]));
+        ASSERT_EQ(BitBoard::queenMask(b4), BitBoard(FilesBB[f_b] | RanksBB[r_4] | DiagsBB[d_5]  | AntiDiagsBB[a_4]));
+        ASSERT_EQ(BitBoard::queenMask(d3), BitBoard(FilesBB[f_d] | RanksBB[r_3] | DiagsBB[d_8]  | AntiDiagsBB[a_5]));
+        ASSERT_EQ(BitBoard::queenMask(f2), BitBoard(FilesBB[f_f] | RanksBB[r_2] | DiagsBB[d_11]  | AntiDiagsBB[a_6]));
+        ASSERT_EQ(BitBoard::queenMask(a8), BitBoard(FilesBB[f_a] | RanksBB[r_8] | DiagsBB[d_14]  | AntiDiagsBB[a_7]));
+        ASSERT_EQ(BitBoard::queenMask(e5), BitBoard(FilesBB[f_e] | RanksBB[r_5] | DiagsBB[d_7]  | AntiDiagsBB[a_8]));
+        ASSERT_EQ(BitBoard::queenMask(h3), BitBoard(FilesBB[f_h] | RanksBB[r_3] | DiagsBB[d_12]  | AntiDiagsBB[a_9]));
+        ASSERT_EQ(BitBoard::queenMask(g5), BitBoard(FilesBB[f_g] | RanksBB[r_5] | DiagsBB[d_9] | AntiDiagsBB[a_10]));
+        ASSERT_EQ(BitBoard::queenMask(e8), BitBoard(FilesBB[f_e] | RanksBB[r_8] | DiagsBB[d_4] | AntiDiagsBB[a_11]));
+        ASSERT_EQ(BitBoard::queenMask(g7), BitBoard(FilesBB[f_g] | RanksBB[r_7] | DiagsBB[d_7] | AntiDiagsBB[a_12]));
+        ASSERT_EQ(BitBoard::queenMask(g8), BitBoard(FilesBB[f_g] | RanksBB[r_8] | DiagsBB[d_6] | AntiDiagsBB[a_13]));
+        ASSERT_EQ(BitBoard::queenMask(h8), BitBoard(FilesBB[f_h] | RanksBB[r_8] | DiagsBB[d_7] | AntiDiagsBB[a_14]));
     }
 
     // population count calculation tests

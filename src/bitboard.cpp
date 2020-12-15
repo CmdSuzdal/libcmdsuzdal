@@ -9,7 +9,7 @@ namespace cSzd
         BitBoardState checkMask = 1;
         for (auto ndx = 0; ndx < 64; ndx++) {
             if ((bbs & checkMask) != EmptyBB) {
-                nb = nb | BitBoard(neighbourMask(static_cast<Cell>(ndx)));
+                nb = nb | neighbour(static_cast<Cell>(ndx));
             }
             checkMask <<= 1;
         }
@@ -56,7 +56,7 @@ namespace cSzd
         return static_cast<Cell>(c + stepEast + (stepNorth * 8));
     }
 
-    BitBoardState BitBoard::neighbourMask(const Cell &c)
+    BitBoard BitBoard::neighbour(const Cell &c)
     {
         File f, w, e;
         Rank r, s, n;
@@ -66,9 +66,9 @@ namespace cSzd
         e = BitBoard::east(c);
         s = BitBoard::south(c);
         n = BitBoard::north(c);
-        return ((FilesBB[w] | FilesBB[f] | FilesBB[e]) &
-                (RanksBB[n] | RanksBB[r] | RanksBB[s])) ^
-               BitBoard::singleCellState(c);
+        return (BitBoard((FilesBB[w] | FilesBB[f] | FilesBB[e]) &
+                (RanksBB[n] | RanksBB[r] | RanksBB[s]))) ^
+               BitBoard::singlecell(c);
     }
 
 } // namespace cSzd
