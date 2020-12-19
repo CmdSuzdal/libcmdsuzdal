@@ -75,6 +75,21 @@ namespace cSzd
         ASSERT_EQ(f.fullMoves(), 8);
     }
 
+    TEST(FENRecordTester, ExtractBitBoardWithIllegalParametersReturnsEmptyBitBoard)
+    {
+        FENRecord f; // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR
+        ASSERT_EQ(f.extractBitBoard(static_cast<ArmyColor>(3)), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(static_cast<ArmyColor>(3), King), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(static_cast<ArmyColor>(3), Queen), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(static_cast<ArmyColor>(3), Bishop), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(static_cast<ArmyColor>(3), Knight), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(static_cast<ArmyColor>(3), Rook), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(static_cast<ArmyColor>(3), Pawn), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(WhiteArmy, static_cast<Piece>(42)), BitBoard(EmptyBB));
+        ASSERT_EQ(f.extractBitBoard(BlackArmy, static_cast<Piece>(42)), BitBoard(EmptyBB));
+    }
+
+
     TEST(FENRecordTester, ExtractArmyPlacementFromVariousPositionIsOK)
     {
         FENRecord f; // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR

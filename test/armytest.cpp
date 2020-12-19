@@ -8,6 +8,17 @@ using namespace testing;
 namespace cSzd
 {
 
+    TEST(ArmyTester, AfterInitWithInvalidArmyThereIsNobody)
+    {
+        Army army { InvalidArmy };
+        ASSERT_EQ(army.color, InvalidArmy);
+        ASSERT_EQ(army.pieces[King].popCount(), 0);
+        ASSERT_EQ(army.pieces[Queen].popCount(), 0);
+        ASSERT_EQ(army.pieces[Rook].popCount(), 0);
+        ASSERT_EQ(army.pieces[Bishop].popCount(), 0);
+        ASSERT_EQ(army.pieces[Knight].popCount(), 0);
+        ASSERT_EQ(army.pieces[Pawn].popCount(), 0);
+    }
     TEST(ArmyTester, AfterInitWhiteArmyHasOneKingInE1)
     {
         Army army { WhiteArmy };

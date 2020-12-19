@@ -38,6 +38,11 @@ namespace cSzd
         ASSERT_EQ(cb.wholeArmyBitBoard(), BitBoard(RanksBB[r_1] | RanksBB[r_2] |
                                                     RanksBB[r_7] | RanksBB[r_8]));
     }
+    TEST(ChessBoardTester, CheckWholeArmyBitBoardForInvalidParameter)
+    {
+        ChessBoard cb {};
+        ASSERT_EQ(cb.wholeArmyBitBoard(static_cast<ArmyColor>(3)), BitBoard(EmptyBB));
+    }
 
 
     // Test on acquisition of position from a FEN Record
@@ -223,6 +228,29 @@ namespace cSzd
         cb.loadPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e5 0 1");
         ASSERT_FALSE(cb.isValid());
         cb.loadPosition("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq d3 0 1");
+        ASSERT_FALSE(cb.isValid());
+    }
+    TEST(ChessBoardTester, IfEnPassantCellIsIn3rdRankActiveSideCannotBeTheWhite)
+    {
+        // initial position after e2-e4 has an e.p. target square in e3
+        // but active side shall be black
+        ChessBoard cb {"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e3 0 1"};
+        ASSERT_FALSE(cb.isValid());
+    }
+    TEST(ChessBoardTester, IfEnPassantCellIsIn6thRankActiveSideCannotBeTheBlack)
+    {
+        // sicilian defense: after first black move (c7-c5) e.p.t.s. is c6
+        // but active side shall be white
+        ChessBoard cb {"rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR b KQkq c6 0 1"};
+        ASSERT_FALSE(cb.isValid());
+    }
+    TEST(ChessBoardTester, EnPassantCellsCannotBeMoreThanOne)
+    {
+        // initial position after e2-e4 has an e.p. target square in e3
+        ChessBoard cb {"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"};
+        ASSERT_TRUE(cb.isValid());
+        // force an additional en passant square
+        cb.enPassantTargetSquare.setCell({d3});
         ASSERT_FALSE(cb.isValid());
     }
 
