@@ -57,11 +57,6 @@ if (ENABLE_COVERAGE_TEST)
     if(CMAKE_COMPILER_IS_GNUCXX)
         include(CodeCoverage)
         append_coverage_compiler_flags()
-        #setup_target_for_coverage_gcovr_html(
-        #  NAME ${PROJECT_NAME}_coverage coverage
-        #  EXECUTABLE ctest
-        #  EXCLUDE ${PROJECT_SOURCE_DIR}/test/*
-        #          ${CMAKE_CURRENT_BINARY_DIR}/*
         setup_target_for_coverage_gcovr_html(
           NAME ${PROJECT_NAME}_coverage
           EXECUTABLE ctest
