@@ -1,7 +1,7 @@
 include(CTest)
 
 # Add gtest/gmock support
-include(${cmakeAddonsDir}/addgtestsupport.cmake)
+include(addgtestsupport)
 
 # Now simply link your own targets against gtest, gmock,
 # etc. as appropriate
@@ -20,7 +20,7 @@ target_include_directories(${TESTCTGT}
     PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
 # Add the dependency to the target under test
-target_link_libraries(${TESTCTGT} PRIVATE ${CTGT})
+target_link_libraries(${TESTCTGT} PRIVATE ${PROJECT_NAME})
 
 target_compile_options(${TESTCTGT} PRIVATE -Werror)
 target_compile_features(${TESTCTGT} PRIVATE cxx_std_17)
