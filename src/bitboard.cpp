@@ -41,7 +41,7 @@ namespace cSzd
     }
     BitBoard BitBoard::fileRankDiagonalsCells() const
     {
-        return diagonalsCells() | fileRankCells();
+        return (diagonalsCells() | fileRankCells());
     }
 
     BitBoardState BitBoard::shiftWest(unsigned int npos)

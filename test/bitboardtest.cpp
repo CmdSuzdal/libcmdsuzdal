@@ -310,6 +310,11 @@ namespace cSzd
         BitBoard bb(FilesBB[f_d] | RanksBB[r_5]);
         ASSERT_EQ(bb.shiftSouth(4), FloorWithASpikeBB);
     }
+    TEST(BBTester, ShiftSouthOfMoreThan7RanksReturnsEmptyBoard)
+    {
+        BitBoard bb(AllCellsBB);
+        ASSERT_EQ(bb.shiftSouth(8), EmptyBB);
+    }
 
     TEST(BBTester, CellToRankAndFileConversionTests)
     {
@@ -331,6 +336,16 @@ namespace cSzd
     }
 
     // Evaluation of neighbours
+    TEST(BBTester, NeighboursMaskOfEmptyBitBoardIsEmpty)
+    {
+        BitBoard bb;
+        ASSERT_EQ(bb.neighbourCells(), BitBoard(EmptyBB));
+    }
+    TEST(BBTester, NeighboursMaskOfWhiteCellsIsAFullBoard)
+    {
+        BitBoard bb {AllWhiteCellsBB};
+        ASSERT_EQ(bb.neighbourCells(), BitBoard(AllCellsBB));
+    }
     TEST(BBTester, NeighboursMaskOfE5IsComputedCorrectly)
     {
         //  ........ = 00
@@ -712,6 +727,16 @@ namespace cSzd
     }
 
     // Evaluations of file/rank/diagonals evaluation
+    TEST(BBTester, DiagonalsBitBoardOfEmptyBoardReturnsEmpty)
+    {
+        BitBoard bb;
+        ASSERT_EQ(bb.diagonalsCells(), BitBoard(EmptyBB));
+    }
+    TEST(BBTester, DiagonalsBitBoardOfFullBoardReturnsFullBoard)
+    {
+        BitBoard bb {AllCellsBB};
+        ASSERT_EQ(bb.diagonalsCells(), BitBoard(AllCellsBB));
+    }
     TEST(BBTester, evalDiagonalOfActiveCellInE4)
     {
         BitBoard bb {e4};
