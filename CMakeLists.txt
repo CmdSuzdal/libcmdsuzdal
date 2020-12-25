@@ -14,19 +14,21 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
 
 # ---------------------------------------------------------------
 set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/bbdefines.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/bitboard.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/army.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/fenrecord.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/chessboard.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/bbdefines.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/bitboard.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/army.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/fenrecord.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessboard.h
 )
 
 # ---------------------------------------------------------------
 # Current Target library target definition and related settings
-# A library can be defined STATIC or SHARED
-add_library(${PROJECT_NAME} SHARED)
-
-target_sources(${PROJECT_NAME} PRIVATE
+# A library can be defined STATIC or SHARED, but, as suggested by CS
+# 4.6, we avoid to use the keyword here. The type of library built
+# can be specified at configuration time using the BUILD_SHARED_LIBS
+# variable (e.g. -DBUILD_SHARED_LIBS=YES)
+add_library(cmdsuzdal)
+target_sources(cmdsuzdal PRIVATE
     src/bitboard.cpp
     src/army.cpp
     src/fenrecord.cpp
@@ -34,7 +36,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 # ------------------------------------------------------------------
-target_include_directories(${PROJECT_NAME}
+target_include_directories(cmdsuzdal
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -43,14 +45,14 @@ target_include_directories(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_compile_options(${PROJECT_NAME} PRIVATE -Werror)
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_compile_options(cmdsuzdal PRIVATE -Werror)
+target_compile_features(cmdsuzdal PRIVATE cxx_std_17)
 
 # ------------------------------------------------------------------
 # Installation
-install(FILES ${HEADERS} DESTINATION ${cmakeInstallPrefix}/include/${PROJECT_NAME})
-install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}_export DESTINATION ${cmakeInstallPrefix}/lib)
-install(EXPORT ${PROJECT_NAME}_export FILE ${PROJECT_NAME}-config.cmake DESTINATION ${cmakeInstallPrefix}/lib)
+install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/cmdsuzdal)
+install(TARGETS cmdsuzdal EXPORT cmdsuzdal_export DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(EXPORT cmdsuzdal_export FILE cmdsuzdal-config.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 # ------------------------------------------------------------------
 if (ENABLE_COVERAGE_TEST)
@@ -58,7 +60,7 @@ if (ENABLE_COVERAGE_TEST)
         include(CodeCoverage)
         append_coverage_compiler_flags()
         setup_target_for_coverage_gcovr_html(
-          NAME ${PROJECT_NAME}_coverage
+          NAME cmdsuzdal_coverage
           EXECUTABLE ctest
           EXCLUDE ${PROJECT_SOURCE_DIR}/test/*
                   ${CMAKE_CURRENT_BINARY_DIR}/*
