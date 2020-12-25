@@ -44,6 +44,17 @@ namespace cSzd
     }
 
     // --------------------------------------------------------
+    BitBoard Army::occupiedCells() const
+    {
+        return  pieces[King]    |
+                pieces[Queen]   |
+                pieces[Pawn]    |
+                pieces[Bishop]  |
+                pieces[Knight]  |
+                pieces[Rook];
+    }
+
+    // --------------------------------------------------------
     BitBoard Army::controlledCells() const
     {
         return pawnsControlledCells() |

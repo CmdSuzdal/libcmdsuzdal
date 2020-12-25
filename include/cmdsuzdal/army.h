@@ -24,6 +24,7 @@ namespace cSzd
 
         // --------------------------
         unsigned int numPieces() const;
+        BitBoard occupiedCells() const;
         BitBoard controlledCells() const;
 
     private:
