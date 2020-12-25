@@ -784,5 +784,54 @@ namespace cSzd
                                                 h5, c6, c7, f7, f8}));
     }
 
+    // File+Rank to Cell method (toCell())
+    TEST(BBTester, chechFileRankToCellMethod)
+    {
+        ASSERT_EQ(BitBoard::toCell(f_a, r_1), a1);
+        ASSERT_EQ(BitBoard::toCell(f_b, r_5), b5);
+        ASSERT_EQ(BitBoard::toCell(f_c, r_2), c2);
+        ASSERT_EQ(BitBoard::toCell(f_d, r_8), d8);
+        ASSERT_EQ(BitBoard::toCell(f_e, r_7), e7);
+        ASSERT_EQ(BitBoard::toCell(f_f, r_4), f4);
+        ASSERT_EQ(BitBoard::toCell(f_g, r_3), g3);
+        ASSERT_EQ(BitBoard::toCell(f_h, r_6), h6);
+    }
+
+    // isActive() methods
+    TEST(BBTester, checkActiveCellsWhenTheWholeRank2IsActive)
+    {
+        BitBoard bb(RanksBB[r_2]);
+        ASSERT_TRUE(bb.isActive(a2));
+        ASSERT_TRUE(bb.isActive(b2));
+        ASSERT_TRUE(bb.isActive(c2));
+        ASSERT_TRUE(bb.isActive(d2));
+        ASSERT_TRUE(bb.isActive(e2));
+        ASSERT_TRUE(bb.isActive(f2));
+        ASSERT_TRUE(bb.isActive(g2));
+        ASSERT_TRUE(bb.isActive(h2));
+    }
+    TEST(BBTester, checkActiveCellsWhenTheWholeFileDIsActive)
+    {
+        BitBoard bb(FilesBB[f_d]);
+        ASSERT_TRUE(bb.isActive(d1));
+        ASSERT_TRUE(bb.isActive(d2));
+        ASSERT_TRUE(bb.isActive(d3));
+        ASSERT_TRUE(bb.isActive(d4));
+        ASSERT_TRUE(bb.isActive(d5));
+        ASSERT_TRUE(bb.isActive(d6));
+        ASSERT_TRUE(bb.isActive(d7));
+        ASSERT_TRUE(bb.isActive(d8));
+    }
+
+
+    TEST(BBTester, checkActiveCellsWhenDiagonal10IsActive)
+    {
+        BitBoard bb(DiagsBB[d_10]);
+        ASSERT_TRUE(bb.isActive(f_d, r_1));
+        ASSERT_TRUE(bb.isActive(f_e, r_2));
+        ASSERT_TRUE(bb.isActive(f_f, r_3));
+        ASSERT_TRUE(bb.isActive(f_g, r_4));
+        ASSERT_TRUE(bb.isActive(f_h, r_5));
+    }
 
 } // namespace cSzd

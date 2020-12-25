@@ -139,6 +139,9 @@ namespace cSzd
         // -------------------------------------------------------------------------------
         // Bitboard utility methods
 
+        // Given file and rank returns the cell
+        static Cell toCell(File f, Rank r) { return static_cast<Cell>(r * 8 + f); }
+
         // Given a cell, returns File, Rank, Diagonal, AntiDiagonal (and combinations)
         static File file(const Cell &c) { return static_cast<File>(c % 8); }
         static Rank rank(const Cell &c) { return static_cast<Rank>(c >> 3); }
@@ -214,10 +217,9 @@ namespace cSzd
         BitBoard fileRankDiagonalsCells() const;
         // -------------------------------------------------------------------------------
 
-
-
-
         // Check functions: return a boolean check on various conditions
+        bool isActive(Cell c) const { return ((bbs & BitBoard(c).bbs) != EmptyBB); }
+        bool isActive(File f, Rank r) const { return isActive(toCell(f, r)); }
         // returns true if at least one of the cell in the given mask is active
         bool activeCellsInMask(BitBoardState bbMask) const { return ((bbs & bbMask) != EmptyBB); }
     };
