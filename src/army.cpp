@@ -55,13 +55,19 @@ namespace cSzd
     }
 
     // --------------------------------------------------------
-    BitBoard Army::controlledCells() const
+    // The interference board is provided to add a set of cell occupied by some
+    // other pieces. This can further limit the view of the current army pieces.
+    // The normal use of the interference board is to pass the position of the
+    // pieces of the enemy army (see the ChessBoard class).
+    // The interference board is not passed to pawns, king and knigths because
+    // the cells controlled by these pieces are not effected to interference
+    BitBoard Army::controlledCells(const BitBoard &intfBoard) const
     {
         return pawnsControlledCells() |
                knightsControlledCells() |
-               bishopsControlledCells() |
-               rooksControlledCells() |
-               queensControlledCells() |
+               bishopsControlledCells(intfBoard) |
+               rooksControlledCells(intfBoard) |
+               queensControlledCells(intfBoard) |
                kingControlledCells();
     }
 
@@ -123,10 +129,14 @@ namespace cSzd
     }
 
     // Returns a BitBoard with the cells controlled by the bishops of the army
-    BitBoard Army::bishopsControlledCells() const
+    // The interference board is provided to add a set of cell occupied by some
+    // other pieces. This can further limit the view of the current army pieces.
+    // The normal use of the interference board is to pass the position of the
+    // pieces of the enemy army (see the ChessBoard class)
+    BitBoard Army::bishopsControlledCells(const BitBoard &intfBoard) const
     {
         BitBoard bb;
-        BitBoard busyCells = occupiedCells();
+        BitBoard busyCells = occupiedCells() | intfBoard;
         auto foundCells = 0;
         for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Bishop].popCount()); ndx++) {
             if (pieces[Bishop].bbs[ndx] != 0) {
@@ -187,11 +197,15 @@ namespace cSzd
 
     // Returns a BitBoard with the cells controlled by the rooks of the army
     // This algorithm take into account occupied cells that can obstruct
-    // the rooks "view"
-    BitBoard Army::rooksControlledCells() const
+    // the rooks "view".
+    // The interference board is provided to add a set of cell occupied by some
+    // other pieces. This can further limit the view of the current army pieces.
+    // The normal use of the interference board is to pass the position of the
+    // pieces of the enemy army (see the ChessBoard class)
+    BitBoard Army::rooksControlledCells(const BitBoard &intfBoard) const
     {
         BitBoard bb;
-        BitBoard busyCells = occupiedCells();
+        BitBoard busyCells = occupiedCells() | intfBoard;
         auto foundCells = 0;
         for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Rook].popCount()); ndx++) {
             if (pieces[Rook].bbs[ndx] != 0) {
@@ -245,7 +259,11 @@ namespace cSzd
     }
 
     // Returns a BitBoard with the cells controlled by the queens of the army
-    BitBoard Army::queensControlledCells() const
+    // The interference board is provided to add a set of cell occupied by some
+    // other pieces. This can further limit the view of the current army pieces.
+    // The normal use of the interference board is to pass the position of the
+    // pieces of the enemy army (see the ChessBoard class)
+    BitBoard Army::queensControlledCells(const BitBoard &intfBoard) const
     {
         // Cells controlled by Queens is the union of the cells
         // controlled by rooks and bishops in the same position
@@ -263,7 +281,8 @@ namespace cSzd
         // This is wrong:
         //   return fakeArmy.controlledCells();
         // This is OK:
-        return fakeArmy.bishopsControlledCells() | fakeArmy.rooksControlledCells();
+        return fakeArmy.bishopsControlledCells(intfBoard) |
+                fakeArmy.rooksControlledCells(intfBoard);
     }
 
 

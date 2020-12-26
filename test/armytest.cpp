@@ -139,7 +139,7 @@ namespace cSzd
     }
 
     // ------------------------------------------------------------------------
-    // --- Controlled Cells Tests ---
+    // --- Controlled Cells Tests --- Without interference board
 
     // King alone ---
     TEST(ArmyTester, ControlledCellsOfAnEmptyArmyIsEmpty)
@@ -422,6 +422,28 @@ namespace cSzd
         ASSERT_EQ(a.queensControlledCells(), BitBoard({a1, d1, g1, b2, d2, f2, c3, d3, e3,
                                                      a4, b4, c4, e4, f4, g4, h4, c5, d5, e5, f6, g6, h6,
                                                      a7, b7, c7, d7, e7, f7, h7, f8, g8, h8}));
+    }
+
+    // ------------------------------------------------------------------------
+    // --- Controlled Cells Tests --- With interference board
+    // ... Additional tests in the ChessBoard class ...
+
+    TEST(ArmyTester, CheckCellControlledByWhiteRooksInInitialPositionWithTheBlackArmyInTheOppositeSide)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Rook] = BitBoard({a1, h1});
+        Army b {BlackArmy};
+        ASSERT_EQ(w.controlledCells(b.occupiedCells()), BitBoard({a1, b1, c1, d1, e1, f1, g1, h1, a2, h2, a3, h3, a4, h4, a5, h5, a6, h6, a7, h7}));
+    }
+    TEST(ArmyTester, CheckCellControlledByBlackBishopsInInitialPositionWithTheBlackArmyInTheOppositeSide)
+    {
+        // The opposite army does not really causes interference to bishops
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Bishop] = BitBoard({c8, f8});
+        Army w {WhiteArmy};
+        ASSERT_EQ(b.controlledCells(w.occupiedCells()), BitBoard({b7, d7, e7, g7, a6, d6, e6, h6, c5, f5, b4, g4, a3, h3}));
     }
 
 } // namespace cSzd
