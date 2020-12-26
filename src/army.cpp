@@ -134,7 +134,6 @@ namespace cSzd
                 auto r = BitBoard::rank(static_cast<Cell>(ndx));
                 auto f = BitBoard::file(static_cast<Cell>(ndx));
                 // Bishop found in position ndx, (rank r, file f)
-
                 // Eplore left-lower side of the diagonal for controlled
                 // cells. The cells are controlled until a busy cell
                 // is found: the busy cell is the last controlled one
@@ -248,9 +247,24 @@ namespace cSzd
     // Returns a BitBoard with the cells controlled by the queens of the army
     BitBoard Army::queensControlledCells() const
     {
-        // ********* FIXME --- To Be Completed: ***************
-        // to take into account interference of other pieces ---
-        return pieces[Queen].fileRankDiagonalsCells();
+        // Cells controlled by Queens is the union of the cells
+        // controlled by rooks and bishops in the same position
+        // of the queens. The code below is quite tricky... we have
+        // to convert bishops and rooks in pawn to mantain interference
+        // and avoid to signal wrong controlled cells
+        Army fakeArmy = *this;
+        fakeArmy.pieces[Pawn] |= fakeArmy.pieces[Bishop];
+        fakeArmy.pieces[Pawn] |= fakeArmy.pieces[Rook];
+        fakeArmy.pieces[Bishop] = pieces[Queen];
+        fakeArmy.pieces[Rook] = pieces[Queen];
+        // IMPORTANT: Please note that we cannot call directly the fakeArmy.controlledCells()
+        // method because not only it returns the wrong value in case of comples army
+        // with interferences, but also generate an infinite recursion...
+        // This is wrong:
+        //   return fakeArmy.controlledCells();
+        // This is OK:
+        return fakeArmy.bishopsControlledCells() | fakeArmy.rooksControlledCells();
     }
+
 
 } // namespace cSzd
