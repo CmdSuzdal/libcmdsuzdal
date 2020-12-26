@@ -253,14 +253,14 @@ namespace cSzd
         cb.enPassantTargetSquare.setCell(d3);
         ASSERT_FALSE(cb.isValid());
     }
-    TEST(ChessBoardTester, BackCellShallBeEmpty)
+    TEST(ChessBoardTester, EnPassantBackCellShallBeEmpty)
     {
         ChessBoard cb {"rnbqkbnr/pppppppp/8/8/4P3/8/PPP1PPPP/RNBQKBNR b KQkq e3 0 1"};
         ASSERT_FALSE(cb.isValid());
         cb.loadPosition("rnbqkbnr/ppp1pppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 1");
         ASSERT_FALSE(cb.isValid());
     }
-    TEST(ChessBoardTester, FrontCellShallBeOccupiedByAPawn)
+    TEST(ChessBoardTester, EnPassantFrontCellShallBeOccupiedByAPawn)
     {
         ChessBoard cb {"rnbqkbnr/pppppppp/8/8/4N3/8/PPPPPPPP/R1BQKBNR b KQkq e3 0 1"};
         ASSERT_FALSE(cb.isValid());
