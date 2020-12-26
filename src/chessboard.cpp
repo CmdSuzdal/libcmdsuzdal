@@ -30,7 +30,8 @@ namespace cSzd
     // -----------------------------------------------------------------
     BitBoard ChessBoard::controlledCells(ArmyColor a) const
     {
-        return armies[a].controlledCells();
+        ArmyColor enemyColor = (a == WhiteArmy) ? BlackArmy : WhiteArmy;
+        return armies[a].controlledCells(armies[enemyColor].occupiedCells());
     }
 
     // -----------------------------------------------------------------

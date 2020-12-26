@@ -286,5 +286,54 @@ namespace cSzd
         ASSERT_EQ(cb.controlledCells(BlackArmy), BitBoard({g7, h7, g8}));
     }
 
+    TEST(ChessBoardTester, ComplexCaseControlledCells1)
+    {
+        // https://lichess.org/6ysOUWrw#31
+        ChessBoard cb {"1k2r2r/1p1qbpp1/1B1pbn1p/1Pp1p3/Q1P5/3P1NP1/4PPBP/R4RK1 b - - 4 16"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.controlledCells(WhiteArmy), BitBoard({
+            a8,         d8,
+            a7,     c7, 
+            a6,     c6, 
+            a5, b5, c5, d5, e5,     g5, 
+            a4, b4, c4, d4, e4, f4,     h4,
+            a3, b3,     d3, e3, f3, g3, h3,
+            a2,     c2, d2,     f2, g2, h2,
+            a1, b1, c1, d1, e1, f1, g1, h1
+        }));
+        ASSERT_EQ(cb.controlledCells(BlackArmy), BitBoard({
+            a8, b8, c8, d8, e8, f8, g8, h8,
+            a7, b7, c7, d7, e7, f7,     h7,
+            a6, c6, c6, d6, e6, f6, g6, h6,
+                b5, c5, d5, e5, f5, g5, h5,
+                b4, c4, d4, e4, f4, g4,
+                                        h3
+        }));
+    }
 
+    TEST(ChessBoardTester, ComplexCaseControlledCells2)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb {"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.controlledCells(WhiteArmy), BitBoard({
+            a7,     c7,                 h7,
+                        d6,         g6,
+                b5,             f5,
+                    c4, d4, e4, f4,
+            a3, b3, c3, d3,     f3, g3, h3,
+                    c2, d2, e2, f2, g2, h2,
+            a1, b1, c1,     e1, f1, g1, h1
+        }));
+        ASSERT_EQ(cb.controlledCells(BlackArmy), BitBoard({
+            a8, b8, c8,     e8, f8, g8, h8,
+                        d7,     f7, g7, h7,
+            a6, b6, c6, d6, e6, f6, g6, h6,
+                        d5, e5,
+                        d4, e4,     g4,
+                        d3, e3,         h3,
+                                f2,     h2,
+                        d1,             h1
+        }));
+    }
 } // namespace cSzd
