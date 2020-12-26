@@ -125,9 +125,65 @@ namespace cSzd
     // Returns a BitBoard with the cells controlled by the bishops of the army
     BitBoard Army::bishopsControlledCells() const
     {
-        // ********* FIXME --- To Be Completed: ***************
-        // to take into account interference of other pieces ---
-        return pieces[Bishop].diagonalsCells();
+        BitBoard bb;
+        BitBoard busyCells = occupiedCells();
+        auto foundCells = 0;
+        for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Bishop].popCount()); ndx++) {
+            if (pieces[Bishop].bbs[ndx] != 0) {
+                foundCells++;
+                auto r = BitBoard::rank(static_cast<Cell>(ndx));
+                auto f = BitBoard::file(static_cast<Cell>(ndx));
+                // Bishop found in position ndx, (rank r, file f)
+
+                // Eplore left-lower side of the diagonal for controlled
+                // cells. The cells are controlled until a busy cell
+                // is found: the busy cell is the last controlled one
+                int cFile = f - 1;
+                int cRank = r - 1;
+                while (cFile >= 0 && cRank >= 0) {
+                    bb.setCell(static_cast<File>(cFile), static_cast<Rank>(cRank));
+                    if (busyCells.isActive(static_cast<File>(cFile), static_cast<Rank>(cRank))) {
+                        break;
+                    }
+                    --cFile;
+                    --cRank;
+                }
+                // Explore the right-upper side of the diagonal (same algo above)
+                cFile = f + 1;
+                cRank = r + 1;
+                while (cFile < 8 && cRank < 8) {
+                    bb.setCell(static_cast<File>(cFile), static_cast<Rank>(cRank));
+                    if (busyCells.isActive(static_cast<File>(cFile), static_cast<Rank>(cRank))) {
+                        break;
+                    }
+                    ++cFile;
+                    ++cRank;
+                }
+                // Explore the right-lower side of the antidiagonal (same algo above)
+                cFile = f + 1;
+                cRank = r - 1;
+                while (cFile < 8 && cRank >= 0) {
+                    bb.setCell(static_cast<File>(cFile), static_cast<Rank>(cRank));
+                    if (busyCells.isActive(static_cast<File>(cFile), static_cast<Rank>(cRank))) {
+                        break;
+                    }
+                    ++cFile;
+                    --cRank;
+                }
+                // Explore the left-upper side of the antidiagonal (same algo above)
+                cFile = f - 1;
+                cRank = r + 1;
+                while (cFile >= 0 && cRank < 8) {
+                    bb.setCell(static_cast<File>(cFile), static_cast<Rank>(cRank));
+                    if (busyCells.isActive(static_cast<File>(cFile), static_cast<Rank>(cRank))) {
+                        break;
+                    }
+                    --cFile;
+                    ++cRank;
+                }
+            }
+        }
+        return bb;
     }
 
     // Returns a BitBoard with the cells controlled by the rooks of the army

@@ -359,6 +359,34 @@ namespace cSzd
         ASSERT_EQ(a.rooksControlledCells(), BitBoard({c1, c2, c3, a4, b4, c4, d4, e4, f4, g4, h4, a5, b5, c5, d5, e5, f5, g5, h5, c6, c7, c8}));
     }
 
+    // Bishops ---
+    TEST(ArmyTester, CheckCellsControlledByBishopInH8WithPawnInG7)
+    {
+        Army a{};
+        a.color = BlackArmy;
+        a.pieces[Bishop] = BitBoard({h8});
+        a.pieces[Pawn] = BitBoard({g7});
+        ASSERT_EQ(a.bishopsControlledCells(), BitBoard({g7}));
+    }
+    TEST(ArmyTester, CheckCellsControlledByBishopComplexCase1)
+    {
+        Army a{};
+        a.color = WhiteArmy;
+        a.pieces[Bishop] = BitBoard({d4, g6});
+        a.pieces[Pawn] = BitBoard({b2,c2,d2,e2,f2});
+        a.pieces[King] = BitBoard({f6});
+        ASSERT_EQ(a.bishopsControlledCells(), BitBoard({b2, c2, f2, c3, d3, e3, e4, c5, e5, f5, h5, b6, f6, a7, f7, h7, e8}));
+    }
+    TEST(ArmyTester, CheckCellsControlledByBishopComplexCase2)
+    {
+        Army a{};
+        a.color = BlackArmy;
+        a.pieces[Bishop] = BitBoard({b5, g3});
+        a.pieces[Pawn] = BitBoard({d3, d7});
+        a.pieces[King] = BitBoard({e5});
+        a.pieces[Queen] = BitBoard({f1});
+        ASSERT_EQ(a.bishopsControlledCells(), BitBoard({e1, f2, h2, d3, a4, c4, f4, h4, e5, a6, c6, d7}));
+    }
 
 
 } // namespace cSzd
