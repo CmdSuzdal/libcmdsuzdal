@@ -323,4 +323,42 @@ namespace cSzd
         ASSERT_EQ(a.occupiedCells(), BitBoard(RanksBB[r_7] | RanksBB[r_8]));
     }
 
+    // --- OCCUPIED CELLS COMPLEX CASES (with interference) ----------------------------------------
+    // Rooks ---
+    TEST(ArmyTester, CheckCellsControlledByRookInA1WithPawnInA2)
+    {
+        Army a{};
+        a.color = WhiteArmy;
+        a.pieces[Rook] = BitBoard({a1});
+        a.pieces[Pawn] = BitBoard({a2});
+        ASSERT_EQ(a.rooksControlledCells(), BitBoard({b1, c1, d1, e1, f1, g1, h1, a2}));
+    }
+    TEST(ArmyTester, CheckCellsControlledByARookInD4SurroundedByPawns)
+    {
+        Army a{};
+        a.color = BlackArmy;
+        a.pieces[Rook] = BitBoard({d4});
+        a.pieces[Pawn] = BitBoard({d3, c4, e4, d5});
+        ASSERT_EQ(a.rooksControlledCells(), BitBoard({d3, c4, e4, d5}));
+    }
+    TEST(ArmyTester, CheckCellsControlledByRooksComplex1)
+    {
+        Army a{};
+        a.color = WhiteArmy;
+        a.pieces[Rook] = BitBoard({d4, g7});
+        a.pieces[Pawn] = BitBoard({d5});
+        a.pieces[Knight] = BitBoard({g6});
+        a.pieces[King] = BitBoard({f6});
+        ASSERT_EQ(a.rooksControlledCells(), BitBoard({d1, d2, d3, a4, b4, c4, e4, f4, g4, h4, d5, g6, a7, b7, c7, d7, e7, f7, h7, g8}));
+    }
+    TEST(ArmyTester, CheckCellsControlledByRooksComplex2)
+    {
+        Army a{};
+        a.color = BlackArmy;
+        a.pieces[Rook] = BitBoard({c4, c5});
+        ASSERT_EQ(a.rooksControlledCells(), BitBoard({c1, c2, c3, a4, b4, c4, d4, e4, f4, g4, h4, a5, b5, c5, d5, e5, f5, g5, h5, c6, c7, c8}));
+    }
+
+
+
 } // namespace cSzd

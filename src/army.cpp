@@ -131,11 +131,62 @@ namespace cSzd
     }
 
     // Returns a BitBoard with the cells controlled by the rooks of the army
+    // This algorithm take into account occupied cells that can obstruct
+    // the rooks "view"
     BitBoard Army::rooksControlledCells() const
     {
-        // ********* FIXME --- To Be Completed: ***************
-        // to take into account interference of other pieces ---
-        return pieces[Rook].fileRankCells();
+        BitBoard bb;
+        BitBoard busyCells = occupiedCells();
+        auto foundCells = 0;
+        for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Rook].popCount()); ndx++) {
+            if (pieces[Rook].bbs[ndx] != 0) {
+                // rook in position ndx
+                foundCells++;
+                auto r = BitBoard::rank(static_cast<Cell>(ndx));
+                auto f = BitBoard::file(static_cast<Cell>(ndx));
+                // Rook found in position ndx, (rank r, file f)
+
+                // Eplore left side of the rank for controlled
+                // cells. The cells are controlled until a busy cell
+                // is found: the busy cell is the last controlled one
+                int cFile = f - 1;
+                while (cFile >= 0) {
+                    bb.setCell(static_cast<File>(cFile), r);
+                    if (busyCells.isActive(static_cast<File>(cFile), r)) {
+                        break;
+                    }
+                    --cFile;
+                }
+                // Explore the right side of the rank (same algo above)
+                cFile = f + 1;
+                while (cFile < 8) {
+                    bb.setCell(static_cast<File>(cFile), r);
+                    if (busyCells.isActive(static_cast<File>(cFile), r)) {
+                        break;
+                    }
+                    ++cFile;
+                }
+                // Explore the lower side of the file (same algo above)
+                int cRank = r - 1;
+                while (cRank >= 0) {
+                    bb.setCell(f, static_cast<Rank>(cRank));
+                    if (busyCells.isActive(f, static_cast<Rank>(cRank))) {
+                        break;
+                    }
+                    --cRank;
+                }
+                // Explore the upper side of the file (same algo above)
+                cRank = r + 1;
+                while (cRank < 8) {
+                    bb.setCell(f, static_cast<Rank>(cRank));
+                    if (busyCells.isActive(f, static_cast<Rank>(cRank))) {
+                        break;
+                    }
+                    ++cRank;
+                }
+            }
+        }
+        return bb;
     }
 
     // Returns a BitBoard with the cells controlled by the queens of the army

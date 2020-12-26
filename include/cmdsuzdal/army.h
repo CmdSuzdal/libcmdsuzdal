@@ -27,7 +27,6 @@ namespace cSzd
         BitBoard occupiedCells() const;
         BitBoard controlledCells() const;
 
-    private:
         BitBoard kingControlledCells() const;
         BitBoard pawnsControlledCells() const;
         BitBoard knightsControlledCells() const;
