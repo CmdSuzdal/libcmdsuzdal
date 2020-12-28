@@ -337,7 +337,7 @@ namespace cSzd
         }));
     }
 
-    // Army in check Tests
+    // ----- Army in check Tests ------------------------------------
     TEST(ChessBoardTester, InInitialPositionTheKingsAreNotInCheck)
     {
         ChessBoard cb {};
@@ -366,6 +366,28 @@ namespace cSzd
         ChessBoard cb {"8/7b/1k6/8/4K3/8/8/1R6 w - - 0 1"};
         ASSERT_FALSE(cb.isValid());
     }
+
+    // ----- Additional validity consideration if a king is in check ---
+    // If a king of an army is in check and move is assigned to other
+    // army, position is not valid
+    TEST(ChessBoardTester, IfWhiteKingInCheckAndMoveToBlackPositionIsNotValid)
+    {
+
+        ChessBoard cb {"8/7b/1k6/8/4K3/8/8/8 b - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), WhiteArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        ASSERT_FALSE(cb.isValid());
+    }
+    TEST(ChessBoardTester, IfBlackKingInCheckAndMoveToWhitePositionIsNotValid)
+    {
+
+        ChessBoard cb {"8/8/8/3Q4/2k1K3/8/8/8 w - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), BlackArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
+        ASSERT_FALSE(cb.isValid());
+    }
+
+
 
 
 } // namespace cSzd

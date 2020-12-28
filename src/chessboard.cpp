@@ -115,6 +115,11 @@ namespace cSzd
         // If both kings are in check, position is not valid
         if (armyIsInCheck(WhiteArmy) && armyIsInCheck(BlackArmy)) return false;
 
+        // If king of an army is in check and move is assigned
+        // to other army, position is not valid
+        if (armyIsInCheck(WhiteArmy) && sideToMove == BlackArmy) return false;
+        if (armyIsInCheck(BlackArmy) && sideToMove == WhiteArmy) return false;
+
         // lastly check en passant cell validity
         return checkEnPassantTargetSquareValidity();
     }
