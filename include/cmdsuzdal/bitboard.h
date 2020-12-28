@@ -90,50 +90,38 @@ namespace cSzd
         //    void resetCell(File f, Rank r)
         // see test IfACellIsSetAndThenResetBitboardIsEmpty
         //
-        BitBoardState clear()
-        {
-            bbs = EmptyBB;
-            return bbs;
-        }
-        BitBoardState set(BitBoardState newBbs)
-        {
-            bbs = newBbs;
-            return bbs;
-        }
-        const BitBoard &setCell(File f, Rank r)
+        void clear() { bbs = EmptyBB; }
+        void set(BitBoardState newBbs) { bbs = newBbs; }
+        void setCell(File f, Rank r)
         {
             (bbs |= 1ULL << (r * 8 + f));
-            return *this;
         }
-        BitBoardState setCell(Cell c)
+        void setCell(Cell c)
         {
             if (c != InvalidCell)
                 bbs |= 1ULL << c;
-            return bbs;
         }
-        BitBoardState setCell(const std::vector<Cell> &cells)
+        void setCell(const std::vector<Cell> &cells)
         {
             for (auto &c : cells)
                 setCell(c);
-            return bbs;
         }
         void resetCell(File f, Rank r) { bbs &= ~(1ULL << (r * 8 + f)); }
-        BitBoardState resetCell(Cell c) { return (bbs &= ~(1ULL << c)); }
-        BitBoardState resetCell(const std::vector<Cell> &cells)
+        void resetCell(Cell c) { bbs &= ~(1ULL << c); }
+        void resetCell(const std::vector<Cell> &cells)
         {
             for (auto &c : cells)
                 resetCell(c);
-            return bbs;
         }
 
         // Shift west (left)
-        BitBoardState shiftWest(unsigned int npos);
+        void shiftWest(unsigned int npos);
         // Shift east (right)
-        BitBoardState shiftEast(unsigned int npos);
+        void shiftEast(unsigned int npos);
         // Shift north (up)
-        BitBoardState shiftNorth(unsigned int npos);
+        void shiftNorth(unsigned int npos);
         // Shift south (bottom)
-        BitBoardState shiftSouth(unsigned int npos);
+        void shiftSouth(unsigned int npos);
         // -------------------------------------------------------------------------------
 
         // -------------------------------------------------------------------------------

@@ -44,30 +44,33 @@ namespace cSzd
         return (diagonalsCells() | fileRankCells());
     }
 
-    BitBoardState BitBoard::shiftWest(unsigned int npos)
+    void BitBoard::shiftWest(unsigned int npos)
     {
         if (npos > 7)
-            return set(EmptyBB);
-        return set((bbs >> npos) & WestShiftClearMask[npos - 1]);
+            set(EmptyBB);
+        else
+            set((bbs >> npos) & WestShiftClearMask[npos - 1]);
     }
-    BitBoardState BitBoard::shiftEast(unsigned int npos)
+    void BitBoard::shiftEast(unsigned int npos)
     {
         if (npos > 7)
-            return set(EmptyBB);
-        return set((bbs << npos) & EastShiftClearMask[npos - 1]);
+            set(EmptyBB);
+        else
+            set((bbs << npos) & EastShiftClearMask[npos - 1]);
     }
-    BitBoardState BitBoard::shiftNorth(unsigned int npos)
+    void BitBoard::shiftNorth(unsigned int npos)
     {
         if (npos > 7)
-            return set(EmptyBB);
-        set((bbs << (npos * 8)) & NorthShiftClearMask[npos - 1]);
-        return bbs;
+            set(EmptyBB);
+        else
+            set((bbs << (npos * 8)) & NorthShiftClearMask[npos - 1]);
     }
-    BitBoardState BitBoard::shiftSouth(unsigned int npos)
+    void BitBoard::shiftSouth(unsigned int npos)
     {
         if (npos > 7)
-            return set(EmptyBB);
-        return set((bbs >> (npos * 8)) & SouthShiftClearMask[npos - 1]);
+            set(EmptyBB);
+        else
+            set((bbs >> (npos * 8)) & SouthShiftClearMask[npos - 1]);
     }
 
 } // namespace cSzd
