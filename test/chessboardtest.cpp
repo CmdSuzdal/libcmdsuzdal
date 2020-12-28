@@ -293,9 +293,9 @@ namespace cSzd
         ASSERT_TRUE(cb.isValid());
         ASSERT_EQ(cb.controlledCells(WhiteArmy), BitBoard({
             a8,         d8,
-            a7,     c7, 
-            a6,     c6, 
-            a5, b5, c5, d5, e5,     g5, 
+            a7,     c7,
+            a6,     c6,
+            a5, b5, c5, d5, e5,     g5,
             a4, b4, c4, d4, e4, f4,     h4,
             a3, b3,     d3, e3, f3, g3, h3,
             a2,     c2, d2,     f2, g2, h2,
