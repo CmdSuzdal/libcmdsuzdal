@@ -9,6 +9,7 @@ include(addgtestsupport)
 
 add_executable(testcmdsuzdal
     bitboardtest.cpp
+    chessmovetest.cpp
     armytest.cpp
     fenrecordtest.cpp
     chessboardtest.cpp

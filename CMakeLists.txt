@@ -16,6 +16,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/bbdefines.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/bitboard.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessdefines.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessmove.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/army.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/fenrecord.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessboard.h
@@ -30,6 +32,7 @@ set(HEADERS
 add_library(cmdsuzdal)
 target_sources(cmdsuzdal PRIVATE
     src/bitboard.cpp
+    src/chessmove.cpp
     src/army.cpp
     src/fenrecord.cpp
     src/chessboard.cpp
