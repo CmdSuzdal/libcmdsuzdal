@@ -26,6 +26,17 @@ namespace cSzd
     using ChessMove = std::bitset<32>;
     constexpr ChessMove InvalidMove = 0x80000000;
 
+    constexpr unsigned int MovedPieceOffset = 0;
+    constexpr unsigned int TakenPieceOffset = 4;
+    constexpr unsigned int PromotedPieceOffset = 8;
+    constexpr unsigned int StartCellOffset = 12;
+    constexpr unsigned int DestinationCellOffset = 18;
+    constexpr unsigned int EnPassantCellOffset = 24;
+
+    constexpr unsigned int PieceMask = 0x0007;
+    constexpr unsigned int ValidCellMask = 0x003F;
+    constexpr unsigned int ValidAndInvalidCellMask = 0x007F;
+
     ChessMove chessMove(Piece movedPiece, Cell startCell, Cell destCell,
                         Piece takenPiece = InvalidPiece,
                         Piece promotedPiece = InvalidPiece);

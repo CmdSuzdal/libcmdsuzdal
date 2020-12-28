@@ -11,7 +11,17 @@ namespace cSzd
         // any check in chess move validity. Just accept
         // everything. It is responsibility of the caller
         // to generate valid moves
-        return InvalidMove;
+        ChessMove cm {};
+        cm |= (movedPiece & PieceMask) << MovedPieceOffset;
+        cm |= (takenPiece & PieceMask) << TakenPieceOffset;
+        cm |= (promotedPiece & PieceMask) << PromotedPieceOffset;
+        cm |= (startCell & ValidCellMask) << StartCellOffset;
+        cm |= (destCell & ValidCellMask) << DestinationCellOffset;
+
+        // FIXME to be completed evaluation of en-passant cell
+        cm |= InvalidCell << EnPassantCellOffset;
+
+        return cm;
     }
 
 }
