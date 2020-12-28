@@ -31,6 +31,7 @@ set(HEADERS
 # variable (e.g. -DBUILD_SHARED_LIBS=YES)
 add_library(cmdsuzdal)
 target_sources(cmdsuzdal PRIVATE
+    src/bbdefines.cpp
     src/bitboard.cpp
     src/chessmove.cpp
     src/army.cpp

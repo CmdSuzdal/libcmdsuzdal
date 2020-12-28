@@ -215,6 +215,36 @@ namespace cSzd
         RanksBB[0] | RanksBB[1] | RanksBB[2],
         RanksBB[0] | RanksBB[1],
         RanksBB[0]};
+
+    // Given file and rank returns the cell
+    Cell toCell(File f, Rank r);
+
+    // Given a cell, returns File, Rank, Diagonal, AntiDiagonal (and combinations)
+    File file(const Cell &c);
+    Rank rank(const Cell &c);
+    Diagonal diag(const Cell &c);
+    AntiDiagonal antiDiag(const Cell &c);
+    std::pair<File, Rank> coords(const Cell &c);
+    std::pair<Diagonal, AntiDiagonal> diagonals(const Cell &c);
+
+    // Given a cell, returns west/east files and south/north ranks
+    File west(const Cell &c);
+    File east(const Cell &c);
+    Rank south(const Cell &c);
+    Rank north(const Cell &c);
+
+    // "Compass rose" methods
+    Cell w(const Cell &c);
+    Cell nw(const Cell &c);
+    Cell n(const Cell &c);
+    Cell ne(const Cell &c);
+    Cell e(const Cell &c);
+    Cell se(const Cell &c);
+    Cell s(const Cell &c);
+    Cell sw(const Cell &c);
+
+    Cell calcCellAfterSteps(const Cell &c, int stepNorth, int stepEast);
+
 } // namespace cSzd
 
 #endif // if !defined CSZD_BBDEFINES_HEADER

@@ -139,56 +139,6 @@ namespace cSzd
         // -------------------------------------------------------------------------------
         // Bitboard utility methods
 
-        // Given file and rank returns the cell
-        static Cell toCell(File f, Rank r) { return static_cast<Cell>(r * 8 + f); }
-
-        // Given a cell, returns File, Rank, Diagonal, AntiDiagonal (and combinations)
-        static File file(const Cell &c) { return static_cast<File>(c % 8); }
-        static Rank rank(const Cell &c) { return static_cast<Rank>(c >> 3); }
-        static Diagonal diag(const Cell &c) { return static_cast<Diagonal>(file(c) - rank(c) + 7); }
-        static AntiDiagonal antiDiag(const Cell &c) { return static_cast<AntiDiagonal>(file(c) + rank(c)); }
-        static std::pair<File, Rank> coords(const Cell &c)
-        {
-            return std::make_pair(file(c), rank(c));
-        }
-        static std::pair<Diagonal, AntiDiagonal> diagonals(const Cell &c)
-        {
-            return std::make_pair(diag(c), antiDiag(c));
-        }
-
-        // Given a cell, returns west/east files and south/north ranks
-        static File west(const Cell &c)
-        {
-            auto f = file(c);
-            return static_cast<File>((f > 0) ? (f - 1) : InvalidFile);
-        }
-        static File east(const Cell &c)
-        {
-            auto f = file(c);
-            return static_cast<File>((f < 7) ? (f + 1) : InvalidFile);
-        }
-        static Rank south(const Cell &c)
-        {
-            auto r = rank(c);
-            return static_cast<Rank>((r > 0) ? (r - 1) : InvalidRank);
-        }
-        static Rank north(const Cell &c)
-        {
-            auto r = rank(c);
-            return static_cast<Rank>((r < 7) ? (r + 1) : InvalidRank);
-        }
-
-        // "Compass rose" methods
-        static Cell w(const Cell &c) { return static_cast<Cell>((file(c) > 0) ? c - 1 : InvalidCell); }
-        static Cell nw(const Cell &c) { return static_cast<Cell>((file(c) > 0 && rank(c) < 7) ? c + 7 : InvalidCell); }
-        static Cell n(const Cell &c) { return static_cast<Cell>((rank(c) < 7) ? c + 8 : InvalidCell); }
-        static Cell ne(const Cell &c) { return static_cast<Cell>((file(c) < 7 && rank(c) < 7) ? c + 9 : InvalidCell); }
-        static Cell e(const Cell &c) { return static_cast<Cell>((file(c) < 7) ? c + 1 : InvalidCell); }
-        static Cell se(const Cell &c) { return static_cast<Cell>((file(c) < 7 && rank(c) > 0) ? c - 7 : InvalidCell); }
-        static Cell s(const Cell &c) { return static_cast<Cell>((rank(c) > 0) ? c - 8 : InvalidCell); }
-        static Cell sw(const Cell &c) { return static_cast<Cell>((file(c) > 0 && rank(c) > 0) ? c - 9 : InvalidCell); }
-        static Cell calcCellAfterSteps(const Cell &c, int stepNorth, int stepEast);
-
         // Given a cell, returns any sort of "related" cells BitBoard states
         static BitBoard singlecell(const Cell &c) { return BitBoard(1ULL << c); }
         static BitBoard neighbour(const Cell &c);

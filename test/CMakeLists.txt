@@ -8,6 +8,7 @@ include(addgtestsupport)
 # etc. as appropriate
 
 add_executable(testcmdsuzdal
+    bbdefinestest.cpp
     bitboardtest.cpp
     chessmovetest.cpp
     armytest.cpp

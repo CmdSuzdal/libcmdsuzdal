@@ -92,12 +92,12 @@ namespace cSzd
                 // pawn in position ndx
                 foundCells++;
                 if (color == WhiteArmy) {
-                    bb |= BitBoard(BitBoard::ne(static_cast<const Cell>(ndx)));
-                    bb |= BitBoard(BitBoard::nw(static_cast<const Cell>(ndx)));
+                    bb |= BitBoard(ne(static_cast<const Cell>(ndx)));
+                    bb |= BitBoard(nw(static_cast<const Cell>(ndx)));
                 }
                 else if (color == BlackArmy) {
-                    bb |= BitBoard(BitBoard::se(static_cast<const Cell>(ndx)));
-                    bb |= BitBoard(BitBoard::sw(static_cast<const Cell>(ndx)));
+                    bb |= BitBoard(se(static_cast<const Cell>(ndx)));
+                    bb |= BitBoard(sw(static_cast<const Cell>(ndx)));
                 }
             }
         }
@@ -115,14 +115,14 @@ namespace cSzd
                 foundCells++;
                 // FIXME --- This can be do probably better using the BitBoard shift functions
                 Cell c = static_cast<const Cell>(ndx);
-                bb |= BitBoard({BitBoard::calcCellAfterSteps(c,  2,  1),
-                                BitBoard::calcCellAfterSteps(c,  1,  2),
-                                BitBoard::calcCellAfterSteps(c, -1,  2),
-                                BitBoard::calcCellAfterSteps(c, -2,  1),
-                                BitBoard::calcCellAfterSteps(c, -2, -1),
-                                BitBoard::calcCellAfterSteps(c, -1, -2),
-                                BitBoard::calcCellAfterSteps(c,  1, -2),
-                                BitBoard::calcCellAfterSteps(c,  2, -1)});
+                bb |= BitBoard({calcCellAfterSteps(c,  2,  1),
+                                calcCellAfterSteps(c,  1,  2),
+                                calcCellAfterSteps(c, -1,  2),
+                                calcCellAfterSteps(c, -2,  1),
+                                calcCellAfterSteps(c, -2, -1),
+                                calcCellAfterSteps(c, -1, -2),
+                                calcCellAfterSteps(c,  1, -2),
+                                calcCellAfterSteps(c,  2, -1)});
             }
         }
         return bb;
@@ -141,8 +141,8 @@ namespace cSzd
         for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Bishop].popCount()); ndx++) {
             if (pieces[Bishop].bbs[ndx] != 0) {
                 foundCells++;
-                auto r = BitBoard::rank(static_cast<Cell>(ndx));
-                auto f = BitBoard::file(static_cast<Cell>(ndx));
+                auto r = rank(static_cast<Cell>(ndx));
+                auto f = file(static_cast<Cell>(ndx));
                 // Bishop found in position ndx, (rank r, file f)
                 // Eplore left-lower side of the diagonal for controlled
                 // cells. The cells are controlled until a busy cell
@@ -211,8 +211,8 @@ namespace cSzd
             if (pieces[Rook].bbs[ndx] != 0) {
                 // rook in position ndx
                 foundCells++;
-                auto r = BitBoard::rank(static_cast<Cell>(ndx));
-                auto f = BitBoard::file(static_cast<Cell>(ndx));
+                auto r = rank(static_cast<Cell>(ndx));
+                auto f = file(static_cast<Cell>(ndx));
                 // Rook found in position ndx, (rank r, file f)
 
                 // Eplore left side of the rank for controlled

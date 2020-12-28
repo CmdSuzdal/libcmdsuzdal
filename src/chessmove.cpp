@@ -1,5 +1,4 @@
 #include "cmdsuzdal/chessmove.h"
-#include "cmdsuzdal/bitboard.h"
 
 namespace cSzd
 {
@@ -30,7 +29,7 @@ namespace cSzd
 
     Cell computeEnPassant(Cell from, Cell to)
     {
-        auto r = BitBoard::rank(from);
+        auto r = rank(from);
 
         // If from cell is in 2nd rank and to = from + 16
         // we have an en passant in from + 8

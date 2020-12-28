@@ -316,25 +316,6 @@ namespace cSzd
         ASSERT_EQ(bb.shiftSouth(8), EmptyBB);
     }
 
-    TEST(BBTester, CellToRankAndFileConversionTests)
-    {
-        ASSERT_EQ(BitBoard::file(f2), f_f);
-        ASSERT_EQ(BitBoard::rank(f2), r_2);
-        ASSERT_EQ(BitBoard::file(a3), f_a);
-        ASSERT_EQ(BitBoard::rank(a3), r_3);
-        ASSERT_EQ(BitBoard::file(c7), f_c);
-        ASSERT_EQ(BitBoard::rank(c7), r_7);
-        ASSERT_EQ(BitBoard::file(h8), f_h);
-        ASSERT_EQ(BitBoard::rank(h8), r_8);
-        pair<File, Rank> coords;
-        coords = BitBoard::coords(b5);
-        ASSERT_EQ(coords.first, f_b);
-        ASSERT_EQ(coords.second, r_5);
-        coords = BitBoard::coords(e1);
-        ASSERT_EQ(coords.first, f_e);
-        ASSERT_EQ(coords.second, r_1);
-    }
-
     // Evaluation of neighbours
     TEST(BBTester, NeighboursMaskOfEmptyBitBoardIsEmpty)
     {
@@ -403,54 +384,6 @@ namespace cSzd
         ASSERT_EQ(bb.neighbourCells(), BitBoard(n));
     }
 
-    TEST(BBTester, NeighboursCellsOfD4AreComputedCorrectly)
-    {
-        ASSERT_EQ(BitBoard::w(d4), c4);
-        ASSERT_EQ(BitBoard::nw(d4), c5);
-        ASSERT_EQ(BitBoard::n(d4), d5);
-        ASSERT_EQ(BitBoard::ne(d4), e5);
-        ASSERT_EQ(BitBoard::e(d4), e4);
-        ASSERT_EQ(BitBoard::se(d4), e3);
-        ASSERT_EQ(BitBoard::s(d4), d3);
-        ASSERT_EQ(BitBoard::sw(d4), c3);
-    }
-
-    TEST(BBTester, NeighboursCellsOfB7AreComputedCorrectly)
-    {
-        ASSERT_EQ(BitBoard::w(b7), a7);
-        ASSERT_EQ(BitBoard::nw(b7), a8);
-        ASSERT_EQ(BitBoard::n(b7), b8);
-        ASSERT_EQ(BitBoard::ne(b7), c8);
-        ASSERT_EQ(BitBoard::e(b7), c7);
-        ASSERT_EQ(BitBoard::se(b7), c6);
-        ASSERT_EQ(BitBoard::s(b7), b6);
-        ASSERT_EQ(BitBoard::sw(b7), a6);
-    }
-
-    TEST(BBTester, NeighboursCellsOfA1AreComputedCorrectly)
-    {
-        ASSERT_EQ(BitBoard::w(a1), InvalidCell);
-        ASSERT_EQ(BitBoard::nw(a1), InvalidCell);
-        ASSERT_EQ(BitBoard::n(a1), a2);
-        ASSERT_EQ(BitBoard::ne(a1), b2);
-        ASSERT_EQ(BitBoard::e(a1), b1);
-        ASSERT_EQ(BitBoard::se(a1), InvalidCell);
-        ASSERT_EQ(BitBoard::s(a1), InvalidCell);
-        ASSERT_EQ(BitBoard::sw(a1), InvalidCell);
-    }
-
-    TEST(BBTester, NeighboursCellsOfH3AreComputedCorrectly)
-    {
-        ASSERT_EQ(BitBoard::w(h3), g3);
-        ASSERT_EQ(BitBoard::nw(h3), g4);
-        ASSERT_EQ(BitBoard::n(h3), h4);
-        ASSERT_EQ(BitBoard::ne(h3), InvalidCell);
-        ASSERT_EQ(BitBoard::e(h3), InvalidCell);
-        ASSERT_EQ(BitBoard::se(h3), InvalidCell);
-        ASSERT_EQ(BitBoard::s(h3), h2);
-        ASSERT_EQ(BitBoard::sw(h3), g2);
-    }
-
     TEST(BBTester, FileMasksAreComputedCorrectly)
     {
         ASSERT_EQ(BitBoard::fileMask(a2), BitBoard(FilesBB[f_a]));
@@ -485,25 +418,6 @@ namespace cSzd
         ASSERT_EQ(BitBoard::fileRankMask(f3), BitBoard(FilesBB[f_f] | RanksBB[r_3]));
         ASSERT_EQ(BitBoard::fileRankMask(g4), BitBoard(FilesBB[f_g] | RanksBB[r_4]));
         ASSERT_EQ(BitBoard::fileRankMask(h5), BitBoard(FilesBB[f_h] | RanksBB[r_5]));
-    }
-
-    TEST(BBTester, CellToDiagonalsConversionTests)
-    {
-        ASSERT_EQ(BitBoard::diag(f2), d_11);
-        ASSERT_EQ(BitBoard::antiDiag(f2), a_6);
-        ASSERT_EQ(BitBoard::diag(a3), d_5);
-        ASSERT_EQ(BitBoard::antiDiag(a3), a_2);
-        ASSERT_EQ(BitBoard::diag(c7), d_3);
-        ASSERT_EQ(BitBoard::antiDiag(c7), a_8);
-        ASSERT_EQ(BitBoard::diag(h8), d_7);
-        ASSERT_EQ(BitBoard::antiDiag(h8), a_14);
-        pair<Diagonal, AntiDiagonal> diags;
-        diags = BitBoard::diagonals(b5);
-        ASSERT_EQ(diags.first, d_4);
-        ASSERT_EQ(diags.second, a_5);
-        diags = BitBoard::diagonals(e1);
-        ASSERT_EQ(diags.first, d_11);
-        ASSERT_EQ(diags.second, a_4);
     }
 
     TEST(BBTester, DiagonalMasksAreComputedCorrectly)
@@ -701,31 +615,6 @@ namespace cSzd
         ASSERT_FALSE(bb.activeCellsInMask(FilesBB[f_h]));
     }
 
-    // Tests for calcCellAfterSteps methods
-    TEST(BBTester, calcCellAfterStepsTest)
-    {
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(a1,  5,  0), a6);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(a1,  0,  5), f1);
-
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4,  2,  1), e6);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4,  1,  2), f5);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4, -1,  2), f3);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4, -2,  1), e2);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4, -2, -1), c2);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4, -1, -2), b3);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4,  1, -2), b5);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d4,  2, -1), c6);
-
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(c2,  6, -2), a8);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(c2,  1, -3), InvalidCell);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(b7,  1,  3), e8);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(b7,  2, -1), InvalidCell);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(f5,  3,  2), h8);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(f5,  1,  3), InvalidCell);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d2,  -1,  -3), a1);
-        ASSERT_EQ(BitBoard::calcCellAfterSteps(d2,  -2,  -1), InvalidCell);
-    }
-
     // Evaluations of file/rank/diagonals evaluation
     TEST(BBTester, DiagonalsBitBoardOfEmptyBoardReturnsEmpty)
     {
@@ -784,19 +673,6 @@ namespace cSzd
                                                 h5, c6, c7, f7, f8}));
     }
 
-    // File+Rank to Cell method (toCell())
-    TEST(BBTester, chechFileRankToCellMethod)
-    {
-        ASSERT_EQ(BitBoard::toCell(f_a, r_1), a1);
-        ASSERT_EQ(BitBoard::toCell(f_b, r_5), b5);
-        ASSERT_EQ(BitBoard::toCell(f_c, r_2), c2);
-        ASSERT_EQ(BitBoard::toCell(f_d, r_8), d8);
-        ASSERT_EQ(BitBoard::toCell(f_e, r_7), e7);
-        ASSERT_EQ(BitBoard::toCell(f_f, r_4), f4);
-        ASSERT_EQ(BitBoard::toCell(f_g, r_3), g3);
-        ASSERT_EQ(BitBoard::toCell(f_h, r_6), h6);
-    }
-
     // isActive() methods
     TEST(BBTester, checkActiveCellsWhenTheWholeRank2IsActive)
     {
@@ -822,7 +698,6 @@ namespace cSzd
         ASSERT_TRUE(bb.isActive(d7));
         ASSERT_TRUE(bb.isActive(d8));
     }
-
 
     TEST(BBTester, checkActiveCellsWhenDiagonal10IsActive)
     {
