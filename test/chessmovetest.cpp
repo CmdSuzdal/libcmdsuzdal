@@ -55,4 +55,20 @@ namespace cSzd
         //      0100 0000 0111 0001 0011 0110 0101 0000 = 0x40713650
         ASSERT_EQ(chessMove(King, d3, e4, Pawn), static_cast<ChessMove>(0x40713650));
     }
+
+    // Promotions testing
+    TEST(ChessMoveTester, PawnFromB7ToB8WithPromotionToQueen)
+    {
+        // Pawn (5 = 101) from b7 (49 = 110001) to b8 (57 = 111001) with no piece taken and promotion to Queen (1 = 001)
+        //      0 1000000 111001 110001 0001 0110 0101
+        //      0100 0000 1110 0111 0001 0001 0110 0101 = 0x40E71165
+        ASSERT_EQ(chessMove(Pawn, b7, b8, InvalidPiece, Queen), static_cast<ChessMove>(0x40E71165));
+    }
+    TEST(ChessMoveTester, PawnFromG2ToH1WithRookTakenAndPromotionToKnight)
+    {
+        // Pawn (5 = 101) from g2 (14 = 001110) to h1 (7 = 000111) with Rook (4 = 0100) taken and promotion to Knigh (3 = 011)
+        //      0 1000000 000111 001110 0011 0100 0101
+        //      0100 0000 0001 1100 1110 0011 0100 0101 = 0x401CE345
+        ASSERT_EQ(chessMove(Pawn, g2, h1, Rook, Knight), static_cast<ChessMove>(0x401CE345));
+    }
 }
