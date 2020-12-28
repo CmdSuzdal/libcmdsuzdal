@@ -285,5 +285,13 @@ namespace cSzd
                 fakeArmy.rooksControlledCells(intfBoard);
     }
 
+    BitBoard Army::kingPossibleMoveCells(const BitBoard &opponentControlled) const
+    {
+        // The king can move in any of its controlled cells that is not
+        // occupied by a piece of its army and it is not controlled by
+        // the opponent (to avoid check)
+        return (((kingControlledCells() | pieces[King]) ^ occupiedCells()) & ~opponentControlled);
+    }
+
 
 } // namespace cSzd

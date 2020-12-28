@@ -426,7 +426,7 @@ namespace cSzd
 
     // ------------------------------------------------------------------------
     // --- Controlled Cells Tests --- With interference board
-    // ... Additional tests in the ChessBoard class ...
+    // ... Check the ChessBoard class for additional tests ...
 
     TEST(ArmyTester, CheckCellControlledByWhiteRooksInInitialPositionWithTheBlackArmyInTheOppositeSide)
     {
@@ -445,5 +445,33 @@ namespace cSzd
         Army w {WhiteArmy};
         ASSERT_EQ(b.controlledCells(w.occupiedCells()), BitBoard({b7, d7, e7, g7, a6, d6, e6, h6, c5, f5, b4, g4, a3, h3}));
     }
+
+    // ------------------------------------------------------------------------
+    // --- Possible Moves Tests ---
+    TEST(ArmyTester, CheckThatKingsAloneInE5AndA1CanMoveInTheWholeNeighbour)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[King] = BitBoard(e5);
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[King] = BitBoard(a1);
+        ASSERT_EQ(w.kingPossibleMoveCells(b.controlledCells()), w.pieces[King].neighbourCells());
+        ASSERT_EQ(b.kingPossibleMoveCells(w.controlledCells()), b.pieces[King].neighbourCells());
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfKingInOpposition)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[King] = BitBoard(e5);
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[King] = BitBoard(e7);
+        ASSERT_EQ(w.kingPossibleMoveCells(b.controlledCells()), BitBoard({d4, e4, f4, d5, f5}));
+        ASSERT_EQ(b.kingPossibleMoveCells(w.controlledCells()), BitBoard({d7, f7, d8, e8, f8}));
+    }
+
+
+
 
 } // namespace cSzd

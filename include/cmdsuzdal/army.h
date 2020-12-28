@@ -28,6 +28,8 @@ namespace cSzd
         BitBoard bishopsControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard rooksControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard queensControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+
+        BitBoard kingPossibleMoveCells(const BitBoard &opponentControlled) const;
     };
     // -----------------------------------------------
 
