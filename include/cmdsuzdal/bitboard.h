@@ -72,6 +72,11 @@ namespace cSzd
             return lhs;
         }
 
+        BitBoard operator~() const
+        {
+            return BitBoard(~bbs);
+        }
+
         // Population count
         unsigned int popCount() const { return bbs.count(); }
 
