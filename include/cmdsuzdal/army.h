@@ -30,6 +30,7 @@ namespace cSzd
         BitBoard queensControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
         BitBoard kingPossibleMoveCells(const BitBoard &opponentControlled) const;
+        BitBoard knightPossibleMoveCells(Cell nPos) const;
     };
     // -----------------------------------------------
 

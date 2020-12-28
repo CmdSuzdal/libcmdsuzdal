@@ -290,8 +290,20 @@ namespace cSzd
         // The king can move in any of its controlled cells that is not
         // occupied by a piece of its army and it is not controlled by
         // the opponent (to avoid check)
-        return (((kingControlledCells() | pieces[King]) ^ occupiedCells()) & ~opponentControlled);
+        return (((kingControlledCells() | occupiedCells()) ^ occupiedCells()) & ~opponentControlled);
     }
 
+    BitBoard Army::knightPossibleMoveCells(Cell nPos) const {
+        // Returns the bitboard with all the possible moves
+        // of the knight in position qPos (it the army does not
+        // have a knight in this position, empty BB is returned
+        if ((pieces[Knight] & BitBoard(nPos)) == BitBoard(EmptyBB))
+            return BitBoard(EmptyBB);
+
+        Army fakeArmy = *this;
+        fakeArmy.pieces[Pawn] |= (pieces[Knight] ^ BitBoard(nPos));
+        fakeArmy.pieces[Knight] = BitBoard(nPos);
+        return ((fakeArmy.knightsControlledCells() | occupiedCells()) ^ occupiedCells());
+    }
 
 } // namespace cSzd

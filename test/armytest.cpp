@@ -470,7 +470,52 @@ namespace cSzd
         ASSERT_EQ(w.kingPossibleMoveCells(b.controlledCells()), BitBoard({d4, e4, f4, d5, f5}));
         ASSERT_EQ(b.kingPossibleMoveCells(w.controlledCells()), BitBoard({d7, f7, d8, e8, f8}));
     }
-
+    TEST(ArmyTester, CheckPossibleMovesOfKingsObstructedByFriends)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[King] = BitBoard(b2);
+        w.pieces[Queen] = BitBoard(a2);
+        w.pieces[Rook] = BitBoard(a1);
+        w.pieces[Knight] = BitBoard({c1, a3});
+        w.pieces[Pawn] = BitBoard({b3, c3, d3});
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[King] = BitBoard(h8);
+        b.pieces[Pawn] = BitBoard({g7, f6, e6});
+        b.pieces[Rook] = BitBoard(h7);
+        ASSERT_EQ(w.kingPossibleMoveCells(b.controlledCells()), BitBoard({b1, c2}));
+        ASSERT_EQ(b.kingPossibleMoveCells(w.controlledCells()), BitBoard(g8));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfAKnightInF3WithNoOtherFriendPiecesInDestinationCells)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Knight] = BitBoard(f3);
+        w.pieces[Pawn] = BitBoard(g2);
+        ASSERT_EQ(w.knightPossibleMoveCells(g2), BitBoard(EmptyBB));  // No knights in g2
+        ASSERT_EQ(w.knightPossibleMoveCells(f3), BitBoard({e1, g1, d2, h2, d4, h4, e5, g5}));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfKnightsWithComplexInteraction)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Knight] = BitBoard(d3);
+        w.pieces[King] = BitBoard(f2);
+        w.pieces[Bishop] = BitBoard(h5);
+        w.pieces[Pawn] = BitBoard({a4, b4, c5, a6});
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Knight] = BitBoard(f4);
+        b.pieces[King] = BitBoard(d5);
+        b.pieces[Rook] = BitBoard(h3);
+        b.pieces[Queen] = BitBoard(b2);
+        b.pieces[Pawn] = BitBoard({e6, f7, g6, h7});
+        ASSERT_EQ(w.knightPossibleMoveCells(f4), BitBoard(EmptyBB));  // No white knights in g2
+        ASSERT_EQ(b.knightPossibleMoveCells(d3), BitBoard(EmptyBB));  // No black knights in g2
+        ASSERT_EQ(w.knightPossibleMoveCells(d3), BitBoard({c1, b2, e5, f4, e1}));
+        ASSERT_EQ(b.knightPossibleMoveCells(f4), BitBoard({d3, h5, g2, e2}));
+    }
 
 
 
