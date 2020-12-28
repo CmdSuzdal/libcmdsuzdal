@@ -71,4 +71,34 @@ namespace cSzd
         //      0100 0000 0001 1100 1110 0011 0100 0101 = 0x401CE345
         ASSERT_EQ(chessMove(Pawn, g2, h1, Rook, Knight), static_cast<ChessMove>(0x401CE345));
     }
+
+    // En-passant testing
+    TEST(ChessMoveTester, PawnFromC2ToC4WithImplicitEnPassantInC3)
+    {
+        // Pawn (5 = 101) from c2 (10 = 001010) to c4 (26 = 011010) with en passant in c3 (18 = 010010)
+        //      0 0010010 011010 001010 0110 0110 0101
+        //      0001 0010 0110 1000 1010 0110 0110 0101 = 0x1268A665
+        ASSERT_EQ(chessMove(Pawn, c2, c4), static_cast<ChessMove>(0x1268A665));
+    }
+    TEST(ChessMoveTester, PawnFromD7ToD5WithImplicitEnPassantInD6)
+    {
+        // Pawn (5 = 101) from d7 (51 = 110011) to d5 (35 = 100011) with en passant in d6 (43 = 101011)
+        //      0 0101011 100011 110011 0110 0110 0101
+        //      0010 1011 1000 1111 0011 0110 0110 0101 = 0x2C8F3665
+        ASSERT_EQ(chessMove(Pawn, d7, d5), static_cast<ChessMove>(0x2B8F3665));
+    }
+    TEST(ChessMoveTester, QueenFromE2ToE4DoesNotGenerateEnPassantInE3)
+    {
+        // Queen (1 = 001) from e2 (12 = 001100) to e4 (28 = 011100) does not generate en passant
+        //      0 1000000 011100 001100 0110 0110 0001
+        //      0100 0000 0111 0000 1100 0110 0110 0001 = 0x4070C661
+        ASSERT_EQ(chessMove(Queen, e2, e4), static_cast<ChessMove>(0x4070C661));
+    }
+    TEST(ChessMoveTester, RookFromD7ToD5DoesNotGenerateEnPassantInD6)
+    {
+        // Rook (4 = 100) from d7 (51 = 110011) to d5 (35 = 100011) does not generate en passant
+        //      0 1000000 100011 110011 0110 0110 0100
+        //      0100 0000 1000 1111 0011 0110 0110 0100 = 0x408F3664
+        ASSERT_EQ(chessMove(Rook, d7, d5), static_cast<ChessMove>(0x408F3664));
+    }
 }

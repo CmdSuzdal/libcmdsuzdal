@@ -1,4 +1,5 @@
 #include "cmdsuzdal/chessmove.h"
+#include "cmdsuzdal/bitboard.h"
 
 namespace cSzd
 {
@@ -18,10 +19,31 @@ namespace cSzd
         cm |= (startCell & ValidCellMask) << StartCellOffset;
         cm |= (destCell & ValidCellMask) << DestinationCellOffset;
 
-        // FIXME to be completed evaluation of en-passant cell
-        cm |= InvalidCell << EnPassantCellOffset;
+        // Evaluates en passant
+        if (movedPiece == Pawn)
+            cm |= computeEnPassant(startCell, destCell) << EnPassantCellOffset;
+        else
+            cm |= InvalidCell << EnPassantCellOffset;
 
         return cm;
     }
+
+    Cell computeEnPassant(Cell from, Cell to)
+    {
+        auto r = BitBoard::rank(from);
+
+        // If from cell is in 2nd rank and to = from + 16
+        // we have an en passant in from + 8
+        if ((r == r_2) && (to == (from + 16))) {
+            return static_cast<Cell>(from + 8);
+        }
+        // If from cell is in 7th rank and to = from - 16
+        // we have an en passant in from - 8
+        if ((r == r_7) && (to == (from - 16))) {
+            return static_cast<Cell>(from - 8);
+        }
+        return InvalidCell;
+    }
+
 
 }

@@ -40,7 +40,7 @@ namespace cSzd
     ChessMove chessMove(Piece movedPiece, Cell startCell, Cell destCell,
                         Piece takenPiece = InvalidPiece,
                         Piece promotedPiece = InvalidPiece);
-
+    Cell computeEnPassant(Cell from, Cell to);
 }
 
 #endif // #if !defined CSZD_CHESSMOVE_HEADER
