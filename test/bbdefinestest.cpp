@@ -132,5 +132,125 @@ namespace cSzd
         ASSERT_EQ(toCell(f_h, r_6), h6);
     }
 
+    TEST(BBTester, FileMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(fileMask(a2), FilesBB[f_a]);
+        ASSERT_EQ(fileMask(b1), FilesBB[f_b]);
+        ASSERT_EQ(fileMask(c4), FilesBB[f_c]);
+        ASSERT_EQ(fileMask(d3), FilesBB[f_d]);
+        ASSERT_EQ(fileMask(e6), FilesBB[f_e]);
+        ASSERT_EQ(fileMask(f5), FilesBB[f_f]);
+        ASSERT_EQ(fileMask(g8), FilesBB[f_g]);
+        ASSERT_EQ(fileMask(h7), FilesBB[f_h]);
+    }
+
+    TEST(BBTester, RankMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(rankMask(a6), RanksBB[r_6]);
+        ASSERT_EQ(rankMask(b7), RanksBB[r_7]);
+        ASSERT_EQ(rankMask(c8), RanksBB[r_8]);
+        ASSERT_EQ(rankMask(d1), RanksBB[r_1]);
+        ASSERT_EQ(rankMask(e2), RanksBB[r_2]);
+        ASSERT_EQ(rankMask(f3), RanksBB[r_3]);
+        ASSERT_EQ(rankMask(g4), RanksBB[r_4]);
+        ASSERT_EQ(rankMask(h5), RanksBB[r_5]);
+    }
+
+    TEST(BBTester, FileRankMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(fileRankMask(a6), FilesBB[f_a] | RanksBB[r_6]);
+        ASSERT_EQ(fileRankMask(b7), FilesBB[f_b] | RanksBB[r_7]);
+        ASSERT_EQ(fileRankMask(c8), FilesBB[f_c] | RanksBB[r_8]);
+        ASSERT_EQ(fileRankMask(d1), FilesBB[f_d] | RanksBB[r_1]);
+        ASSERT_EQ(fileRankMask(e2), FilesBB[f_e] | RanksBB[r_2]);
+        ASSERT_EQ(fileRankMask(f3), FilesBB[f_f] | RanksBB[r_3]);
+        ASSERT_EQ(fileRankMask(g4), FilesBB[f_g] | RanksBB[r_4]);
+        ASSERT_EQ(fileRankMask(h5), FilesBB[f_h] | RanksBB[r_5]);
+    }
+
+    TEST(BBTester, DiagonalMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(diagMask(a8), DiagsBB[d_0]);
+        ASSERT_EQ(diagMask(b8), DiagsBB[d_1]);
+        ASSERT_EQ(diagMask(a6), DiagsBB[d_2]);
+        ASSERT_EQ(diagMask(d8), DiagsBB[d_3]);
+        ASSERT_EQ(diagMask(d7), DiagsBB[d_4]);
+        ASSERT_EQ(diagMask(e7), DiagsBB[d_5]);
+        ASSERT_EQ(diagMask(c4), DiagsBB[d_6]);
+        ASSERT_EQ(diagMask(f6), DiagsBB[d_7]);
+        ASSERT_EQ(diagMask(b1), DiagsBB[d_8]);
+        ASSERT_EQ(diagMask(h6), DiagsBB[d_9]);
+        ASSERT_EQ(diagMask(d1), DiagsBB[d_10]);
+        ASSERT_EQ(diagMask(e1), DiagsBB[d_11]);
+        ASSERT_EQ(diagMask(g2), DiagsBB[d_12]);
+        ASSERT_EQ(diagMask(g1), DiagsBB[d_13]);
+        ASSERT_EQ(diagMask(h1), DiagsBB[d_14]);
+    }
+
+    TEST(BBTester, AntiDiagonalMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(antiDiagMask(a1), AntiDiagsBB[a_0]);
+        ASSERT_EQ(antiDiagMask(a2), AntiDiagsBB[a_1]);
+        ASSERT_EQ(antiDiagMask(c1), AntiDiagsBB[a_2]);
+        ASSERT_EQ(antiDiagMask(b3), AntiDiagsBB[a_3]);
+        ASSERT_EQ(antiDiagMask(b4), AntiDiagsBB[a_4]);
+        ASSERT_EQ(antiDiagMask(d3), AntiDiagsBB[a_5]);
+        ASSERT_EQ(antiDiagMask(f2), AntiDiagsBB[a_6]);
+        ASSERT_EQ(antiDiagMask(a8), AntiDiagsBB[a_7]);
+        ASSERT_EQ(antiDiagMask(e5), AntiDiagsBB[a_8]);
+        ASSERT_EQ(antiDiagMask(h3), AntiDiagsBB[a_9]);
+        ASSERT_EQ(antiDiagMask(g5), AntiDiagsBB[a_10]);
+        ASSERT_EQ(antiDiagMask(e8), AntiDiagsBB[a_11]);
+        ASSERT_EQ(antiDiagMask(g7), AntiDiagsBB[a_12]);
+        ASSERT_EQ(antiDiagMask(g8), AntiDiagsBB[a_13]);
+        ASSERT_EQ(antiDiagMask(h8), AntiDiagsBB[a_14]);
+    }
+
+    TEST(BBTester, DiagonalAntiDiagonalMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(diagonalsMask(a6), DiagsBB[d_2] | AntiDiagsBB[a_5]);
+        ASSERT_EQ(diagonalsMask(b7), DiagsBB[d_2] | AntiDiagsBB[a_7]);
+        ASSERT_EQ(diagonalsMask(c8), DiagsBB[d_2] | AntiDiagsBB[a_9]);
+        ASSERT_EQ(diagonalsMask(d1), DiagsBB[d_10] | AntiDiagsBB[a_3]);
+        ASSERT_EQ(diagonalsMask(e2), DiagsBB[d_10] | AntiDiagsBB[a_5]);
+        ASSERT_EQ(diagonalsMask(f3), DiagsBB[d_10] | AntiDiagsBB[a_7]);
+        ASSERT_EQ(diagonalsMask(g4), DiagsBB[d_10] | AntiDiagsBB[a_9]);
+        ASSERT_EQ(diagonalsMask(h5), DiagsBB[d_10] | AntiDiagsBB[a_11]);
+    }
+
+    TEST(BBTester, QueenMasksAreComputedCorrectly)
+    {
+        ASSERT_EQ(queenMask(a8), FilesBB[f_a] | RanksBB[r_8] | DiagsBB[d_0]  | AntiDiagsBB[a_7]);
+        ASSERT_EQ(queenMask(b8), FilesBB[f_b] | RanksBB[r_8] | DiagsBB[d_1]  | AntiDiagsBB[a_8]);
+        ASSERT_EQ(queenMask(a6), FilesBB[f_a] | RanksBB[r_6] | DiagsBB[d_2]  | AntiDiagsBB[a_5]);
+        ASSERT_EQ(queenMask(d8), FilesBB[f_d] | RanksBB[r_8] | DiagsBB[d_3]  | AntiDiagsBB[a_10]);
+        ASSERT_EQ(queenMask(d7), FilesBB[f_d] | RanksBB[r_7] | DiagsBB[d_4]  | AntiDiagsBB[a_9]);
+        ASSERT_EQ(queenMask(e7), FilesBB[f_e] | RanksBB[r_7] | DiagsBB[d_5]  | AntiDiagsBB[a_10]);
+        ASSERT_EQ(queenMask(c4), FilesBB[f_c] | RanksBB[r_4] | DiagsBB[d_6]  | AntiDiagsBB[a_5]);
+        ASSERT_EQ(queenMask(f6), FilesBB[f_f] | RanksBB[r_6] | DiagsBB[d_7]  | AntiDiagsBB[a_10]);
+        ASSERT_EQ(queenMask(b1), FilesBB[f_b] | RanksBB[r_1] | DiagsBB[d_8]  | AntiDiagsBB[a_1]);
+        ASSERT_EQ(queenMask(h6), FilesBB[f_h] | RanksBB[r_6] | DiagsBB[d_9]  | AntiDiagsBB[a_12]);
+        ASSERT_EQ(queenMask(d1), FilesBB[f_d] | RanksBB[r_1] | DiagsBB[d_10] | AntiDiagsBB[a_3]);
+        ASSERT_EQ(queenMask(e1), FilesBB[f_e] | RanksBB[r_1] | DiagsBB[d_11] | AntiDiagsBB[a_4]);
+        ASSERT_EQ(queenMask(g2), FilesBB[f_g] | RanksBB[r_2] | DiagsBB[d_12] | AntiDiagsBB[a_7]);
+        ASSERT_EQ(queenMask(g1), FilesBB[f_g] | RanksBB[r_1] | DiagsBB[d_13] | AntiDiagsBB[a_6]);
+        ASSERT_EQ(queenMask(h1), FilesBB[f_h] | RanksBB[r_1] | DiagsBB[d_14] | AntiDiagsBB[a_7]);
+        ASSERT_EQ(queenMask(a1), FilesBB[f_a] | RanksBB[r_1] | DiagsBB[d_7]  | AntiDiagsBB[a_0]);
+        ASSERT_EQ(queenMask(a2), FilesBB[f_a] | RanksBB[r_2] | DiagsBB[d_6]  | AntiDiagsBB[a_1]);
+        ASSERT_EQ(queenMask(c1), FilesBB[f_c] | RanksBB[r_1] | DiagsBB[d_9]  | AntiDiagsBB[a_2]);
+        ASSERT_EQ(queenMask(b3), FilesBB[f_b] | RanksBB[r_3] | DiagsBB[d_6]  | AntiDiagsBB[a_3]);
+        ASSERT_EQ(queenMask(b4), FilesBB[f_b] | RanksBB[r_4] | DiagsBB[d_5]  | AntiDiagsBB[a_4]);
+        ASSERT_EQ(queenMask(d3), FilesBB[f_d] | RanksBB[r_3] | DiagsBB[d_8]  | AntiDiagsBB[a_5]);
+        ASSERT_EQ(queenMask(f2), FilesBB[f_f] | RanksBB[r_2] | DiagsBB[d_11]  | AntiDiagsBB[a_6]);
+        ASSERT_EQ(queenMask(a8), FilesBB[f_a] | RanksBB[r_8] | DiagsBB[d_14]  | AntiDiagsBB[a_7]);
+        ASSERT_EQ(queenMask(e5), FilesBB[f_e] | RanksBB[r_5] | DiagsBB[d_7]  | AntiDiagsBB[a_8]);
+        ASSERT_EQ(queenMask(h3), FilesBB[f_h] | RanksBB[r_3] | DiagsBB[d_12]  | AntiDiagsBB[a_9]);
+        ASSERT_EQ(queenMask(g5), FilesBB[f_g] | RanksBB[r_5] | DiagsBB[d_9] | AntiDiagsBB[a_10]);
+        ASSERT_EQ(queenMask(e8), FilesBB[f_e] | RanksBB[r_8] | DiagsBB[d_4] | AntiDiagsBB[a_11]);
+        ASSERT_EQ(queenMask(g7), FilesBB[f_g] | RanksBB[r_7] | DiagsBB[d_7] | AntiDiagsBB[a_12]);
+        ASSERT_EQ(queenMask(g8), FilesBB[f_g] | RanksBB[r_8] | DiagsBB[d_6] | AntiDiagsBB[a_13]);
+        ASSERT_EQ(queenMask(h8), FilesBB[f_h] | RanksBB[r_8] | DiagsBB[d_7] | AntiDiagsBB[a_14]);
+    }
+
 
 }

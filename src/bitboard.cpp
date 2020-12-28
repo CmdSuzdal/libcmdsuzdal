@@ -10,7 +10,7 @@ namespace cSzd
         for (auto ndx = 0; (ndx < 64) && (foundCells < popCount()); ndx++) {
             if (bbs[ndx] != 0) {
                 foundCells++;
-                nb = nb | neighbour(static_cast<Cell>(ndx));
+                nb = nb | BitBoard(neighbour(static_cast<Cell>(ndx)));
             }
         }
         return nb;
@@ -22,7 +22,7 @@ namespace cSzd
         for (auto ndx = 0; (ndx < 64) && (foundCells < popCount()); ndx++) {
             if (bbs[ndx] != 0) {
                 foundCells++;
-                nb = nb | (diagonalsMask(static_cast<Cell>(ndx)) ^ singlecell(static_cast<Cell>(ndx)));
+                nb = nb | BitBoard(diagonalsMask(static_cast<Cell>(ndx)) ^ singlecell(static_cast<Cell>(ndx)));
             }
         }
         return nb;
@@ -34,7 +34,7 @@ namespace cSzd
         for (auto ndx = 0; (ndx < 64) && (foundCells < popCount()); ndx++) {
             if (bbs[ndx] != 0) {
                 foundCells++;
-                nb = nb | (fileRankMask(static_cast<Cell>(ndx)) ^ singlecell(static_cast<Cell>(ndx)));
+                nb = nb | BitBoard(fileRankMask(static_cast<Cell>(ndx)) ^ singlecell(static_cast<Cell>(ndx)));
             }
         }
         return nb;
@@ -68,21 +68,6 @@ namespace cSzd
         if (npos > 7)
             return set(EmptyBB);
         return set((bbs >> (npos * 8)) & SouthShiftClearMask[npos - 1]);
-    }
-
-    BitBoard BitBoard::neighbour(const Cell &c)
-    {
-        File f, w, e;
-        Rank r, s, n;
-        f = file(c);
-        r = rank(c);
-        w = west(c);
-        e = east(c);
-        s = south(c);
-        n = north(c);
-        return (BitBoard((FilesBB[w] | FilesBB[f] | FilesBB[e]) &
-                (RanksBB[n] | RanksBB[r] | RanksBB[s]))) ^
-               BitBoard::singlecell(c);
     }
 
 } // namespace cSzd

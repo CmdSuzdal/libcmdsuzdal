@@ -245,6 +245,17 @@ namespace cSzd
 
     Cell calcCellAfterSteps(const Cell &c, int stepNorth, int stepEast);
 
+    // Given a cell, returns any sort of "related" cells BitBoard states
+    BitBoardState singlecell(const Cell &c);
+    BitBoardState neighbour(const Cell &c);
+    BitBoardState fileMask(const Cell &c);
+    BitBoardState rankMask(const Cell &c);
+    BitBoardState fileRankMask(const Cell &c);
+    BitBoardState diagMask(const Cell &c);
+    BitBoardState antiDiagMask(const Cell &c);
+    BitBoardState diagonalsMask(const Cell &c);
+    BitBoardState queenMask(const Cell &c);
+
 } // namespace cSzd
 
 #endif // if !defined CSZD_BBDEFINES_HEADER

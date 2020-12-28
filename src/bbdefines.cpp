@@ -63,4 +63,32 @@ namespace cSzd
             return InvalidCell;
         return static_cast<Cell>(c + stepEast + (stepNorth * 8));
     }
+
+    BitBoardState singlecell(const Cell &c) { return (1ULL << c); }
+
+    BitBoardState neighbour(const Cell &c)
+    {
+        File f, w, e;
+        Rank r, s, n;
+        f = file(c);
+        r = rank(c);
+        w = west(c);
+        e = east(c);
+        s = south(c);
+        n = north(c);
+        return ((FilesBB[w] | FilesBB[f] | FilesBB[e]) &
+                (RanksBB[n] | RanksBB[r] | RanksBB[s])) ^
+               singlecell(c);
+    }
+
+    BitBoardState fileMask(const Cell &c) { return (FilesBB[file(c)]); }
+    BitBoardState rankMask(const Cell &c) { return (RanksBB[rank(c)]); }
+    BitBoardState fileRankMask(const Cell &c) { return fileMask(c) | rankMask(c); }
+    BitBoardState diagMask(const Cell &c) { return (DiagsBB[diag(c)]); }
+    BitBoardState antiDiagMask(const Cell &c) { return (AntiDiagsBB[antiDiag(c)]); }
+    BitBoardState diagonalsMask(const Cell &c) { return diagMask(c) | antiDiagMask(c); }
+    BitBoardState queenMask(const Cell &c) { return fileMask(c) | rankMask(c) | diagMask(c) | antiDiagMask(c); }
+
+
+
 }

@@ -137,20 +137,6 @@ namespace cSzd
         // -------------------------------------------------------------------------------
 
         // -------------------------------------------------------------------------------
-        // Bitboard utility methods
-
-        // Given a cell, returns any sort of "related" cells BitBoard states
-        static BitBoard singlecell(const Cell &c) { return BitBoard(1ULL << c); }
-        static BitBoard neighbour(const Cell &c);
-        static BitBoard fileMask(const Cell &c) { return BitBoard(FilesBB[file(c)]); }
-        static BitBoard rankMask(const Cell &c) { return BitBoard(RanksBB[rank(c)]); }
-        static BitBoard fileRankMask(const Cell &c) { return fileMask(c) | rankMask(c); }
-        static BitBoard diagMask(const Cell &c) { return BitBoard(DiagsBB[diag(c)]); }
-        static BitBoard antiDiagMask(const Cell &c) { return BitBoard(AntiDiagsBB[antiDiag(c)]); }
-        static BitBoard diagonalsMask(const Cell &c) { return diagMask(c) | antiDiagMask(c); }
-        static BitBoard queenMask(const Cell &c) { return fileMask(c) | rankMask(c) | diagMask(c) | antiDiagMask(c); }
-
-        // -------------------------------------------------------------------------------
         // Bitboard generation methods: returns a BitBoard object composed by cells generated
         // by the current object active cells
 
