@@ -34,6 +34,35 @@ namespace cSzd
         return armies[a].controlledCells(armies[enemyColor].occupiedCells());
     }
 
+    bool ChessBoard::armyIsInCheck(ArmyColor a) const
+    {
+        // An army is in check if King position intersecates
+        // the controlled cells of the opposite army
+        ArmyColor enemyColor = (a == WhiteArmy) ? BlackArmy : WhiteArmy;
+        return ((armies[a].pieces[King] & controlledCells(enemyColor))
+             != BitBoard(EmptyBB)) ? true : false;
+    }
+    // -----------------------------------------------------------------
+    ArmyColor ChessBoard::armyInCheck() const
+    {
+        // A king is in check if its position intersecates
+        // the controlled cells of the opposite army
+        auto blackKingInCkeck = armyIsInCheck(BlackArmy);
+        auto whiteKingInCkeck = armyIsInCheck(WhiteArmy);
+
+        // if both kings are in check, position is not valid
+        // and InvalidArmy is returned
+        if (blackKingInCkeck && whiteKingInCkeck)
+            return InvalidArmy;
+        else if (blackKingInCkeck)
+            return BlackArmy;
+        else if (whiteKingInCkeck)
+            return WhiteArmy;
+
+        return InvalidArmy;
+    }
+
+
     // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)
     {
@@ -79,9 +108,12 @@ namespace cSzd
         if (armies[BlackArmy].pieces[Pawn].activeCellsInMask(
             RanksBB[r_1] | RanksBB[r_8])) return false;
 
-        // More that 16 pieces for army
+        // No More that 16 pieces for army shall be present
         if (armies[WhiteArmy].numPieces() > 16) return false;
         if (armies[BlackArmy].numPieces() > 16) return false;
+
+        // If both kings are in check, position is not valid
+        if (armyIsInCheck(WhiteArmy) && armyIsInCheck(BlackArmy)) return false;
 
         // lastly check en passant cell validity
         return checkEnPassantTargetSquareValidity();

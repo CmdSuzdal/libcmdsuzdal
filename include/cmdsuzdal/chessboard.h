@@ -57,6 +57,14 @@ namespace cSzd
         BitBoard wholeArmyBitBoard(ArmyColor a = InvalidArmy) const;
         BitBoard controlledCells(ArmyColor a) const;
 
+        // If one of the kings is in check, returns the color of the army
+        // in check. Otherwise, returns InvalidArmy. If the position is not
+        // valid and both the kings are in check, InvalidArmy is returned.
+        // In the latter case, the isValid() function can be used to
+        // discriminate the condition
+        ArmyColor armyInCheck() const ;
+        bool armyIsInCheck(ArmyColor a) const;
+
         // --------------------------
         void loadPosition(const FENRecord &fen);
         void loadPosition(const std::string_view fenStr);

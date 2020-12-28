@@ -336,4 +336,36 @@ namespace cSzd
                         d1,             h1
         }));
     }
+
+    // Army in check Tests
+    TEST(ChessBoardTester, InInitialPositionTheKingsAreNotInCheck)
+    {
+        ChessBoard cb {};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+    }
+    TEST(ChessBoardTester, BlackKingInCheckSimpleCase)
+    {
+        ChessBoard cb {"8/8/8/3Q4/2k1K3/8/8/8 b - - 0 1"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), BlackArmy);
+    }
+    TEST(ChessBoardTester, WhiteKingInCheckSimpleCase)
+    {
+        ChessBoard cb {"8/7b/1k6/8/4K3/8/8/8 w - - 0 1"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), WhiteArmy);
+    }
+    TEST(ChessBoardTester, IfBothKingsAreInCheckArmyInCheckReturnsInvalidArmy)
+    {
+        ChessBoard cb {"8/7b/1k6/8/4K3/8/8/1R6 w - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+    }
+    TEST(ChessBoardTester, IfBothKingsAreInCheckPositionIsNotValid)
+    {
+        ChessBoard cb {"8/7b/1k6/8/4K3/8/8/1R6 w - - 0 1"};
+        ASSERT_FALSE(cb.isValid());
+    }
+
+
 } // namespace cSzd
