@@ -3,6 +3,7 @@
 
 #include "cmdsuzdal/bitboard.h"
 #include "cmdsuzdal/chessdefines.h"
+#include "cmdsuzdal/chessmove.h"
 
 namespace cSzd
 {
@@ -20,6 +21,8 @@ namespace cSzd
         // --------------------------
         unsigned int numPieces() const;
         BitBoard occupiedCells() const;
+        Piece getPieceInCell(Cell c) const;
+
         BitBoard controlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
         BitBoard kingControlledCells() const;
@@ -29,8 +32,9 @@ namespace cSzd
         BitBoard rooksControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard queensControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
-        BitBoard kingPossibleMoveCells(const BitBoard &opponentControlled) const;
-        BitBoard knightPossibleMoveCells(Cell nPos) const;
+        BitBoard kingPossibleMovesCells(const BitBoard &opponentControlled) const;
+        BitBoard knightPossibleMovesCells(Cell nPos) const;
+
     };
     // -----------------------------------------------
 

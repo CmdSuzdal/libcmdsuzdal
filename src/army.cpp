@@ -54,6 +54,20 @@ namespace cSzd
                 pieces[Rook];
     }
 
+    // Return the Piece type occupying the specified cell. If no
+    // piece is occupying the cell, InvalidPiece is returned
+    Piece Army::getPieceInCell(Cell c) const
+    {
+        BitBoard bb{c};
+        int pieceNdx;
+        for (pieceNdx = King; pieceNdx < InvalidPiece; pieceNdx++) {
+            if ((pieces[pieceNdx] & bb) != BitBoard(EmptyBB))
+                break;
+        }
+        return static_cast<Piece>(pieceNdx);
+    }
+
+
     // --------------------------------------------------------
     // The interference board is provided to add a set of cell occupied by some
     // other pieces. This can further limit the view of the current army pieces.
@@ -285,7 +299,7 @@ namespace cSzd
                 fakeArmy.rooksControlledCells(intfBoard);
     }
 
-    BitBoard Army::kingPossibleMoveCells(const BitBoard &opponentControlled) const
+    BitBoard Army::kingPossibleMovesCells(const BitBoard &opponentControlled) const
     {
         // The king can move in any of its controlled cells that is not
         // occupied by a piece of its army and it is not controlled by
@@ -293,13 +307,12 @@ namespace cSzd
         return (((kingControlledCells() | occupiedCells()) ^ occupiedCells()) & ~opponentControlled);
     }
 
-    BitBoard Army::knightPossibleMoveCells(Cell nPos) const {
+    BitBoard Army::knightPossibleMovesCells(Cell nPos) const {
         // Returns the bitboard with all the possible moves
-        // of the knight in position qPos (it the army does not
-        // have a knight in this position, empty BB is returned
+        // of the knight in position qPos (if the army does not
+        // have a knight in this position, empty BB is returned)
         if ((pieces[Knight] & BitBoard(nPos)) == BitBoard(EmptyBB))
             return BitBoard(EmptyBB);
-
         Army fakeArmy = *this;
         fakeArmy.pieces[Pawn] |= (pieces[Knight] ^ BitBoard(nPos));
         fakeArmy.pieces[Knight] = BitBoard(nPos);
