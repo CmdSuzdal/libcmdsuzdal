@@ -1,6 +1,8 @@
 #if !defined CSZD_ARMY_HEADER
 #define CSZD_ARMY_HEADER
 
+#include <vector>
+
 #include "cmdsuzdal/bitboard.h"
 #include "cmdsuzdal/chessdefines.h"
 #include "cmdsuzdal/chessmove.h"
@@ -35,6 +37,8 @@ namespace cSzd
         BitBoard kingPossibleMovesCells(const BitBoard &opponentControlled) const;
         BitBoard knightPossibleMovesCells(Cell nPos) const;
 
+        void generateLegalMoves(std::vector<ChessMove> &moves, const Army &opponentArmy) const;
+        void generateKingLegalMoves(std::vector<ChessMove> &moves, const Army &opponentArmy) const;
     };
     // -----------------------------------------------
 
