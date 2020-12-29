@@ -73,6 +73,7 @@ namespace cSzd
 
         void generateLegalMoves(std::vector<ChessMove> &moves);
         void generateKingLegalMoves(std::vector<ChessMove> &moves);
+        void generateKnightLegalMoves(std::vector<ChessMove> &moves);
 
     private:
         bool checkEnPassantTargetSquareValidity() const;
