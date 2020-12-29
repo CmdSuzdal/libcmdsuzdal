@@ -183,4 +183,41 @@ namespace cSzd
         // if here, e.p. target cell is OK
         return true;
     }
+
+    // Generates all the legal moves for the Army starting from the current position
+    // taking into account an opponent Army. The opponent army is necessary to generate
+    // the move, but also to check for the legality of moves: illegal moves are those
+    // that places the King in check
+    void ChessBoard::generateLegalMoves(std::vector<ChessMove> &moves)
+    {
+        generateKingLegalMoves(moves);
+    }
+
+    void ChessBoard::generateKingLegalMoves(std::vector<ChessMove> &moves)
+    {
+        ArmyColor opponentColor = (sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
+        BitBoard moveBB;
+        int startPos;
+        // before to proceed we need the king position. Only one king is present in an army
+        for (startPos = 0; startPos < 64; startPos++) {
+            if (armies[sideToMove].pieces[King].bbs[startPos] != 0)
+                break;
+        }
+        moveBB = armies[sideToMove].kingPossibleMovesCells(
+                                        armies[opponentColor].controlledCells());
+        auto foundCells = 0;
+        for (auto destPos = 0; (destPos < 64) && (foundCells < moveBB.popCount()); destPos++) {
+            if (moveBB.bbs[destPos] != 0) {
+                ++foundCells;
+                // Possible move found. Note that it is not important here
+                // to check for validity of moves because the kingPossibleMovesCells()
+                // already avoid to generate illegal moves, so any move found here can
+                // be added to the vector of moves
+                moves.push_back(chessMove(King,
+                    static_cast<Cell>(startPos), static_cast<Cell>(destPos),
+                    armies[opponentColor].getPieceInCell(static_cast<Cell>(destPos))));
+            }
+        }
+    }
+
 } // namespace cSzd

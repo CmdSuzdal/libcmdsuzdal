@@ -3,6 +3,7 @@
 
 #include "cmdsuzdal/army.h"
 #include "cmdsuzdal/fenrecord.h"
+#include "cmdsuzdal/chessmove.h"
 
 namespace cSzd
 {
@@ -69,6 +70,9 @@ namespace cSzd
         void loadPosition(const FENRecord &fen);
         void loadPosition(const std::string_view fenStr);
         bool isValid() const;
+
+        void generateLegalMoves(std::vector<ChessMove> &moves);
+        void generateKingLegalMoves(std::vector<ChessMove> &moves);
 
     private:
         bool checkEnPassantTargetSquareValidity() const;

@@ -387,7 +387,51 @@ namespace cSzd
         ASSERT_FALSE(cb.isValid());
     }
 
+    // ---------------- generateLegalMoves() testing -------------------------
+    // --- generateKingLegalMoves() method Testing
+    TEST(ChessBoardTester, CheckLegalMovesOfKingsInE5AndA1WithNoInterference)
+    {
+        ChessBoard cb {"8/8/8/4k3/8/8/8/K7 b - - 0 1"};
 
+        std::vector<ChessMove> blackKingMoves;
+        cb.generateKingLegalMoves(blackKingMoves);
+        ASSERT_EQ(blackKingMoves.size(), 8);
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, e5, d4)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, e5, e4)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, e5, f4)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, e5, d5)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, e5, f5)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, e5, d6)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, e5, e6)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, e5, f6)) != blackKingMoves.end());
 
+        cb.loadPosition("8/8/8/4k3/8/8/8/K7 w - - 0 1");
+        std::vector<ChessMove> whiteKingMoves;
+        cb.generateKingLegalMoves(whiteKingMoves);
+        ASSERT_EQ(whiteKingMoves.size(), 3);
+        ASSERT_TRUE(std::find(whiteKingMoves.begin(), whiteKingMoves.end(), chessMove(King, a1, b1)) != whiteKingMoves.end());
+        ASSERT_TRUE(std::find(whiteKingMoves.begin(), whiteKingMoves.end(), chessMove(King, a1, a2)) != whiteKingMoves.end());
+        ASSERT_TRUE(std::find(whiteKingMoves.begin(), whiteKingMoves.end(), chessMove(King, a1, b2)) != whiteKingMoves.end());
+    }
+
+    TEST(ChessBoardTester, CheckLegalMovesOfKingsInB4AndD5WithSomeInterferenceAndCaptures)
+    {
+        ChessBoard cb {"8/8/4N3/1p1k4/1K6/7r/1Q6/8 w - - 0 1"};
+
+        std::vector<ChessMove> whiteKingMoves;
+        cb.generateKingLegalMoves(whiteKingMoves);
+        ASSERT_EQ(whiteKingMoves.size(), 2);
+        ASSERT_TRUE(std::find(whiteKingMoves.begin(), whiteKingMoves.end(), chessMove(King, b4, a5)) != whiteKingMoves.end());
+        ASSERT_TRUE(std::find(whiteKingMoves.begin(), whiteKingMoves.end(), chessMove(King, b4, b5, Pawn)) != whiteKingMoves.end());
+
+        cb.loadPosition("8/8/4N3/1p1k4/1K6/7r/1Q6/8 b - - 0 1");
+        std::vector<ChessMove> blackKingMoves;
+        cb.generateKingLegalMoves(blackKingMoves);
+        ASSERT_EQ(blackKingMoves.size(), 4);
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, d5, c6)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, d5, d6)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, d5, e6, Knight)) != blackKingMoves.end());
+        ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, d5, e4)) != blackKingMoves.end());
+    }
 
 } // namespace cSzd
