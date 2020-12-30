@@ -191,7 +191,11 @@ namespace cSzd
     void ChessBoard::generateLegalMoves(std::vector<ChessMove> &moves)
     {
         generateKingLegalMoves(moves);
-        generateKnightLegalMoves(moves);
+        generateKnightsLegalMoves(moves);
+        generateBishopsLegalMoves(moves);
+        generateRooksLegalMoves(moves);
+        generateQueensLegalMoves(moves);
+        generatePawnsLegalMoves(moves);
     }
 
     void ChessBoard::generateKingLegalMoves(std::vector<ChessMove> &moves)
@@ -221,7 +225,8 @@ namespace cSzd
         }
     }
 
-    void ChessBoard::generateKnightLegalMoves(std::vector<ChessMove> &moves)
+    // ---------------------------------------------------------------------------------
+    void ChessBoard::generateKnightsLegalMoves(std::vector<ChessMove> &moves)
     {
         ArmyColor opponentColor = (sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
         // Iterates over all knights
@@ -266,5 +271,77 @@ namespace cSzd
             }
         }
     }
+
+    // ---------------------------------------------------------------------------------
+    void ChessBoard::generateBishopsLegalMoves(std::vector<ChessMove> &moves)
+    {
+        ArmyColor opponentColor = (sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
+        // Iterates over all bishops
+        BitBoard moveBB;
+        auto foundPieces = 0;
+        for (auto startPos = 0; (startPos < 64) && (foundPieces < armies[sideToMove].pieces[Bishop].popCount()); startPos++) {
+            if (armies[sideToMove].pieces[Bishop].bbs[startPos] != 0) {
+                // piece in position ndx
+                foundPieces++;
+                moveBB = armies[sideToMove].bishopPossibleMovesCells(static_cast<Cell>(startPos),
+                                                             armies[opponentColor].occupiedCells());
+                auto foundMove = 0;
+                //std::cout << "   ------ possible move bitboard has a size of " << startPos << " ***" << std::endl;
+                for (auto destPos = 0; (destPos < 64) && (foundMove < moveBB.popCount()); destPos++) {
+                    if (moveBB.bbs[destPos] != 0) {
+                        ++foundMove;
+                        auto takenPiece = armies[opponentColor].getPieceInCell(static_cast<Cell>(destPos));
+                        // Possible move found:
+                        //    Bishop from startPos --- to ---> destPos, taking takenPiece (can be InvalidPiece)
+                        // We need to validate the move: after the move the king shall not be in check
+                        // otherwise the move is not valid and shall be discarded
+                        // ...move the piece
+                        armies[sideToMove].pieces[Bishop] ^=
+                                BitBoard({static_cast<Cell>(startPos), static_cast<Cell>(destPos)});
+                        // ...remove the piece from the opponent army if necessary
+                        if (takenPiece != InvalidPiece) {
+                            armies[opponentColor].pieces[takenPiece] ^= BitBoard(static_cast<Cell>(destPos));
+                        }
+                        // ... check for check
+                        if (!armyIsInCheck(sideToMove)) {
+                            // If at the end the move is valid, it can be added to the vector of moves
+                            moves.push_back(chessMove(Bishop,
+                                static_cast<Cell>(startPos), static_cast<Cell>(destPos),
+                                takenPiece));
+                        }
+                        // ...restore the armies
+                        armies[sideToMove].pieces[Bishop] ^=
+                                BitBoard({static_cast<Cell>(startPos), static_cast<Cell>(destPos)});
+                        if (takenPiece != InvalidPiece) {
+                            armies[opponentColor].pieces[takenPiece] ^= BitBoard(static_cast<Cell>(destPos));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ---------------------------------------------------------------------------------
+    void ChessBoard::generateRooksLegalMoves(std::vector<ChessMove> &moves)
+    {
+        // FIXME --- TO BE COMPLETED
+    }
+
+    // ---------------------------------------------------------------------------------
+    void ChessBoard::generateQueensLegalMoves(std::vector<ChessMove> &moves)
+    {
+        // FIXME --- TO BE COMPLETED
+    }
+
+    // ---------------------------------------------------------------------------------
+    void ChessBoard::generatePawnsLegalMoves(std::vector<ChessMove> &moves)
+    {
+        // FIXME --- TO BE COMPLETED
+    }
+
+
+
+
+
 
 } // namespace cSzd
