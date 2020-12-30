@@ -323,6 +323,44 @@ namespace cSzd
         ASSERT_EQ(a.occupiedCells(), BitBoard(RanksBB[r_7] | RanksBB[r_8]));
     }
 
+    // --- getPieceInCell() method Testing
+    TEST(ArmyTester, CheckThatGetPieceInCellReturnsCorrectValues)
+    {
+        Army a{WhiteArmy};
+        ASSERT_EQ(a.getPieceInCell(e1), King);
+        ASSERT_EQ(a.getPieceInCell(d1), Queen);
+        ASSERT_EQ(a.getPieceInCell(c1), Bishop);
+        ASSERT_EQ(a.getPieceInCell(f1), Bishop);
+        ASSERT_EQ(a.getPieceInCell(b1), Knight);
+        ASSERT_EQ(a.getPieceInCell(g1), Knight);
+        ASSERT_EQ(a.getPieceInCell(a1), Rook);
+        ASSERT_EQ(a.getPieceInCell(h1), Rook);
+        ASSERT_EQ(a.getPieceInCell(a2), Pawn);
+        ASSERT_EQ(a.getPieceInCell(b2), Pawn);
+        ASSERT_EQ(a.getPieceInCell(c2), Pawn);
+        ASSERT_EQ(a.getPieceInCell(d2), Pawn);
+        ASSERT_EQ(a.getPieceInCell(e2), Pawn);
+        ASSERT_EQ(a.getPieceInCell(f2), Pawn);
+        ASSERT_EQ(a.getPieceInCell(g2), Pawn);
+        ASSERT_EQ(a.getPieceInCell(h2), Pawn);
+        ASSERT_EQ(a.getPieceInCell(a3), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(b3), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(c3), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(d3), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(e3), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(f3), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(g3), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(h3), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(a4), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(b4), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(c4), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(d4), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(e4), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(f4), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(g4), InvalidPiece);
+        ASSERT_EQ(a.getPieceInCell(h4), InvalidPiece);
+    }
+
     // --- OCCUPIED CELLS COMPLEX CASES (with interference) ----------------------------------------
     // Rooks ---
     TEST(ArmyTester, CheckCellsControlledByRookInA1WithPawnInA2)
@@ -511,48 +549,38 @@ namespace cSzd
         b.pieces[Rook] = BitBoard(h3);
         b.pieces[Queen] = BitBoard(b2);
         b.pieces[Pawn] = BitBoard({e6, f7, g6, h7});
-        ASSERT_EQ(w.knightPossibleMovesCells(f4), BitBoard(EmptyBB));  // No white knights in g2
-        ASSERT_EQ(b.knightPossibleMovesCells(d3), BitBoard(EmptyBB));  // No black knights in g2
+        ASSERT_EQ(w.knightPossibleMovesCells(f4), BitBoard(EmptyBB));  // No white knight in g2
+        ASSERT_EQ(b.knightPossibleMovesCells(d3), BitBoard(EmptyBB));  // No black knight in g2
         ASSERT_EQ(w.knightPossibleMovesCells(d3), BitBoard({c1, b2, e5, f4, e1}));
         ASSERT_EQ(b.knightPossibleMovesCells(f4), BitBoard({d3, h5, g2, e2}));
     }
-
-    // --- getPieceInCell() method Testing
-    TEST(ArmyTester, CheckThatGetPieceInCellReturnsCorrectValues)
+    TEST(ArmyTester, CheckPossibleMovesOfABishopInF3WithNoOtherFriendPiecesInDestinationCells)
     {
-        Army a{WhiteArmy};
-        ASSERT_EQ(a.getPieceInCell(e1), King);
-        ASSERT_EQ(a.getPieceInCell(d1), Queen);
-        ASSERT_EQ(a.getPieceInCell(c1), Bishop);
-        ASSERT_EQ(a.getPieceInCell(f1), Bishop);
-        ASSERT_EQ(a.getPieceInCell(b1), Knight);
-        ASSERT_EQ(a.getPieceInCell(g1), Knight);
-        ASSERT_EQ(a.getPieceInCell(a1), Rook);
-        ASSERT_EQ(a.getPieceInCell(h1), Rook);
-        ASSERT_EQ(a.getPieceInCell(a2), Pawn);
-        ASSERT_EQ(a.getPieceInCell(b2), Pawn);
-        ASSERT_EQ(a.getPieceInCell(c2), Pawn);
-        ASSERT_EQ(a.getPieceInCell(d2), Pawn);
-        ASSERT_EQ(a.getPieceInCell(e2), Pawn);
-        ASSERT_EQ(a.getPieceInCell(f2), Pawn);
-        ASSERT_EQ(a.getPieceInCell(g2), Pawn);
-        ASSERT_EQ(a.getPieceInCell(h2), Pawn);
-        ASSERT_EQ(a.getPieceInCell(a3), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(b3), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(c3), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(d3), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(e3), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(f3), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(g3), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(h3), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(a4), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(b4), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(c4), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(d4), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(e4), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(f4), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(g4), InvalidPiece);
-        ASSERT_EQ(a.getPieceInCell(h4), InvalidPiece);
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Bishop] = BitBoard(e6);
+        w.pieces[Pawn] = BitBoard(g2);
+        ASSERT_EQ(w.bishopPossibleMovesCells(g2), BitBoard(EmptyBB));  // No bishop in g2
+        ASSERT_EQ(w.bishopPossibleMovesCells(e6), BitBoard({a2, b3, c4, d5, f7, g8, h3, g4, f5, d7, c8}));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfBishopsWithComplexInteraction)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Bishop] = BitBoard(d5);
+        w.pieces[King] = BitBoard(c4);
+        w.pieces[Knight] = BitBoard(g3);
+        w.pieces[Pawn] = BitBoard({e6, f6});
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Bishop] = BitBoard(f4);
+        b.pieces[King] = BitBoard(g5);
+        b.pieces[Knight] = BitBoard(b7);
+        b.pieces[Pawn] = BitBoard({e3, f3});
+        ASSERT_EQ(w.bishopPossibleMovesCells(c4, b.occupiedCells()), BitBoard(EmptyBB));  // No white bishop in g2
+        ASSERT_EQ(b.bishopPossibleMovesCells(e3, w.occupiedCells()), BitBoard(EmptyBB));  // No black bishop in g2
+        ASSERT_EQ(w.bishopPossibleMovesCells(d5, b.occupiedCells()), BitBoard({b7, c6, e4, f3}));
+        ASSERT_EQ(b.bishopPossibleMovesCells(f4, w.occupiedCells()), BitBoard({b8, c7, d6, e5, g3}));
     }
 
 } // namespace cSzd

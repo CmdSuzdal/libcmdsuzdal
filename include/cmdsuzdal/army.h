@@ -35,6 +35,10 @@ namespace cSzd
 
         BitBoard kingPossibleMovesCells(const BitBoard &opponentControlled) const;
         BitBoard knightPossibleMovesCells(Cell nPos) const;
+        BitBoard bishopPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+        BitBoard rookPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+        BitBoard queenPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+        BitBoard pawnPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
     };
     // -----------------------------------------------
