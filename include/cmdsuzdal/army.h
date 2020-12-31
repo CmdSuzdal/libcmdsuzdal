@@ -41,6 +41,8 @@ namespace cSzd
         BitBoard queenPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard pawnPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
+    private:
+        BitBoard piecePossibleMovesCells(Piece pType, Cell nPos, const BitBoard &intfBoard) const;
     };
     // -----------------------------------------------
 

@@ -336,34 +336,23 @@ namespace cSzd
 
     BitBoard Army::knightPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
     {
-        // Returns the bitboard with all the possible moves
-        // of the knight in position qPos (if the army does not
-        // have a knight in this position, empty BB is returned)
-        if ((pieces[Knight] & BitBoard(nPos)) == BitBoard(EmptyBB))
-            return BitBoard(EmptyBB);
-        Army fakeArmy = *this;
-        fakeArmy.pieces[Pawn] |= (pieces[Knight] ^ BitBoard(nPos));
-        fakeArmy.pieces[Knight] = BitBoard(nPos);
-        return ((fakeArmy.controlledCellsByPieceType(Knight, intfBoard) | occupiedCells()) ^ occupiedCells());
+        // Returns the bitboard with all the possible
+        // moves of the knight in position qPos
+        return piecePossibleMovesCells(Knight, nPos, intfBoard);
     }
 
     BitBoard Army::bishopPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
     {
-        // Returns the bitboard with all the possible moves
-        // of the bishop in position qPos (if the army does not
-        // have a bishop in this position, empty BB is returned)
-        if ((pieces[Bishop] & BitBoard(nPos)) == BitBoard(EmptyBB))
-            return BitBoard(EmptyBB);
-        Army fakeArmy = *this;
-        fakeArmy.pieces[Pawn] |= (pieces[Bishop] ^ BitBoard(nPos));
-        fakeArmy.pieces[Bishop] = BitBoard(nPos);
-        return ((fakeArmy.controlledCellsByPieceType(Bishop, intfBoard) | occupiedCells()) ^ occupiedCells());
+        // Returns the bitboard with all the possible
+        // moves of the bishop in position qPos
+        return piecePossibleMovesCells(Bishop, nPos, intfBoard);
     }
 
     BitBoard Army::rookPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
     {
-        // FIXME --- TO BE COMPLETED
-        return BitBoard(EmptyBB);
+        // Returns the bitboard with all the possible
+        // moves of a rook in position qPos
+        return piecePossibleMovesCells(Rook, nPos, intfBoard);
     }
 
     BitBoard Army::queenPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
@@ -377,5 +366,26 @@ namespace cSzd
         // FIXME --- TO BE COMPLETED
         return BitBoard(EmptyBB);
     }
+
+    // --------------------------------------------------------------------------------------------
+    BitBoard Army::piecePossibleMovesCells(Piece pType, Cell nPos, const BitBoard &intfBoard) const
+    {
+        // Returns the bitboard with all the possible moves of a piece
+        // of type pType in position qPos (if the army does not have a piece
+        // of that type in this position, empty BB is returned).
+        // This functions works only for "normal pieces":
+        //   - Knights
+        //   - Bishops
+        //   - Rooks
+        //   - Queens
+        if ((pieces[pType] & BitBoard(nPos)) == BitBoard(EmptyBB))
+            return BitBoard(EmptyBB);
+        Army fakeArmy = *this;
+        fakeArmy.pieces[Pawn] |= (pieces[pType] ^ BitBoard(nPos));
+        fakeArmy.pieces[pType] = BitBoard(nPos);
+        return ((fakeArmy.controlledCellsByPieceType(pType, intfBoard) | occupiedCells()) ^ occupiedCells());
+    }
+
+
 
 } // namespace cSzd

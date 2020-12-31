@@ -486,6 +486,8 @@ namespace cSzd
 
     // ------------------------------------------------------------------------
     // --- Possible Moves Tests ---
+
+    // --- King
     TEST(ArmyTester, CheckThatKingsAloneInE5AndA1CanMoveInTheWholeNeighbour)
     {
         Army w{};
@@ -525,6 +527,8 @@ namespace cSzd
         ASSERT_EQ(w.kingPossibleMovesCells(b.controlledCells()), BitBoard({b1, c2}));
         ASSERT_EQ(b.kingPossibleMovesCells(w.controlledCells()), BitBoard(g8));
     }
+
+    // --- Knights
     TEST(ArmyTester, CheckPossibleMovesOfAKnightInF3WithNoOtherFriendPiecesInDestinationCells)
     {
         Army w{};
@@ -554,6 +558,8 @@ namespace cSzd
         ASSERT_EQ(w.knightPossibleMovesCells(d3), BitBoard({c1, b2, e5, f4, e1}));
         ASSERT_EQ(b.knightPossibleMovesCells(f4), BitBoard({d3, h5, g2, e2}));
     }
+
+    // --- Bishops
     TEST(ArmyTester, CheckPossibleMovesOfABishopInF3WithNoOtherFriendPiecesInDestinationCells)
     {
         Army w{};
@@ -581,6 +587,38 @@ namespace cSzd
         ASSERT_EQ(b.bishopPossibleMovesCells(e3, w.occupiedCells()), BitBoard(EmptyBB));  // No black bishop in g2
         ASSERT_EQ(w.bishopPossibleMovesCells(d5, b.occupiedCells()), BitBoard({b7, c6, e4, f3}));
         ASSERT_EQ(b.bishopPossibleMovesCells(f4, w.occupiedCells()), BitBoard({b8, c7, d6, e5, g3}));
+    }
+
+    // --- Rooks
+    TEST(ArmyTester, CheckPossibleMovesOfARookInB2WithNoOtherFriendPiecesInDestinationCells)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Rook] = BitBoard(b2);
+        w.pieces[Pawn] = BitBoard(g3);
+        ASSERT_EQ(w.rookPossibleMovesCells(g3), BitBoard(EmptyBB));  // No rook in g2
+        ASSERT_EQ(w.rookPossibleMovesCells(b2), BitBoard(FilesBB[f_b] ^ RanksBB[r_2]));
+    }
+
+    TEST(ArmyTester, CheckPossibleMovesOfRooksWithComplexInteraction)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Rook] = BitBoard({c3, d3});
+        w.pieces[King] = BitBoard(a3);
+        w.pieces[Pawn] = BitBoard({e2, h3});
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Rook] = BitBoard({g3, d5});
+        b.pieces[King] = BitBoard(d8);
+        b.pieces[Pawn] = BitBoard({c6, h4});
+        ASSERT_EQ(w.rookPossibleMovesCells(e2, b.occupiedCells()), BitBoard(EmptyBB));  // No white rook in g2
+        ASSERT_EQ(w.rookPossibleMovesCells(c3, b.occupiedCells()), BitBoard({b3, c1, c2, c4, c5, c6}));
+        ASSERT_EQ(w.rookPossibleMovesCells(d3, b.occupiedCells()), BitBoard({e3, f3, g3, d1, d2, d4, d5}));
+
+        ASSERT_EQ(b.rookPossibleMovesCells(c6, w.occupiedCells()), BitBoard(EmptyBB));  // No black rook in g2
+        ASSERT_EQ(b.rookPossibleMovesCells(g3, w.occupiedCells()), BitBoard({d3, e3, f3, h3, g1, g2, g4, g5, g6, g7, g8}));
+        ASSERT_EQ(b.rookPossibleMovesCells(d5, w.occupiedCells()), BitBoard({d3, d4, d6, d7, a5, b5, c5, e5, f5, g5, h5}));
     }
 
 } // namespace cSzd
