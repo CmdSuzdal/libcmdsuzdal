@@ -357,8 +357,9 @@ namespace cSzd
 
     BitBoard Army::queenPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
     {
-        // FIXME --- TO BE COMPLETED
-        return BitBoard(EmptyBB);
+        // Returns the bitboard with all the possible
+        // moves of a queen in position qPos
+        return piecePossibleMovesCells(Queen, nPos, intfBoard);
     }
 
     BitBoard Army::pawnPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const

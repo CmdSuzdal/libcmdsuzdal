@@ -621,4 +621,38 @@ namespace cSzd
         ASSERT_EQ(b.rookPossibleMovesCells(d5, w.occupiedCells()), BitBoard({d3, d4, d6, d7, a5, b5, c5, e5, f5, g5, h5}));
     }
 
+    // --- Queens
+    TEST(ArmyTester, CheckPossibleMovesOfAQueenInE6WithNoOtherFriendPiecesInDestinationCells)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Queen] = BitBoard(e6);
+        w.pieces[King] = BitBoard(f4);
+        ASSERT_EQ(w.queenPossibleMovesCells(f4), BitBoard(EmptyBB));  // No queen in f4
+        ASSERT_EQ(w.queenPossibleMovesCells(e6), BitBoard(FilesBB[f_e] | RanksBB[r_6] |
+                                                          DiagsBB[d_6] | AntiDiagsBB[a_9]) ^ BitBoard(e6));
+    }
+
+    TEST(ArmyTester, CheckPossibleMovesOfQueensWithComplexInteraction)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Queen] = BitBoard(c6);
+        w.pieces[King] = BitBoard(b6);
+        w.pieces[Knight] = BitBoard(e8);
+        w.pieces[Bishop] = BitBoard(f6);
+        w.pieces[Pawn] = BitBoard({b5, c5});
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Queen] = BitBoard(f3);
+        b.pieces[King] = BitBoard(g2);
+        b.pieces[Rook] = BitBoard(h5);
+        b.pieces[Pawn] = BitBoard({c3, h7});
+        ASSERT_EQ(w.queenPossibleMovesCells(f6, b.occupiedCells()), BitBoard(EmptyBB));  // No white queen in f6
+        ASSERT_EQ(w.queenPossibleMovesCells(c6, b.occupiedCells()), BitBoard({a8, b7, d5, e4, f3, d7, d6, e6, c7, c8}));
+
+        ASSERT_EQ(b.queenPossibleMovesCells(h5, w.occupiedCells()), BitBoard(EmptyBB));  // No black queen in h5
+        ASSERT_EQ(b.queenPossibleMovesCells(f3, w.occupiedCells()), BitBoard({d3, e3, g3, h3, f1, f2, f4, f5, f6, d1, e2, g4, e4, d5, c6}));
+    }
+
 } // namespace cSzd
