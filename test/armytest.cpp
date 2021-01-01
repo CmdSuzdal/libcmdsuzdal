@@ -361,6 +361,43 @@ namespace cSzd
         ASSERT_EQ(a.getPieceInCell(h4), InvalidPiece);
     }
 
+    // --- Test the controlledCellsByPieceType() method for kings, pawns and invalid pieces.
+    // (this is done to complete the coverage of the function)
+    TEST(ArmyTester, controlledCellsByPieceType_CheckKing)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[King] = BitBoard(g4);
+        Army b{};
+        b.color = WhiteArmy;
+        b.pieces[King] = BitBoard(b6);
+        ASSERT_EQ(w.controlledCellsByPieceType(King, b.occupiedCells()), BitBoard({f3, g3, h3, f4, h4, f5, g5, h5}));
+        ASSERT_EQ(b.controlledCellsByPieceType(King, w.occupiedCells()), BitBoard({a5, b5, c5, a6, c6, a7, b7, c7}));
+    }
+    TEST(ArmyTester, controlledCellsByPieceType_CheckInvalidPiece)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[King] = BitBoard(g4);
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[King] = BitBoard(b6);
+        ASSERT_EQ(w.controlledCellsByPieceType(InvalidPiece, b.occupiedCells()), BitBoard(EmptyBB));
+        ASSERT_EQ(b.controlledCellsByPieceType(InvalidPiece, w.occupiedCells()), BitBoard(EmptyBB));
+    }
+    TEST(ArmyTester, controlledCellsByPieceType_CheckPawn)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard({c2, g3});
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Pawn] = BitBoard({c7, h6});
+        ASSERT_EQ(w.controlledCellsByPieceType(Pawn, b.occupiedCells()), BitBoard({b3, d3, f4, h4}));
+        ASSERT_EQ(b.controlledCellsByPieceType(Pawn, w.occupiedCells()), BitBoard({b6, d6, g5}));
+    }
+
+
     // --- OCCUPIED CELLS COMPLEX CASES (with interference) ----------------------------------------
     // Rooks ---
     TEST(ArmyTester, CheckCellsControlledByRookInA1WithPawnInA2)
