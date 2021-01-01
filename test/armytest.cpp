@@ -841,5 +841,72 @@ namespace cSzd
         ASSERT_EQ(b.pawnPossibleMovesCells(d7, w.occupiedCells()), BitBoard(d6));
         ASSERT_EQ(b.pawnPossibleMovesCells(h7, w.occupiedCells()), BitBoard({h6, h5}));
     }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn7_FromNonStartLineWithEnemyToCaptureOnOneSide)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard(d4);
+        w.pieces[King] = BitBoard(c5);
+        ASSERT_EQ(w.pawnPossibleMovesCells(d4), BitBoard(d5));
+
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Pawn] = BitBoard(e5);
+        b.pieces[King] = BitBoard(e6);
+        ASSERT_EQ(b.pawnPossibleMovesCells(e5), BitBoard(e4));
+
+        ASSERT_EQ(w.pawnPossibleMovesCells(d4, b.occupiedCells()), BitBoard({d5, e5}));
+        ASSERT_EQ(b.pawnPossibleMovesCells(e5, w.occupiedCells()), BitBoard({e4, d4}));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn7_FromNonStartLineWithEnemyToCaptureOnBothSides)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard(b5);
+        w.pieces[King] = BitBoard(b4);
+        w.pieces[Queen] = BitBoard(d5);
+        ASSERT_EQ(w.pawnPossibleMovesCells(b5), BitBoard(b6));
+
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Pawn] = BitBoard(c6);
+        b.pieces[King] = BitBoard(c7);
+        b.pieces[Bishop] = BitBoard(a6);
+        ASSERT_EQ(b.pawnPossibleMovesCells(c6), BitBoard(c5));
+
+        ASSERT_EQ(w.pawnPossibleMovesCells(b5, b.occupiedCells()), BitBoard({a6, b6, c6}));
+        ASSERT_EQ(b.pawnPossibleMovesCells(c6, w.occupiedCells()), BitBoard({b5, c5, d5}));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn7_FromStartLineWithEnemyToCaptureOnOneSide)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard({c2, d2, h5});
+        w.pieces[King] = BitBoard(e1);
+        w.pieces[Knight] = BitBoard({c6, e6});
+        w.pieces[Bishop] = BitBoard({c5, e5});
+        w.pieces[Rook] = BitBoard({f6, h6});
+        w.pieces[Queen] = BitBoard(f5);
+        ASSERT_EQ(w.pawnPossibleMovesCells(c2), BitBoard({c3, c4}));
+        ASSERT_EQ(w.pawnPossibleMovesCells(d2), BitBoard({d3, d4}));
+        ASSERT_EQ(w.pawnPossibleMovesCells(h5), BitBoard(EmptyBB));
+
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Pawn] = BitBoard({d7, g7});
+        b.pieces[King] = BitBoard(e8);
+        b.pieces[Knight] = BitBoard({b3, e3});
+        b.pieces[Bishop] = BitBoard(b4);
+        b.pieces[Queen] = BitBoard(e4);
+        ASSERT_EQ(b.pawnPossibleMovesCells(d7), BitBoard({d6, d5}));
+        ASSERT_EQ(b.pawnPossibleMovesCells(g7), BitBoard({g6, g5}));
+
+        ASSERT_EQ(w.pawnPossibleMovesCells(c2, b.occupiedCells()), BitBoard({c3, c4, b3}));
+        ASSERT_EQ(w.pawnPossibleMovesCells(d2, b.occupiedCells()), BitBoard({d3, d4, e3}));
+        ASSERT_EQ(w.pawnPossibleMovesCells(h5, b.occupiedCells()), BitBoard(EmptyBB));
+
+        ASSERT_EQ(b.pawnPossibleMovesCells(d7, w.occupiedCells()), BitBoard({d6, d5, c6, e6}));
+        ASSERT_EQ(b.pawnPossibleMovesCells(g7, w.occupiedCells()), BitBoard({g6, g5, f6, h6}));
+    }
 
 } // namespace cSzd

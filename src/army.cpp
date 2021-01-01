@@ -403,6 +403,7 @@ namespace cSzd
                 }
             }
         }
+        bb |= singlePawnControlledCells(nPos) & intfBoard;
         return bb;
     }
 
