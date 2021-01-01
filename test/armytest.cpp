@@ -655,4 +655,18 @@ namespace cSzd
         ASSERT_EQ(b.queenPossibleMovesCells(f3, w.occupiedCells()), BitBoard({d3, e3, g3, h3, f1, f2, f4, f5, f6, d1, e2, g4, e4, d5, c6}));
     }
 
+    // --- Pawns
+    TEST(ArmyTester, CheckPossibleMovesOfPawn1_OnlySingleStepIsPossibleFromRankDifferentFromStartRankAndNoCapture)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard({a3, e4, g6});
+        w.pieces[King] = BitBoard(e1);
+        ASSERT_EQ(w.pawnPossibleMovesCells(e1), BitBoard(EmptyBB));  // No pawn in e1
+        ASSERT_EQ(w.pawnPossibleMovesCells(b3), BitBoard(EmptyBB));  // No pawn in b2
+        ASSERT_EQ(w.pawnPossibleMovesCells(a3), BitBoard(a4));
+        ASSERT_EQ(w.pawnPossibleMovesCells(e4), BitBoard(e5));
+        ASSERT_EQ(w.pawnPossibleMovesCells(g6), BitBoard(g7));
+    }
+
 } // namespace cSzd

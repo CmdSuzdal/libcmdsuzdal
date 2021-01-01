@@ -365,7 +365,9 @@ namespace cSzd
     BitBoard Army::pawnPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
     {
         // FIXME --- TO BE COMPLETED
-        return BitBoard(EmptyBB);
+        if ((pieces[Pawn] & BitBoard(nPos)) == BitBoard(EmptyBB))
+            return BitBoard(EmptyBB);
+        return BitBoard(static_cast<Cell>(nPos + 8));
     }
 
     // --------------------------------------------------------------------------------------------
