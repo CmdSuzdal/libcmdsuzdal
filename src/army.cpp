@@ -364,26 +364,34 @@ namespace cSzd
 
     BitBoard Army::pawnPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
     {
-        // FIXME --- TO BE COMPLETED
+        BitBoard bb {};
+        Cell tentativeCell;
         if ((pieces[Pawn] & BitBoard(nPos)) == BitBoard(EmptyBB))
-            return BitBoard(EmptyBB);
+            return bb;
+
         if (color == WhiteArmy) {
             if (rank(nPos) == r_2) {
-                return BitBoard({static_cast<Cell>(nPos + 8), static_cast<Cell>(nPos + 16)});
+                bb = BitBoard({static_cast<Cell>(nPos + 8), static_cast<Cell>(nPos + 16)});
             } else {
-                return BitBoard(static_cast<Cell>(nPos + 8));
+                tentativeCell = static_cast<Cell>(nPos + 8);
+                if ((occupiedCells() & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+                    // the tentative cell is free. Add to the BitBoard of possible moves
+                    bb.setCell(tentativeCell);
+                }
             }
         }
         else if (color == BlackArmy) {
             if (rank(nPos) == r_7) {
-                return BitBoard({static_cast<Cell>(nPos - 8), static_cast<Cell>(nPos - 16)});
+                bb = BitBoard({static_cast<Cell>(nPos - 8), static_cast<Cell>(nPos - 16)});
             } else {
-                return BitBoard(static_cast<Cell>(nPos - 8));
+                tentativeCell = static_cast<Cell>(nPos - 8);
+                if ((occupiedCells() & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+                    // the tentative cell is free. Add to the BitBoard of possible moves
+                    bb.setCell(tentativeCell);
+                }
             }
         }
-
-        // invalid color ???
-        return BitBoard(EmptyBB);
+        return bb;
     }
 
     // --------------------------------------------------------------------------------------------

@@ -700,5 +700,21 @@ namespace cSzd
         ASSERT_EQ(a.pawnPossibleMovesCells(d7), BitBoard({d6, d5}));
         ASSERT_EQ(a.pawnPossibleMovesCells(h7), BitBoard({h6, h5}));
     }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn3_FromRankDifferentFromStartWithBlockingPieceOfTheSameArmy_WhiteCase)
+    {
+        Army a{};
+        a.color = WhiteArmy;
+        a.pieces[Pawn] = BitBoard(d3);
+        a.pieces[King] = BitBoard(d4);
+        ASSERT_EQ(a.pawnPossibleMovesCells(d3), BitBoard(EmptyBB));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn3_FromRankDifferentFromStartWithBlockingPieceOfTheSameArmy_BlackCase)
+    {
+        Army a{};
+        a.color = BlackArmy;
+        a.pieces[Pawn] = BitBoard(g5);
+        a.pieces[King] = BitBoard(g4);
+        ASSERT_EQ(a.pawnPossibleMovesCells(g5), BitBoard(EmptyBB));
+    }
 
 } // namespace cSzd
