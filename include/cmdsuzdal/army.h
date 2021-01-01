@@ -29,10 +29,12 @@ namespace cSzd
         BitBoard controlledCellsByPieceType(Piece pType, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard kingControlledCells() const;
         BitBoard pawnsControlledCells() const;
+        BitBoard singlePawnControlledCells(Cell nPos) const;
         BitBoard knightsControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard bishopsControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard rooksControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard queensControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+
 
         BitBoard kingPossibleMovesCells(const BitBoard &opponentControlled) const;
         BitBoard knightPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;

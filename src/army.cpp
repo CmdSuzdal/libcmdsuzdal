@@ -121,7 +121,7 @@ namespace cSzd
         return pieces[King].neighbourCells();
     }
 
-    // Returns a BitBoard with the cells controlled by the pawns of the army
+    // Returns a BitBoard with the cells controlled by all the pawns of the army
     BitBoard Army::pawnsControlledCells() const
     {
         // The cell controlled by pawns are the front left and front right
@@ -132,17 +132,23 @@ namespace cSzd
             if (pieces[Pawn].bbs[ndx] != 0) {
                 // pawn in position ndx
                 foundCells++;
-                if (color == WhiteArmy) {
-                    bb |= BitBoard(ne(static_cast<const Cell>(ndx)));
-                    bb |= BitBoard(nw(static_cast<const Cell>(ndx)));
-                }
-                else if (color == BlackArmy) {
-                    bb |= BitBoard(se(static_cast<const Cell>(ndx)));
-                    bb |= BitBoard(sw(static_cast<const Cell>(ndx)));
-                }
+                bb |= singlePawnControlledCells(static_cast<Cell>(ndx));
             }
         }
         return bb;
+    }
+    // Returns the cell controlled by a pawn in the given position
+    // N.B. This function does not check for presence of the pawn
+    // in that position, so the caller knows what it is doing...
+    BitBoard Army::singlePawnControlledCells(Cell nPos) const
+    {
+        if (color == WhiteArmy) {
+            return BitBoard({ne(nPos), nw(nPos)});
+        }
+        else if (color == BlackArmy) {
+            return BitBoard({se(nPos), sw(nPos)});
+        }
+        return BitBoard(EmptyBB);
     }
 
     // Returns a BitBoard with the cells controlled by the knights of the army
