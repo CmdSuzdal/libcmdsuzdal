@@ -658,27 +658,47 @@ namespace cSzd
     // --- Pawns
     TEST(ArmyTester, CheckPossibleMovesOfPawn1_OnlySingleStepIsPossibleFromRankDifferentFromStartRankAndNoCapture_WhiteSide)
     {
-        Army w{};
-        w.color = WhiteArmy;
-        w.pieces[Pawn] = BitBoard({a3, e4, g6});
-        w.pieces[King] = BitBoard(e1);
-        ASSERT_EQ(w.pawnPossibleMovesCells(e1), BitBoard(EmptyBB));  // No pawn in e1
-        ASSERT_EQ(w.pawnPossibleMovesCells(b3), BitBoard(EmptyBB));  // No pawn in b3
-        ASSERT_EQ(w.pawnPossibleMovesCells(a3), BitBoard(a4));
-        ASSERT_EQ(w.pawnPossibleMovesCells(e4), BitBoard(e5));
-        ASSERT_EQ(w.pawnPossibleMovesCells(g6), BitBoard(g7));
+        Army a{};
+        a.color = WhiteArmy;
+        a.pieces[Pawn] = BitBoard({a3, e4, g6});
+        a.pieces[King] = BitBoard(e1);
+        ASSERT_EQ(a.pawnPossibleMovesCells(e1), BitBoard(EmptyBB));  // No pawn in e1
+        ASSERT_EQ(a.pawnPossibleMovesCells(b3), BitBoard(EmptyBB));  // No pawn in b3
+        ASSERT_EQ(a.pawnPossibleMovesCells(a3), BitBoard(a4));
+        ASSERT_EQ(a.pawnPossibleMovesCells(e4), BitBoard(e5));
+        ASSERT_EQ(a.pawnPossibleMovesCells(g6), BitBoard(g7));
     }
     TEST(ArmyTester, CheckPossibleMovesOfPawn1_OnlySingleStepIsPossibleFromRankDifferentFromStartRankAndNoCapture_BlackSide)
     {
-        Army w{};
-        w.color = BlackArmy;
-        w.pieces[Pawn] = BitBoard({b6, c5, h3});
-        w.pieces[King] = BitBoard(e8);
-        ASSERT_EQ(w.pawnPossibleMovesCells(e8), BitBoard(EmptyBB));  // No pawn in e8
-        ASSERT_EQ(w.pawnPossibleMovesCells(d4), BitBoard(EmptyBB));  // No pawn in d4
-        ASSERT_EQ(w.pawnPossibleMovesCells(b6), BitBoard(b5));
-        ASSERT_EQ(w.pawnPossibleMovesCells(c5), BitBoard(c4));
-        ASSERT_EQ(w.pawnPossibleMovesCells(h3), BitBoard(h2));
+        Army a{};
+        a.color = BlackArmy;
+        a.pieces[Pawn] = BitBoard({b6, c5, h3});
+        a.pieces[King] = BitBoard(e8);
+        ASSERT_EQ(a.pawnPossibleMovesCells(e8), BitBoard(EmptyBB));  // No pawn in e8
+        ASSERT_EQ(a.pawnPossibleMovesCells(d4), BitBoard(EmptyBB));  // No pawn in d4
+        ASSERT_EQ(a.pawnPossibleMovesCells(b6), BitBoard(b5));
+        ASSERT_EQ(a.pawnPossibleMovesCells(c5), BitBoard(c4));
+        ASSERT_EQ(a.pawnPossibleMovesCells(h3), BitBoard(h2));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn2_OneOrTwoRanksStepPossibleFromSecondRankForWhite)
+    {
+        Army a{};
+        a.color = WhiteArmy;
+        a.pieces[Pawn] = BitBoard({c2, f2});
+        a.pieces[King] = BitBoard(e1);
+        ASSERT_EQ(a.pawnPossibleMovesCells(a2), BitBoard(EmptyBB));  // No pawn in a2
+        ASSERT_EQ(a.pawnPossibleMovesCells(c2), BitBoard({c3, c4}));
+        ASSERT_EQ(a.pawnPossibleMovesCells(f2), BitBoard({f3, f4}));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn2_OneOrTwoRanksStepPossibleFromSeventhRankForBlack)
+    {
+        Army a{};
+        a.color = BlackArmy;
+        a.pieces[Pawn] = BitBoard({d7, h7});
+        a.pieces[King] = BitBoard(e1);
+        ASSERT_EQ(a.pawnPossibleMovesCells(b7), BitBoard(EmptyBB));  // No pawn in b7
+        ASSERT_EQ(a.pawnPossibleMovesCells(d7), BitBoard({d6, d5}));
+        ASSERT_EQ(a.pawnPossibleMovesCells(h7), BitBoard({h6, h5}));
     }
 
 } // namespace cSzd

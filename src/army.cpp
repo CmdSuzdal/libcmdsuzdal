@@ -367,10 +367,20 @@ namespace cSzd
         // FIXME --- TO BE COMPLETED
         if ((pieces[Pawn] & BitBoard(nPos)) == BitBoard(EmptyBB))
             return BitBoard(EmptyBB);
-        if (color == WhiteArmy)
-            return BitBoard(static_cast<Cell>(nPos + 8));
-        else if (color == BlackArmy)
-            return BitBoard(static_cast<Cell>(nPos - 8));
+        if (color == WhiteArmy) {
+            if (rank(nPos) == r_2) {
+                return BitBoard({static_cast<Cell>(nPos + 8), static_cast<Cell>(nPos + 16)});
+            } else {
+                return BitBoard(static_cast<Cell>(nPos + 8));
+            }
+        }
+        else if (color == BlackArmy) {
+            if (rank(nPos) == r_7) {
+                return BitBoard({static_cast<Cell>(nPos - 8), static_cast<Cell>(nPos - 16)});
+            } else {
+                return BitBoard(static_cast<Cell>(nPos - 8));
+            }
+        }
 
         // invalid color ???
         return BitBoard(EmptyBB);
