@@ -716,5 +716,27 @@ namespace cSzd
         a.pieces[King] = BitBoard(g4);
         ASSERT_EQ(a.pawnPossibleMovesCells(g5), BitBoard(EmptyBB));
     }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn4_FromStartRankWithBlockingPieceOfTheSameArmy_WhiteCase)
+    {
+        Army a{};
+        a.color = WhiteArmy;
+        a.pieces[Pawn] = BitBoard({b2, g2, h2});
+        a.pieces[King] = BitBoard(b3);
+        a.pieces[Knight] = BitBoard(g4);
+        ASSERT_EQ(a.pawnPossibleMovesCells(b2), BitBoard(EmptyBB));
+        ASSERT_EQ(a.pawnPossibleMovesCells(g2), BitBoard(g3));
+        ASSERT_EQ(a.pawnPossibleMovesCells(h2), BitBoard({h3, h4}));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn4_FromStartRankWithBlockingPieceOfTheSameArmy_BlackCase)
+    {
+        Army a{};
+        a.color = BlackArmy;
+        a.pieces[Pawn] = BitBoard({a7, b7, e7});
+        a.pieces[King] = BitBoard(a6);
+        a.pieces[Knight] = BitBoard(b5);
+        ASSERT_EQ(a.pawnPossibleMovesCells(a7), BitBoard(EmptyBB));
+        ASSERT_EQ(a.pawnPossibleMovesCells(b7), BitBoard(b6));
+        ASSERT_EQ(a.pawnPossibleMovesCells(e7), BitBoard({e6, e5}));
+    }
 
 } // namespace cSzd

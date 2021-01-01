@@ -370,24 +370,30 @@ namespace cSzd
             return bb;
 
         if (color == WhiteArmy) {
-            if (rank(nPos) == r_2) {
-                bb = BitBoard({static_cast<Cell>(nPos + 8), static_cast<Cell>(nPos + 16)});
-            } else {
-                tentativeCell = static_cast<Cell>(nPos + 8);
-                if ((occupiedCells() & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
-                    // the tentative cell is free. Add to the BitBoard of possible moves
-                    bb.setCell(tentativeCell);
+            tentativeCell = static_cast<Cell>(nPos + 8);
+            if ((occupiedCells() & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+                // the tentative cell is free. Add to the BitBoard of possible moves
+                bb.setCell(tentativeCell);
+                if (rank(nPos) == r_2) {
+                    tentativeCell = static_cast<Cell>(nPos + 16);
+                    if ((occupiedCells() & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+                        // the tentative cell is free. Add to the BitBoard of possible moves
+                        bb.setCell(tentativeCell);
+                    }
                 }
             }
         }
         else if (color == BlackArmy) {
-            if (rank(nPos) == r_7) {
-                bb = BitBoard({static_cast<Cell>(nPos - 8), static_cast<Cell>(nPos - 16)});
-            } else {
-                tentativeCell = static_cast<Cell>(nPos - 8);
-                if ((occupiedCells() & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
-                    // the tentative cell is free. Add to the BitBoard of possible moves
-                    bb.setCell(tentativeCell);
+            tentativeCell = static_cast<Cell>(nPos - 8);
+            if ((occupiedCells() & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+                // the tentative cell is free. Add to the BitBoard of possible moves
+                bb.setCell(tentativeCell);
+                if (rank(nPos) == r_7) {
+                    tentativeCell = static_cast<Cell>(nPos - 16);
+                    if ((occupiedCells() & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+                        // the tentative cell is free. Add to the BitBoard of possible moves
+                        bb.setCell(tentativeCell);
+                    }
                 }
             }
         }
