@@ -9,19 +9,16 @@
 
 Command Line (basic) instructions:
 
+- Clone & Build:
 ```bash
-git clone https://github.com/fpiantini/cmdsuzdal.git
-cd cmdsuzdal
-git submodule update --init --recursive
+git clone --recurse-submodules https://github.com/fpiantini/cmdsuzdal.git
 cd ..
 mkdir build
 cd build
 cmake ../cmdsuzdal
 cmake --build .
 ```
-
-Verify tests:
-
+- Execute Tests:
 ```bash
 ctest -V .
 ```
