@@ -12,7 +12,6 @@ Command Line (basic) instructions:
 - Clone & Build:
 ```bash
 git clone --recurse-submodules https://github.com/fpiantini/cmdsuzdal.git
-cd ..
 mkdir build
 cd build
 cmake ../cmdsuzdal
