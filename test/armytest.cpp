@@ -738,5 +738,71 @@ namespace cSzd
         ASSERT_EQ(a.pawnPossibleMovesCells(b7), BitBoard(b6));
         ASSERT_EQ(a.pawnPossibleMovesCells(e7), BitBoard({e6, e5}));
     }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn5_FromNonStartRankWithBlockingPieceOfTheOppositeArmy_WhiteCase)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard({c3, g7});
+        w.pieces[King] = BitBoard(g1);
+        ASSERT_EQ(w.pawnPossibleMovesCells(c3), BitBoard(c4));
+        ASSERT_EQ(w.pawnPossibleMovesCells(g7), BitBoard(g8));
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Pawn] = BitBoard(c4);
+        b.pieces[King] = BitBoard(g8);
+        ASSERT_EQ(w.pawnPossibleMovesCells(c3, b.occupiedCells()), BitBoard(EmptyBB));
+        ASSERT_EQ(w.pawnPossibleMovesCells(g7, b.occupiedCells()), BitBoard(EmptyBB));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn5_FromNonStartRankWithBlockingPieceOfTheOppositeArmy_BlackCase)
+    {
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Pawn] = BitBoard({c5, f3});
+        b.pieces[King] = BitBoard(g8);
+        ASSERT_EQ(b.pawnPossibleMovesCells(c5), BitBoard(c4));
+        ASSERT_EQ(b.pawnPossibleMovesCells(f3), BitBoard(f2));
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard(c4);
+        w.pieces[King] = BitBoard(f2);
+        ASSERT_EQ(b.pawnPossibleMovesCells(c4, w.occupiedCells()), BitBoard(EmptyBB));
+        ASSERT_EQ(b.pawnPossibleMovesCells(f3, w.occupiedCells()), BitBoard(EmptyBB));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn6_FromStartRankWithBlockingPieceOfTheOppositeArmy_WhiteCase)
+    {
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard({b2, e2, h2});
+        w.pieces[King] = BitBoard(g1);
+        ASSERT_EQ(w.pawnPossibleMovesCells(b2), BitBoard({b3, b4}));
+        ASSERT_EQ(w.pawnPossibleMovesCells(e2), BitBoard({e3, e4}));
+        ASSERT_EQ(w.pawnPossibleMovesCells(h2), BitBoard({h3, h4}));
+
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Pawn] = BitBoard(e3);
+        b.pieces[King] = BitBoard(b4);
+        ASSERT_EQ(w.pawnPossibleMovesCells(b2, b.occupiedCells()), BitBoard(b3));
+        ASSERT_EQ(w.pawnPossibleMovesCells(e2, b.occupiedCells()), BitBoard(EmptyBB));
+        ASSERT_EQ(w.pawnPossibleMovesCells(h2, b.occupiedCells()), BitBoard({h3, h4}));
+    }
+    TEST(ArmyTester, CheckPossibleMovesOfPawn6_FromStartRankWithBlockingPieceOfTheOppositeArmy_BlackCase)
+    {
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[Pawn] = BitBoard({b7,d7, h7});
+        b.pieces[King] = BitBoard(g8);
+        ASSERT_EQ(b.pawnPossibleMovesCells(b7), BitBoard({b6, b5}));
+        ASSERT_EQ(b.pawnPossibleMovesCells(d7), BitBoard({d6, d5}));
+        ASSERT_EQ(b.pawnPossibleMovesCells(h7), BitBoard({h6, h5}));
+
+        Army w{};
+        w.color = WhiteArmy;
+        w.pieces[Pawn] = BitBoard(b6);
+        w.pieces[King] = BitBoard(d5);
+        ASSERT_EQ(b.pawnPossibleMovesCells(b7, w.occupiedCells()), BitBoard({EmptyBB}));
+        ASSERT_EQ(b.pawnPossibleMovesCells(d7, w.occupiedCells()), BitBoard(d6));
+        ASSERT_EQ(b.pawnPossibleMovesCells(h7, w.occupiedCells()), BitBoard({h6, h5}));
+    }
 
 } // namespace cSzd
