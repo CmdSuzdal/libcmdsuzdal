@@ -877,7 +877,7 @@ namespace cSzd
         ASSERT_EQ(w.pawnPossibleMovesCells(b5, b.occupiedCells()), BitBoard({a6, b6, c6}));
         ASSERT_EQ(b.pawnPossibleMovesCells(c6, w.occupiedCells()), BitBoard({b5, c5, d5}));
     }
-    TEST(ArmyTester, CheckPossibleMovesOfPawn7_FromStartLineWithEnemyToCaptureOnOneSide)
+    TEST(ArmyTester, CheckPossibleMovesOfPawn7_FromStartLineWithEnemyToCaptureOnBothSides)
     {
         Army w{};
         w.color = WhiteArmy;

@@ -388,7 +388,8 @@ namespace cSzd
     }
 
     // ---------------- generateLegalMoves() testing -------------------------
-    // --- generateKingLegalMoves() method Testing
+
+    // --- KING ---
     TEST(ChessBoardTester, CheckLegalMovesOfKingsInE5AndA1WithNoInterference)
     {
         ChessBoard cb {"8/8/8/4k3/8/8/8/K7 b - - 0 1"};
@@ -434,6 +435,7 @@ namespace cSzd
         ASSERT_TRUE(std::find(blackKingMoves.begin(), blackKingMoves.end(), chessMove(King, d5, e4)) != blackKingMoves.end());
     }
 
+    // --- KNIGHTS ---
     TEST(ChessBoardTester, CheckLegalMovesOfKnightsInC6AndF3WithNoInterference)
     {
         // https://lichess.org/editor/7k/8/2N5/8/8/5n2/8/K7_w_-_-_0_1
@@ -477,6 +479,7 @@ namespace cSzd
         ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, a1, b2)) != whiteMoves.end());
     }
 
+    // --- BISHOPS ---
     TEST(ChessBoardTester, CheckLegalMovesOfBishopsSimpleCase)
     {
         // https://lichess.org/editor/8/4k3/8/4bb2/K1B5/8/3B4/8_w_-_-_0_1
@@ -564,6 +567,95 @@ namespace cSzd
         ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Bishop, f6, h4, Bishop)) != blackMoves.end());
     }
 
+    // --- QUEENS ---
+    TEST(ChessBoardTester, CheckLegalMovesOfQueensSimpleCase)
+    {
+        // https://lichess.org/editor/8/k7/8/8/4Q3/2q5/7K/8_w_-_-_0_1
+        ChessBoard cb {"8/k7/8/8/4Q3/2q5/7K/8 w - - 0 1"};
+        std::vector<ChessMove> whiteMoves;
+        cb.generateQueensLegalMoves(whiteMoves);
+        ASSERT_EQ(whiteMoves.size(), 27);
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, e1)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, e2)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, e3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, e5)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, e6)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, e7)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, e8)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, a4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, b4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, c4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, d4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, f4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, g4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, h4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, b1)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, c2)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, d3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, f5)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, g6)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, h7)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, a8)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, b7)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, c6)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, d5)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, f3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, g2)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, e4, h1)) != whiteMoves.end());
 
+        cb.loadPosition("8/k7/8/8/4Q3/2q5/7K/8 b - - 0 1");
+        std::vector<ChessMove> blackMoves;
+        cb.generateQueensLegalMoves(blackMoves);
+        ASSERT_EQ(blackMoves.size(), 25);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, c1)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, c2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, c4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, c5)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, c6)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, c7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, c8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, a3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, b3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, d3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, e3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, f3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, g3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, h3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, a1)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, b2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, d4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, e5)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, f6)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, g7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, h8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, e1)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, d2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, b4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c3, a5)) != blackMoves.end());
+    }
+
+    TEST(ChessBoardTester, CheckLegalMovesOfQueensComplexCase)
+    {
+        // https://lichess.org/editor/k7/1q2p3/8/8/8/6R1/1r3PQ1/7K_w_-_-_0_1
+        ChessBoard cb {"k7/1q2p3/8/8/8/6R1/1r3PQ1/7K w - - 0 1"};
+        std::vector<ChessMove> whiteMoves;
+        cb.generateQueensLegalMoves(whiteMoves);
+        ASSERT_EQ(whiteMoves.size(), 5);
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, g2, f3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, g2, e4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, g2, d5)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, g2, c6)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Queen, g2, b7, Queen)) != whiteMoves.end());
+
+        cb.loadPosition("k7/1q2p3/8/8/8/6R1/1r3PQ1/7K b - - 0 1");
+        std::vector<ChessMove> blackMoves;
+        cb.generateQueensLegalMoves(blackMoves);
+        ASSERT_EQ(blackMoves.size(), 5);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, b7, c6)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, b7, d5)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, b7, e4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, b7, f3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, b7, g2, Queen)) != blackMoves.end());
+    }
 
 } // namespace cSzd
