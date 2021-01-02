@@ -796,4 +796,82 @@ namespace cSzd
         ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c7, d8)) != blackMoves.end());
     }
 
+    // --- PAWNS ---
+    TEST(ChessBoardTester, CheckLegalMovesOfPawnsFromLineDifferentFromStartNoCapturesAndNoCheckConsiderations)
+    {
+        // https://lichess.org/editor/4k3/8/1p4p1/p4p2/3P3P/1P3P2/8/4K3_w_-_-_0_1
+        ChessBoard cb {"4k3/8/1p4p1/p4p2/3P3P/1P3P2/8/4K3 w - - 0 1"};
+
+        std::vector<ChessMove> whiteMoves;
+        cb.generateLegalMoves(whiteMoves, Pawn);
+        ASSERT_EQ(whiteMoves.size(), 4);
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, b3, b4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, d4, d5)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, f3, f4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, h4, h5)) != whiteMoves.end());
+
+        cb.loadPosition("4k3/8/1p4p1/p4p2/3P3P/1P3P2/8/4K3 b - - 0 1");
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, Pawn);
+        ASSERT_EQ(blackMoves.size(), 4);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, a5, a4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, b6, b5)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, f5, f4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, g6, g5)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, CheckLegalMovesOfPawnsFromLineDifferentFromStartWithCapturesAndNoCheckConsiderations)
+    {
+        // https://lichess.org/editor/4k3/8/8/2p3p1/p2Pp2P/1P3P2/8/4K3_w_-_-_0_1
+        ChessBoard cb {"4k3/8/8/2p3p1/p2Pp2P/1P3P2/8/4K3 w - - 0 1"};
+
+        std::vector<ChessMove> whiteMoves;
+        cb.generateLegalMoves(whiteMoves, Pawn);
+        ASSERT_EQ(whiteMoves.size(), 8);
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, b3, a4, Pawn)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, b3, b4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, d4, c5, Pawn)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, d4, d5)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, f3, e4, Pawn)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, f3, f4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, h4, g5, Pawn)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, h4, h5)) != whiteMoves.end());
+
+        cb.loadPosition("4k3/8/8/2p3p1/p2Pp2P/1P3P2/8/4K3 b - - 0 1");
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, Pawn);
+        ASSERT_EQ(blackMoves.size(), 8);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, a4, a3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, a4, b3, Pawn)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, c5, c4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, c5, d4, Pawn)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, e4, e3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, e4, f3, Pawn)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, g5, g4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, g5, h4, Pawn)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, CheckLegalMovesOfPawnsFromLineDifferentFromStartWithCapturesAndDiscoverCheckConsiderations)
+    {
+        // https://lichess.org/editor/8/8/8/R1pk2pb/p2Pp2P/1P3P2/4K3/8_w_-_-_0_1
+        ChessBoard cb {"8/8/8/R1pk2pb/p2Pp2P/1P3P2/4K3/8 w - - 0 1"};
+
+        std::vector<ChessMove> whiteMoves;
+        cb.generateLegalMoves(whiteMoves, Pawn);
+        ASSERT_EQ(whiteMoves.size(), 4);
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, b3, a4, Pawn)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, b3, b4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, d4, c5, Pawn)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Pawn, h4, g5, Pawn)) != whiteMoves.end());
+
+        cb.loadPosition("8/8/8/R1pk2pb/p2Pp2P/1P3P2/4K3/8 b - - 0 1");
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, Pawn);
+        ASSERT_EQ(blackMoves.size(), 6);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, a4, a3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, a4, b3, Pawn)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, e4, e3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, e4, f3, Pawn)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, g5, g4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, g5, h4, Pawn)) != blackMoves.end());
+    }
+
 } // namespace cSzd
