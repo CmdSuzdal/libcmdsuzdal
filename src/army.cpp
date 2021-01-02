@@ -67,6 +67,13 @@ namespace cSzd
         return static_cast<Piece>(pieceNdx);
     }
 
+    Cell Army::getKingPosition() const
+    {
+        // Returns the position of the King of the Army. Note that the king is
+        // the only piece type for which a method like this makes sense,
+        // because it is the only piece type that has always a popCount() of 1
+        return pieces[King].activeCell();
+    }
 
     // --------------------------------------------------------
     // The interference board is provided to add a set of cell occupied by some
@@ -332,58 +339,88 @@ namespace cSzd
                 fakeArmy.rooksControlledCells(intfBoard);
     }
 
+    BitBoard Army::possibleMovesCellsByPieceTypeAndPosition(Piece pType,
+                                        Cell c, const BitBoard &intfBoard) const
+    {
+        switch (pType) {
+            case King:
+                return kingPossibleMovesCells();
+                break;
+            case Queen:
+                return queenPossibleMovesCells(c, intfBoard);
+                break;
+            case Rook:
+                return rookPossibleMovesCells(c, intfBoard);
+                break;
+            case Bishop:
+                return bishopPossibleMovesCells(c, intfBoard);
+                break;
+            case Knight:
+                return knightPossibleMovesCells(c, intfBoard);
+                break;
+            case Pawn:
+                return pawnPossibleMovesCells(c, intfBoard);
+                break;
+            default:
+                break;
+        }
+        return BitBoard(EmptyBB);
+    }
+
+
+
     BitBoard Army::kingPossibleMovesCells() const
     {
         // The king can move in any of its controlled cells that is not
         // occupied by a piece of its army. As for other pieces we do not
         // checks here for validity of moves (placing the king under check),
         // the "possible moves" functions return the possible moves and not
-        // the valid ones. Check for validity shall be done to caller
+        // the valid ones. Check for validity shall be done from caller
         return ((kingControlledCells() | occupiedCells()) ^ occupiedCells());
     }
 
-    BitBoard Army::knightPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
+    BitBoard Army::knightPossibleMovesCells(Cell c, const BitBoard &intfBoard) const
     {
         // Returns the bitboard with all the possible
-        // moves of the knight in position qPos
-        return piecePossibleMovesCells(Knight, nPos, intfBoard);
+        // moves of the knight in position c
+        return piecePossibleMovesCells(Knight, c, intfBoard);
     }
 
-    BitBoard Army::bishopPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
+    BitBoard Army::bishopPossibleMovesCells(Cell c, const BitBoard &intfBoard) const
     {
         // Returns the bitboard with all the possible
-        // moves of the bishop in position qPos
-        return piecePossibleMovesCells(Bishop, nPos, intfBoard);
+        // moves of the bishop in position c
+        return piecePossibleMovesCells(Bishop, c, intfBoard);
     }
 
-    BitBoard Army::rookPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
+    BitBoard Army::rookPossibleMovesCells(Cell c, const BitBoard &intfBoard) const
     {
         // Returns the bitboard with all the possible
-        // moves of a rook in position qPos
-        return piecePossibleMovesCells(Rook, nPos, intfBoard);
+        // moves of a rook in position c
+        return piecePossibleMovesCells(Rook, c, intfBoard);
     }
 
-    BitBoard Army::queenPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
+    BitBoard Army::queenPossibleMovesCells(Cell c, const BitBoard &intfBoard) const
     {
         // Returns the bitboard with all the possible
-        // moves of a queen in position qPos
-        return piecePossibleMovesCells(Queen, nPos, intfBoard);
+        // moves of a queen in position c
+        return piecePossibleMovesCells(Queen, c, intfBoard);
     }
 
-    BitBoard Army::pawnPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
+    BitBoard Army::pawnPossibleMovesCells(Cell c, const BitBoard &intfBoard) const
     {
         BitBoard bb {};
         Cell tentativeCell;
-        if ((pieces[Pawn] & BitBoard(nPos)) == BitBoard(EmptyBB))
+        if ((pieces[Pawn] & BitBoard(c)) == BitBoard(EmptyBB))
             return bb;
 
         if (color == WhiteArmy) {
-            tentativeCell = static_cast<Cell>(nPos + 8);
+            tentativeCell = static_cast<Cell>(c + 8);
             if (((occupiedCells() | intfBoard) & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
                 // the tentative cell is free. Add to the BitBoard of possible moves
                 bb.setCell(tentativeCell);
-                if (rank(nPos) == r_2) {
-                    tentativeCell = static_cast<Cell>(nPos + 16);
+                if (rank(c) == r_2) {
+                    tentativeCell = static_cast<Cell>(c + 16);
                     if (((occupiedCells() | intfBoard) & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
                         // the tentative cell is free. Add to the BitBoard of possible moves
                         bb.setCell(tentativeCell);
@@ -392,12 +429,12 @@ namespace cSzd
             }
         }
         else if (color == BlackArmy) {
-            tentativeCell = static_cast<Cell>(nPos - 8);
+            tentativeCell = static_cast<Cell>(c - 8);
             if (((occupiedCells() | intfBoard) & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
                 // the tentative cell is free. Add to the BitBoard of possible moves
                 bb.setCell(tentativeCell);
-                if (rank(nPos) == r_7) {
-                    tentativeCell = static_cast<Cell>(nPos - 16);
+                if (rank(c) == r_7) {
+                    tentativeCell = static_cast<Cell>(c - 16);
                     if (((occupiedCells() | intfBoard) & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
                         // the tentative cell is free. Add to the BitBoard of possible moves
                         bb.setCell(tentativeCell);
@@ -405,12 +442,12 @@ namespace cSzd
                 }
             }
         }
-        bb |= singlePawnControlledCells(nPos) & intfBoard;
+        bb |= singlePawnControlledCells(c) & intfBoard;
         return bb;
     }
 
     // --------------------------------------------------------------------------------------------
-    BitBoard Army::piecePossibleMovesCells(Piece pType, Cell nPos, const BitBoard &intfBoard) const
+    BitBoard Army::piecePossibleMovesCells(Piece pType, Cell c, const BitBoard &intfBoard) const
     {
         // Returns the bitboard with all the possible moves of a piece
         // of type pType in position qPos (if the army does not have a piece
@@ -420,11 +457,11 @@ namespace cSzd
         //   - Bishops
         //   - Rooks
         //   - Queens
-        if ((pieces[pType] & BitBoard(nPos)) == BitBoard(EmptyBB))
+        if ((pieces[pType] & BitBoard(c)) == BitBoard(EmptyBB))
             return BitBoard(EmptyBB);
         Army fakeArmy = *this;
-        fakeArmy.pieces[Pawn] |= (pieces[pType] ^ BitBoard(nPos));
-        fakeArmy.pieces[pType] = BitBoard(nPos);
+        fakeArmy.pieces[Pawn] |= (pieces[pType] ^ BitBoard(c));
+        fakeArmy.pieces[pType] = BitBoard(c);
         return ((fakeArmy.controlledCellsByPieceType(pType, intfBoard) | occupiedCells()) ^ occupiedCells());
     }
 

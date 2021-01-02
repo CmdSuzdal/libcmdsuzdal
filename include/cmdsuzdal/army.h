@@ -23,6 +23,7 @@ namespace cSzd
         unsigned int numPieces() const;
         BitBoard occupiedCells() const;
         Piece getPieceInCell(Cell c) const;
+        Cell getKingPosition() const;
 
         BitBoard controlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
@@ -35,12 +36,14 @@ namespace cSzd
         BitBoard rooksControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard queensControlledCells(const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
+        BitBoard possibleMovesCellsByPieceTypeAndPosition(Piece pType, Cell pos,
+                                                const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard kingPossibleMovesCells() const;
-        BitBoard knightPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
-        BitBoard bishopPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
-        BitBoard rookPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
-        BitBoard queenPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
-        BitBoard pawnPossibleMovesCells(Cell nPos, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+        BitBoard knightPossibleMovesCells(Cell c, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+        BitBoard bishopPossibleMovesCells(Cell c, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+        BitBoard rookPossibleMovesCells(Cell c, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+        BitBoard queenPossibleMovesCells(Cell c, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
+        BitBoard pawnPossibleMovesCells(Cell c, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
     private:
         BitBoard piecePossibleMovesCells(Piece pType, Cell nPos, const BitBoard &intfBoard) const;
