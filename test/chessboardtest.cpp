@@ -658,4 +658,19 @@ namespace cSzd
         ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, b7, g2, Queen)) != blackMoves.end());
     }
 
+    TEST(ChessBoardTester, CheckLegalMovesOfBlackWithTwoOppositeQueensAndCheckToCover)
+    {
+        // https://lichess.org/editor/k4Q2/2q5/b7/2b5/3Q4/8/8/7K_b_-_-_0_1
+        ChessBoard cb {"k4Q2/2q5/b7/2b5/3Q4/8/8/7K b - - 0 1"};
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves);
+        ASSERT_EQ(blackMoves.size(), 6);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, a8, b7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Bishop, a6, c8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Bishop, c5, f8, Queen)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c7, b8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c7, c8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Queen, c7, d8)) != blackMoves.end());
+    }
+
 } // namespace cSzd
