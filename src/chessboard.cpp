@@ -243,15 +243,59 @@ namespace cSzd
                         }
                     }
                 }
+                if (pType == Pawn) {
+                    checkForEnPassant(static_cast<Cell>(startPos), moves);
+                }
             }
         }
     }
 
-    // ---------------------------------------------------------------------------------
-    //void ChessBoard::generatePawnsLegalMoves(std::vector<ChessMove> &moves)
-    //{
-    //    // FIXME --- TO BE COMPLETED
-    //}
+    void ChessBoard::checkForEnPassant(Cell c, std::vector<ChessMove> &moves) const
+    {
+        Rank pawnRank;
+        File pawnFile;
+        auto enPassantCell = enPassantTargetSquare.activeCell();
+
+        if (enPassantCell != InvalidCell) {
+            pawnRank = rank(c);
+            if ((sideToMove == WhiteArmy) && pawnRank == r_5) {
+                // there are chances that we have an en passant move for white
+                pawnFile = file(c);
+                if (pawnFile > f_a) {
+                    // checks the file to the left of the pawn
+                    if (c + 7 == enPassantCell) {
+                        // en passant move!
+                        moves.push_back(chessMove(Pawn, c, enPassantCell, Pawn));
+                    }
+                }
+                if (pawnFile < f_h) {
+                    // checks the file to the right of the pawn
+                    if (c + 9 == enPassantCell) {
+                        // en passant move!
+                        moves.push_back(chessMove(Pawn, c, enPassantCell, Pawn));
+                    }
+                }
+            }
+            if ((sideToMove == BlackArmy) && pawnRank == r_4) {
+                // there are chances that we have an en passant move for black
+                pawnFile = file(c);
+                if (pawnFile > f_a) {
+                    // checks the file to the right of the pawn
+                    if (c - 9 == enPassantCell) {
+                        // en passant move!
+                        moves.push_back(chessMove(Pawn, c, enPassantCell, Pawn));
+                    }
+                }
+                if (pawnFile < f_h) {
+                    // checks the file to the left of the pawn
+                    if (c - 7 == enPassantCell) {
+                        // en passant move!
+                        moves.push_back(chessMove(Pawn, c, enPassantCell, Pawn));
+                    }
+                }
+            }
+        }
+    }
 
 
 

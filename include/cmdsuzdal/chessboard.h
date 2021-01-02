@@ -72,7 +72,7 @@ namespace cSzd
         bool isValid() const;
 
         void generateLegalMoves(std::vector<ChessMove> &moves, Piece pType = InvalidPiece);
-        //void generatePawnsLegalMoves(std::vector<ChessMove> &moves);
+        void checkForEnPassant(Cell c, std::vector<ChessMove> &moves) const;
 
     private:
         bool checkEnPassantTargetSquareValidity() const;
