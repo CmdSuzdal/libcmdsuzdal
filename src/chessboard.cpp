@@ -184,31 +184,32 @@ namespace cSzd
         return true;
     }
 
+    // ---------------------------------------------------------------------------------
     // Generates all the legal moves for the Army starting from the current position
     // taking into account an opponent Army. The opponent army is necessary to generate
     // the move, but also to check for the legality of moves: illegal moves are those
-    // that places the King in check
-    void ChessBoard::generateLegalMoves(std::vector<ChessMove> &moves)
-    {
-        generatePieceLegalMovesByType(King, moves);
-        generatePieceLegalMovesByType(Knight, moves);
-        generatePieceLegalMovesByType(Bishop, moves);
-        generatePieceLegalMovesByType(Rook, moves);
-        generatePieceLegalMovesByType(Queen, moves);
-        generatePawnsLegalMoves(moves);
-    }
-
-    // ---------------------------------------------------------------------------------
-    void ChessBoard::generatePieceLegalMovesByType(Piece pType, std::vector<ChessMove> &moves)
+    // that places the King in check. If a valid Piece type is specified, only the
+    // moves for that Piece type are generated, otherwise, the moves for all the
+    // pieces are generated
+    void ChessBoard::generateLegalMoves(std::vector<ChessMove> &moves, Piece pType)
     {
         ArmyColor opponentColor = (sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
-        // Iterates over all Pieces of the specified type
+        // Iterates over all Pieces of the specified type.
+        // If pType is InvalidPiece, all the piece are considered
         BitBoard moveBB;
         auto foundPieces = 0;
-        for (auto startPos = 0; (startPos < 64) && (foundPieces < armies[sideToMove].pieces[pType].popCount()); startPos++) {
-            if (armies[sideToMove].pieces[pType].bbs[startPos] != 0) {
-                // piece found in position ndx
+        BitBoard bbToCheck;
+        if (pType == InvalidPiece) {
+            bbToCheck = armies[sideToMove].occupiedCells();
+        }
+        else {
+            bbToCheck = armies[sideToMove].pieces[pType];
+        }
+        for (auto startPos = 0; (startPos < 64) && (foundPieces < bbToCheck.popCount()); startPos++) {
+            if (bbToCheck.bbs[startPos] != 0) {
+                // piece found in position startPos
                 foundPieces++;
+                pType = armies[sideToMove].getPieceInCell(static_cast<Cell>(startPos));
                 moveBB = armies[sideToMove].possibleMovesCellsByPieceTypeAndPosition(pType,
                                 static_cast<Cell>(startPos), armies[opponentColor].occupiedCells());
                 auto foundMove = 0;
@@ -217,7 +218,7 @@ namespace cSzd
                         ++foundMove;
                         auto takenPiece = armies[opponentColor].getPieceInCell(static_cast<Cell>(destPos));
                         // Possible move found:
-                        //    Piece from startPos --- to ---> destPos, taking takenPiece (can be InvalidPiece)
+                        //    Piece of type pType from startPos --- to ---> destPos, taking takenPiece (can be InvalidPiece)
                         // We need to validate the move: after the move the king shall not be in check
                         // otherwise the move is not valid and shall be discarded
                         // ...move the knight
@@ -247,10 +248,10 @@ namespace cSzd
     }
 
     // ---------------------------------------------------------------------------------
-    void ChessBoard::generatePawnsLegalMoves(std::vector<ChessMove> &moves)
-    {
-        // FIXME --- TO BE COMPLETED
-    }
+    //void ChessBoard::generatePawnsLegalMoves(std::vector<ChessMove> &moves)
+    //{
+    //    // FIXME --- TO BE COMPLETED
+    //}
 
 
 

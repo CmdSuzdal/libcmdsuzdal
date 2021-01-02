@@ -71,9 +71,8 @@ namespace cSzd
         void loadPosition(const std::string_view fenStr);
         bool isValid() const;
 
-        void generateLegalMoves(std::vector<ChessMove> &moves);
-        void generatePieceLegalMovesByType(Piece pType, std::vector<ChessMove> &moves);
-        void generatePawnsLegalMoves(std::vector<ChessMove> &moves);
+        void generateLegalMoves(std::vector<ChessMove> &moves, Piece pType = InvalidPiece);
+        //void generatePawnsLegalMoves(std::vector<ChessMove> &moves);
 
     private:
         bool checkEnPassantTargetSquareValidity() const;
