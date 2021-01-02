@@ -533,19 +533,21 @@ namespace cSzd
         Army b{};
         b.color = BlackArmy;
         b.pieces[King] = BitBoard(a1);
-        ASSERT_EQ(w.kingPossibleMovesCells(b.controlledCells()), w.pieces[King].neighbourCells());
-        ASSERT_EQ(b.kingPossibleMovesCells(w.controlledCells()), b.pieces[King].neighbourCells());
+        ASSERT_EQ(w.kingPossibleMovesCells(), w.pieces[King].neighbourCells());
+        ASSERT_EQ(b.kingPossibleMovesCells(), b.pieces[King].neighbourCells());
     }
     TEST(ArmyTester, CheckPossibleMovesOfKingInOpposition)
     {
+        // remember that the kingPossibleMovesCells does not check
+        // for validity and returns all the possible moves
         Army w{};
         w.color = WhiteArmy;
         w.pieces[King] = BitBoard(e5);
         Army b{};
         b.color = BlackArmy;
         b.pieces[King] = BitBoard(e7);
-        ASSERT_EQ(w.kingPossibleMovesCells(b.controlledCells()), BitBoard({d4, e4, f4, d5, f5}));
-        ASSERT_EQ(b.kingPossibleMovesCells(w.controlledCells()), BitBoard({d7, f7, d8, e8, f8}));
+        ASSERT_EQ(w.kingPossibleMovesCells(), BitBoard({d4, e4, f4, d5, f5, d6, e6, f6 }));
+        ASSERT_EQ(b.kingPossibleMovesCells(), BitBoard({d6, e6, f6, d7, f7, d8, e8, f8}));
     }
     TEST(ArmyTester, CheckPossibleMovesOfKingsObstructedByFriends)
     {
@@ -561,8 +563,8 @@ namespace cSzd
         b.pieces[King] = BitBoard(h8);
         b.pieces[Pawn] = BitBoard({g7, f6, e6});
         b.pieces[Rook] = BitBoard(h7);
-        ASSERT_EQ(w.kingPossibleMovesCells(b.controlledCells()), BitBoard({b1, c2}));
-        ASSERT_EQ(b.kingPossibleMovesCells(w.controlledCells()), BitBoard(g8));
+        ASSERT_EQ(w.kingPossibleMovesCells(), BitBoard({b1, c2}));
+        ASSERT_EQ(b.kingPossibleMovesCells(), BitBoard(g8));
     }
 
     // --- Knights

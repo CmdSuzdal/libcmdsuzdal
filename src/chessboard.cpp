@@ -208,16 +208,13 @@ namespace cSzd
             if (armies[sideToMove].pieces[King].bbs[startPos] != 0)
                 break;
         }
-        moveBB = armies[sideToMove].kingPossibleMovesCells(
-                                        armies[opponentColor].controlledCells());
+        moveBB = armies[sideToMove].kingPossibleMovesCells();
+        // remove the invalid moves (the ones that places the king under check)
+        moveBB &= ~armies[opponentColor].controlledCells();
         auto foundCells = 0;
         for (auto destPos = 0; (destPos < 64) && (foundCells < moveBB.popCount()); destPos++) {
             if (moveBB.bbs[destPos] != 0) {
                 ++foundCells;
-                // Possible move found. Note that it is not important here
-                // to check for validity of moves because the kingPossibleMovesCells()
-                // already avoid to generate illegal moves, so any move found here can
-                // be added to the vector of moves
                 moves.push_back(chessMove(King,
                     static_cast<Cell>(startPos), static_cast<Cell>(destPos),
                     armies[opponentColor].getPieceInCell(static_cast<Cell>(destPos))));

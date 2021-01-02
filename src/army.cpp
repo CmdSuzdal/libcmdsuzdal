@@ -332,12 +332,14 @@ namespace cSzd
                 fakeArmy.rooksControlledCells(intfBoard);
     }
 
-    BitBoard Army::kingPossibleMovesCells(const BitBoard &opponentControlled) const
+    BitBoard Army::kingPossibleMovesCells() const
     {
         // The king can move in any of its controlled cells that is not
-        // occupied by a piece of its army and it is not controlled by
-        // the opponent (to avoid check)
-        return (((kingControlledCells() | occupiedCells()) ^ occupiedCells()) & ~opponentControlled);
+        // occupied by a piece of its army. As for other pieces we do not
+        // checks here for validity of moves (placing the king under check),
+        // the "possible moves" functions return the possible moves and not
+        // the valid ones. Check for validity shall be done to caller
+        return ((kingControlledCells() | occupiedCells()) ^ occupiedCells());
     }
 
     BitBoard Army::knightPossibleMovesCells(Cell nPos, const BitBoard &intfBoard) const
