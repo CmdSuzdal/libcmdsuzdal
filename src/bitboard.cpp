@@ -3,6 +3,21 @@
 namespace cSzd
 {
 
+    Cell BitBoard::activeCell() const
+    {
+        // if popCount() is not one, this method is probably called in error,
+        // so InvalidCell is returned...
+        if (popCount() != 1)
+            return InvalidCell;
+
+        unsigned int ndx;
+        for (ndx = 0; ndx < 64; ndx++)
+            if (bbs[ndx] != 0)
+                break;
+
+        return static_cast<Cell>(ndx);
+    }
+
     BitBoard BitBoard::neighbourCells() const
     {
         BitBoard nb;

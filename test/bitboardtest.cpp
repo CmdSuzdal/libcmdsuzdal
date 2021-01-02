@@ -66,6 +66,17 @@ namespace cSzd
         ASSERT_EQ(bb, BitBoard(1ULL << h4));
     }
 
+    TEST(BBTester, IfASingleCellIsSetItCanBeObtainedBackByTheActiveCellMethod)
+    {
+        BitBoard bb{g2};
+        ASSERT_EQ(bb.activeCell(), g2);
+    }
+    TEST(BBTester, IfMoreThanACellIsSetTheActiveCellMethodReturnsInvalidCell)
+    {
+        BitBoard bb({g2, h4});
+        ASSERT_EQ(bb.activeCell(), InvalidCell);
+    }
+
     TEST(BBTester, CheckCellSetByName)
     {
         BitBoard bb;

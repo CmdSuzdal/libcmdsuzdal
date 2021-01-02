@@ -80,6 +80,9 @@ namespace cSzd
         // Population count
         unsigned int popCount() const { return bbs.count(); }
 
+        // Returns the active cell of the Bitboard (Assuming only one cell is active)
+        Cell activeCell() const;
+
         // -------------------------------------------------------------------------------
         // waiting for apolis comments
         // -------------------------------------------------------------------------------
