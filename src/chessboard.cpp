@@ -208,7 +208,7 @@ namespace cSzd
             if (armies[sideToMove].pieces[King].bbs[startPos] != 0)
                 break;
         }
-        moveBB = armies[sideToMove].kingPossibleMovesCells();
+        moveBB = armies[sideToMove].possibleMovesCellsByPieceTypeAndPosition(King, armies[sideToMove].getKingPosition());
         // remove the invalid moves (the ones that places the king under check)
         moveBB &= ~armies[opponentColor].controlledCells();
         auto foundCells = 0;
@@ -233,7 +233,7 @@ namespace cSzd
             if (armies[sideToMove].pieces[Knight].bbs[startPos] != 0) {
                 // knight in position ndx
                 foundKnights++;
-                moveBB = armies[sideToMove].knightPossibleMovesCells(static_cast<Cell>(startPos));
+                moveBB = armies[sideToMove].possibleMovesCellsByPieceTypeAndPosition(Knight, static_cast<Cell>(startPos));
                 auto foundMove = 0;
                 for (auto destPos = 0; (destPos < 64) && (foundMove < moveBB.popCount()); destPos++) {
                     if (moveBB.bbs[destPos] != 0) {
@@ -280,7 +280,7 @@ namespace cSzd
             if (armies[sideToMove].pieces[Bishop].bbs[startPos] != 0) {
                 // piece in position ndx
                 foundPieces++;
-                moveBB = armies[sideToMove].bishopPossibleMovesCells(static_cast<Cell>(startPos),
+                moveBB = armies[sideToMove].possibleMovesCellsByPieceTypeAndPosition(Bishop, static_cast<Cell>(startPos),
                                                              armies[opponentColor].occupiedCells());
                 auto foundMove = 0;
                 for (auto destPos = 0; (destPos < 64) && (foundMove < moveBB.popCount()); destPos++) {
@@ -328,7 +328,7 @@ namespace cSzd
             if (armies[sideToMove].pieces[Rook].bbs[startPos] != 0) {
                 // piece in position ndx
                 foundPieces++;
-                moveBB = armies[sideToMove].rookPossibleMovesCells(static_cast<Cell>(startPos),
+                moveBB = armies[sideToMove].possibleMovesCellsByPieceTypeAndPosition(Rook, static_cast<Cell>(startPos),
                                                              armies[opponentColor].occupiedCells());
                 auto foundMove = 0;
                 for (auto destPos = 0; (destPos < 64) && (foundMove < moveBB.popCount()); destPos++) {
@@ -376,7 +376,7 @@ namespace cSzd
             if (armies[sideToMove].pieces[Queen].bbs[startPos] != 0) {
                 // piece in position ndx
                 foundPieces++;
-                moveBB = armies[sideToMove].queenPossibleMovesCells(static_cast<Cell>(startPos),
+                moveBB = armies[sideToMove].possibleMovesCellsByPieceTypeAndPosition(Queen, static_cast<Cell>(startPos),
                                                              armies[opponentColor].occupiedCells());
                 auto foundMove = 0;
                 for (auto destPos = 0; (destPos < 64) && (foundMove < moveBB.popCount()); destPos++) {
