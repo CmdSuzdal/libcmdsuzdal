@@ -323,7 +323,49 @@ namespace cSzd
     // ---------------------------------------------------------------------------------
     void ChessBoard::generateRooksLegalMoves(std::vector<ChessMove> &moves)
     {
-        // FIXME --- TO BE COMPLETED
+        ArmyColor opponentColor = (sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
+        // Iterates over all rooks
+        BitBoard moveBB;
+        auto foundPieces = 0;
+        for (auto startPos = 0; (startPos < 64) && (foundPieces < armies[sideToMove].pieces[Rook].popCount()); startPos++) {
+            if (armies[sideToMove].pieces[Rook].bbs[startPos] != 0) {
+                // piece in position ndx
+                foundPieces++;
+                moveBB = armies[sideToMove].rookPossibleMovesCells(static_cast<Cell>(startPos),
+                                                             armies[opponentColor].occupiedCells());
+                auto foundMove = 0;
+                for (auto destPos = 0; (destPos < 64) && (foundMove < moveBB.popCount()); destPos++) {
+                    if (moveBB.bbs[destPos] != 0) {
+                        ++foundMove;
+                        auto takenPiece = armies[opponentColor].getPieceInCell(static_cast<Cell>(destPos));
+                        // Possible move found:
+                        //    Rook from startPos --- to ---> destPos, taking takenPiece (can be InvalidPiece)
+                        // We need to validate the move: after the move the king shall not be in check
+                        // otherwise the move is not valid and shall be discarded
+                        // ...move the piece
+                        armies[sideToMove].pieces[Rook] ^=
+                                BitBoard({static_cast<Cell>(startPos), static_cast<Cell>(destPos)});
+                        // ...remove the piece from the opponent army if necessary
+                        if (takenPiece != InvalidPiece) {
+                            armies[opponentColor].pieces[takenPiece] ^= BitBoard(static_cast<Cell>(destPos));
+                        }
+                        // ... check for check
+                        if (!armyIsInCheck(sideToMove)) {
+                            // If at the end the move is valid, it can be added to the vector of moves
+                            moves.push_back(chessMove(Rook,
+                                static_cast<Cell>(startPos), static_cast<Cell>(destPos),
+                                takenPiece));
+                        }
+                        // ...restore the armies
+                        armies[sideToMove].pieces[Rook] ^=
+                                BitBoard({static_cast<Cell>(startPos), static_cast<Cell>(destPos)});
+                        if (takenPiece != InvalidPiece) {
+                            armies[opponentColor].pieces[takenPiece] ^= BitBoard(static_cast<Cell>(destPos));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // ---------------------------------------------------------------------------------
