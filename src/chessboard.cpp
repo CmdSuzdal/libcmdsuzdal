@@ -61,7 +61,19 @@ namespace cSzd
 
         return InvalidArmy;
     }
-
+    // -----------------------------------------------------------------
+    bool ChessBoard::isCheckMate()
+    {
+        // If the army with the move is in check and there are no valid moves,
+        // this is checkmate
+        if (armyInCheck() == sideToMove) {
+            std::vector<ChessMove> moves;
+            generateLegalMoves(moves);
+            if (moves.size() == 0)
+                return true;
+        }
+        return false;
+    }
 
     // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)

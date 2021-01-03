@@ -1005,4 +1005,117 @@ namespace cSzd
         ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, g6, g5)) != blackMoves.end());
     }
 
+    // --- isCheckMate() method testing ---
+    TEST(ChessBoardTester, IsCheckMateForWhiteNegativeCaseInCaseOfNoCheckTesting)
+    {
+        // https://lichess.org/editor/3N4/1q6/6p1/6N1/pk6/6K1/8/8_w_-_-_0_1
+        ChessBoard cb {"3N4/1q6/6p1/6N1/pk6/6K1/8/8 w - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_FALSE(cb.isCheckMate());
+        std::vector<ChessMove> whiteMoves;
+        cb.generateLegalMoves(whiteMoves);
+        ASSERT_EQ(whiteMoves.size(), 16);
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, d8, b7, Queen)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, d8, c6)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, d8, e6)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, d8, f7)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, g5, f7)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, g5, h7)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, g5, h3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, g5, f3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, g5, e4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, g5, e6)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, f2)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, h2)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, h3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, f4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, g4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, h4)) != whiteMoves.end());
+    }
+    TEST(ChessBoardTester, IsCheckMateForWhiteNegativeCaseInCaseOfCheckTesting)
+    {
+        // https://lichess.org/editor/4N3/2q5/6p1/6N1/pk6/6K1/8/8_w_-_-_0_1
+        ChessBoard cb {"4N3/2q5/6p1/6N1/pk6/6K1/8/8 w - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), WhiteArmy);
+        ASSERT_FALSE(cb.isCheckMate());
+        std::vector<ChessMove> whiteMoves;
+        cb.generateLegalMoves(whiteMoves);
+        ASSERT_EQ(whiteMoves.size(), 8);
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, e8, c7, Queen)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(Knight, e8, d6)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, f2)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, g2)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, f3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, h3)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, g4)) != whiteMoves.end());
+        ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, g3, h4)) != whiteMoves.end());
+    }
+    TEST(ChessBoardTester, IsCheckMateForWhitePositiveCaseTesting)
+    {
+        // https://lichess.org/editor/8/2B5/p7/3p2N1/1k6/8/5PPP/1q4K1_w_-_-_0_1
+        ChessBoard cb {"8/2B5/p7/3p2N1/1k6/8/5PPP/1q4K1 w - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), WhiteArmy);
+        ASSERT_TRUE(cb.isCheckMate());
+        std::vector<ChessMove> whiteMoves;
+        cb.generateLegalMoves(whiteMoves);
+        ASSERT_EQ(whiteMoves.size(), 0);
+    }
+
+    TEST(ChessBoardTester, IsCheckMateForBlackNegativeCaseInCaseOfNoCheckTesting)
+    {
+        // https://lichess.org/editor/2K5/p3B3/8/8/7R/1k6/4rp2/8_b_-_-_0_1
+        ChessBoard cb {"2K5/p3B3/8/8/7R/1k6/4rp2/8 b - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_FALSE(cb.isCheckMate());
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves);
+        ASSERT_EQ(blackMoves.size(), 20);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, c3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, a2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, b2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, c2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, e1)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, e3)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, e4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, e5)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, e6)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, e7, Bishop)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, d2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, c2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, b2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, a2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, a7, a6)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, a7, a5)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, f2, f1, InvalidPiece, Queen)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, f2, f1, InvalidPiece, Rook)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, f2, f1, InvalidPiece, Bishop)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Pawn, f2, f1, InvalidPiece, Knight)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, IsCheckMateForBlackNegativeCaseInCaseOfCheckTesting)
+    {
+        // https://lichess.org/editor/2K5/p3B3/8/8/8/1k4R1/4rp2/8_b_-_-_0_1
+        ChessBoard cb {"2K5/p3B3/8/8/8/1k4R1/4rp2/8 b - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), BlackArmy);
+        ASSERT_FALSE(cb.isCheckMate());
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves);
+        ASSERT_EQ(blackMoves.size(), 6);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, a4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, c4)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, a2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, b2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, b3, c2)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(Rook, e2, e3)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, IsCheckMateForBlackPositiveCaseTesting)
+    {
+        // https://lichess.org/editor/8/8/8/knN5/1nN5/8/8/5K2_b_-_-_0_1
+        ChessBoard cb {"8/8/8/knN5/1nN5/8/8/5K2 b - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), BlackArmy);
+        ASSERT_TRUE(cb.isCheckMate());
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves);
+        ASSERT_EQ(blackMoves.size(), 0);
+    }
+
 } // namespace cSzd

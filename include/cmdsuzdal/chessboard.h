@@ -65,6 +65,7 @@ namespace cSzd
         // discriminate the condition
         ArmyColor armyInCheck() const ;
         bool armyIsInCheck(ArmyColor a) const;
+        bool isCheckMate();
 
         // --------------------------
         void loadPosition(const FENRecord &fen);
