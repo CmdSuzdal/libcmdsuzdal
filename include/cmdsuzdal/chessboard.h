@@ -65,14 +65,14 @@ namespace cSzd
         // discriminate the condition
         ArmyColor armyInCheck() const ;
         bool armyIsInCheck(ArmyColor a) const;
-        bool isCheckMate();
+        bool isCheckMate() const;
 
         // --------------------------
         void loadPosition(const FENRecord &fen);
         void loadPosition(const std::string_view fenStr);
         bool isValid() const;
 
-        void generateLegalMoves(std::vector<ChessMove> &moves, Piece pType = InvalidPiece);
+        void generateLegalMoves(std::vector<ChessMove> &moves, Piece pType = InvalidPiece) const;
         void addPromotionMoves(std::vector<ChessMove> &moves, Cell startPos,
                                 Cell destPos, Piece takenPiece) const;
 

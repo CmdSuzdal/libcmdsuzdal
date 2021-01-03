@@ -62,7 +62,7 @@ namespace cSzd
         return InvalidArmy;
     }
     // -----------------------------------------------------------------
-    bool ChessBoard::isCheckMate()
+    bool ChessBoard::isCheckMate() const
     {
         // If the army with the move is in check and there are no valid moves,
         // this is checkmate
@@ -203,8 +203,10 @@ namespace cSzd
     // that places the King in check. If a valid Piece type is specified, only the
     // moves for that Piece type are generated, otherwise, the moves for all the
     // pieces are generated
-    void ChessBoard::generateLegalMoves(std::vector<ChessMove> &moves, Piece pType)
+    void ChessBoard::generateLegalMoves(std::vector<ChessMove> &moves, Piece pType) const
     {
+        ChessBoard fakeCB = *this;
+
         ArmyColor opponentColor = (sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
         // Iterates over all Pieces of the specified type.
         // If pType is InvalidPiece, all the piece are considered
@@ -234,14 +236,14 @@ namespace cSzd
                         // We need to validate the move: after the move the king shall not be in check
                         // otherwise the move is not valid and shall be discarded
                         // ...move the knight
-                        armies[sideToMove].pieces[pType] ^=
+                        fakeCB.armies[sideToMove].pieces[pType] ^=
                                 BitBoard({static_cast<Cell>(startPos), static_cast<Cell>(destPos)});
                         // ...remove the piece from the opponent army if necessary
                         if (takenPiece != InvalidPiece) {
-                            armies[opponentColor].pieces[takenPiece] ^= BitBoard(static_cast<Cell>(destPos));
+                            fakeCB.armies[opponentColor].pieces[takenPiece] ^= BitBoard(static_cast<Cell>(destPos));
                         }
                         // ... check for check
-                        if (!armyIsInCheck(sideToMove)) {
+                        if (!fakeCB.armyIsInCheck(sideToMove)) {
                             // If at the end the move is valid, it can be added to the vector of moves.
                             // If the piece is a pawn and the destination position is on the last rank,
                             // this is a promotion, so the moves to be added are four: one for each type
@@ -262,10 +264,10 @@ namespace cSzd
                             }
                         }
                         // ...restore the armies
-                        armies[sideToMove].pieces[pType] ^=
+                        fakeCB.armies[sideToMove].pieces[pType] ^=
                                 BitBoard({static_cast<Cell>(startPos), static_cast<Cell>(destPos)});
                         if (takenPiece != InvalidPiece) {
-                            armies[opponentColor].pieces[takenPiece] ^= BitBoard(static_cast<Cell>(destPos));
+                            fakeCB.armies[opponentColor].pieces[takenPiece] ^= BitBoard(static_cast<Cell>(destPos));
                         }
                     }
                 }
