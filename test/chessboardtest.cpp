@@ -44,6 +44,74 @@ namespace cSzd
         ASSERT_EQ(cb.wholeArmyBitBoard(static_cast<ArmyColor>(3)), BitBoard(EmptyBB));
     }
 
+    // Copy Constructor
+    TEST(ChessBoardTester, CheckCopyConstructorOfStandardInitialPosition)
+    {
+        ChessBoard cb {};
+        ChessBoard cb2 = cb;
+        cb.loadPosition("8/8/8/8/8/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        ASSERT_TRUE(cb2.isValid());
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[King], BitBoard({e1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Queen], BitBoard({d1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Rook], BitBoard({a1, h1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Knight], BitBoard({b1, g1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Bishop], BitBoard({c1, f1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Pawn], BitBoard(RanksBB[r_2]));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[King], BitBoard({e8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Queen], BitBoard({d8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Rook], BitBoard({a8, h8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Knight], BitBoard({b8, g8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
+        ASSERT_EQ(cb2.sideToMove, WhiteArmy);
+        ASSERT_EQ(cb2.castlingAvailability, BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(cb2.enPassantTargetSquare, BitBoard(EmptyBB));
+        ASSERT_EQ(cb2.halfMoveClock, 0);
+        ASSERT_EQ(cb2.fullMoves, 1);
+        ASSERT_EQ(cb2.wholeArmyBitBoard(WhiteArmy), BitBoard(RanksBB[r_1] | RanksBB[r_2]));
+        ASSERT_EQ(cb2.wholeArmyBitBoard(BlackArmy), BitBoard(RanksBB[r_7] | RanksBB[r_8]));
+        ASSERT_EQ(cb2.wholeArmyBitBoard(), BitBoard(RanksBB[r_1] | RanksBB[r_2] |
+                                                    RanksBB[r_7] | RanksBB[r_8]));
+    }
+
+    // Assignment Operator
+    TEST(ChessBoardTester, CheckAssignmentOperatorOfStandardInitialPosition)
+    {
+        ChessBoard cb {};
+        ChessBoard cb2{"8/8/8/8/8/8/8/8 w - - 0 1"};
+
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_FALSE(cb2.isValid());
+
+        cb2 = cb;
+
+        cb.loadPosition("8/8/8/8/8/8/8/8 w - - 0 1");
+        ASSERT_FALSE(cb.isValid());
+        ASSERT_TRUE(cb2.isValid());
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[King], BitBoard({e1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Queen], BitBoard({d1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Rook], BitBoard({a1, h1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Knight], BitBoard({b1, g1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Bishop], BitBoard({c1, f1}));
+        ASSERT_EQ(cb2.armies[WhiteArmy].pieces[Pawn], BitBoard(RanksBB[r_2]));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[King], BitBoard({e8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Queen], BitBoard({d8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Rook], BitBoard({a8, h8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Knight], BitBoard({b8, g8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
+        ASSERT_EQ(cb2.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
+        ASSERT_EQ(cb2.sideToMove, WhiteArmy);
+        ASSERT_EQ(cb2.castlingAvailability, BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(cb2.enPassantTargetSquare, BitBoard(EmptyBB));
+        ASSERT_EQ(cb2.halfMoveClock, 0);
+        ASSERT_EQ(cb2.fullMoves, 1);
+        ASSERT_EQ(cb2.wholeArmyBitBoard(WhiteArmy), BitBoard(RanksBB[r_1] | RanksBB[r_2]));
+        ASSERT_EQ(cb2.wholeArmyBitBoard(BlackArmy), BitBoard(RanksBB[r_7] | RanksBB[r_8]));
+        ASSERT_EQ(cb2.wholeArmyBitBoard(), BitBoard(RanksBB[r_1] | RanksBB[r_2] |
+                                                    RanksBB[r_7] | RanksBB[r_8]));
+    }
+
 
     // Test on acquisition of position from a FEN Record
     // 1. Initial standard position
