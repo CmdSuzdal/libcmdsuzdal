@@ -465,6 +465,4 @@ namespace cSzd
         return ((fakeArmy.controlledCellsByPieceType(pType, intfBoard) | occupiedCells()) ^ occupiedCells());
     }
 
-
-
 } // namespace cSzd

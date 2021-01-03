@@ -230,10 +230,24 @@ namespace cSzd
                         }
                         // ... check for check
                         if (!armyIsInCheck(sideToMove)) {
-                            // If at the end the move is valid, it can be added to the vector of moves
-                            moves.push_back(chessMove(pType,
-                                static_cast<Cell>(startPos), static_cast<Cell>(destPos),
-                                takenPiece));
+                            // If at the end the move is valid, it can be added to the vector of moves.
+                            // If the piece is a pawn and the destination position is on the last rank,
+                            // this is a promotion, so the moves to be added are four: one for each type
+                            // of promotion (Queen, Rook, Bishop, Knight). To add this kind of moves, we
+                            // use a dedicated function
+                            if ((pType == Pawn) && (((sideToMove == WhiteArmy) && (rank(static_cast<Cell>(destPos)) == r_8)) ||
+                                                    ((sideToMove == BlackArmy) && (rank(static_cast<Cell>(destPos)) == r_1)))) {
+                                // promotion moves
+                                addPromotionMoves(moves, static_cast<Cell>(startPos),
+                                                    static_cast<Cell>(destPos),
+                                                    takenPiece);
+
+                            } else {
+                                // normal move
+                                moves.push_back(chessMove(pType,
+                                    static_cast<Cell>(startPos), static_cast<Cell>(destPos),
+                                    takenPiece));
+                            }
                         }
                         // ...restore the armies
                         armies[sideToMove].pieces[pType] ^=
@@ -248,6 +262,16 @@ namespace cSzd
                 }
             }
         }
+    }
+
+    void ChessBoard::addPromotionMoves(std::vector<ChessMove> &moves, Cell startPos,
+                                       Cell destPos, Piece takenPiece) const
+    {
+        // add all the possible promotions
+         moves.push_back(chessMove(Pawn, startPos, destPos, takenPiece, Queen));
+         moves.push_back(chessMove(Pawn, startPos, destPos, takenPiece, Rook));
+         moves.push_back(chessMove(Pawn, startPos, destPos, takenPiece, Bishop));
+         moves.push_back(chessMove(Pawn, startPos, destPos, takenPiece, Knight));
     }
 
     void ChessBoard::checkForEnPassant(Cell c, std::vector<ChessMove> &moves) const
@@ -296,10 +320,5 @@ namespace cSzd
             }
         }
     }
-
-
-
-
-
 
 } // namespace cSzd

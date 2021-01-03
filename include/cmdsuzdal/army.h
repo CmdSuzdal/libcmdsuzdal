@@ -50,7 +50,6 @@ namespace cSzd
     };
     // -----------------------------------------------
 
-
 } // namespace cSzd
 
 #endif // #if !defined CSZD_ARMY_HEADER

@@ -72,6 +72,9 @@ namespace cSzd
         bool isValid() const;
 
         void generateLegalMoves(std::vector<ChessMove> &moves, Piece pType = InvalidPiece);
+        void addPromotionMoves(std::vector<ChessMove> &moves, Cell startPos,
+                                Cell destPos, Piece takenPiece) const;
+
         void checkForEnPassant(Cell c, std::vector<ChessMove> &moves) const;
 
     private:
@@ -80,7 +83,6 @@ namespace cSzd
 
     };
     // -----------------------------------------------
-
 
 } // namespace cSzd
 
