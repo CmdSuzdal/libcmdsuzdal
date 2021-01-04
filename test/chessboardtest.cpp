@@ -1238,6 +1238,7 @@ namespace cSzd
         ASSERT_EQ(cb.armyInCheck(), WhiteArmy);
         ASSERT_FALSE(cb.isCheckMate());
         ASSERT_FALSE(cb.isStaleMate());
+        ASSERT_FALSE(cb.isDrawnPosition());
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves);
         ASSERT_EQ(whiteMoves.size(), 1);
@@ -1250,6 +1251,7 @@ namespace cSzd
         ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_FALSE(cb.isCheckMate());
         ASSERT_TRUE(cb.isStaleMate());
+        ASSERT_TRUE(cb.isDrawnPosition());
         std::vector<ChessMove> blackMoves;
         cb.generateLegalMoves(blackMoves);
         ASSERT_EQ(blackMoves.size(), 0);
@@ -1262,6 +1264,7 @@ namespace cSzd
         ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_FALSE(cb.isCheckMate());
         ASSERT_TRUE(cb.isStaleMate());
+        ASSERT_TRUE(cb.isDrawnPosition());
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves);
         ASSERT_EQ(whiteMoves.size(), 0);
@@ -1273,6 +1276,7 @@ namespace cSzd
         ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_FALSE(cb.isCheckMate());
         ASSERT_TRUE(cb.isStaleMate());
+        ASSERT_TRUE(cb.isDrawnPosition());
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves);
         ASSERT_EQ(whiteMoves.size(), 0);
@@ -1284,6 +1288,7 @@ namespace cSzd
         ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_FALSE(cb.isCheckMate());
         ASSERT_TRUE(cb.isStaleMate());
+        ASSERT_TRUE(cb.isDrawnPosition());
         std::vector<ChessMove> blackMoves;
         cb.generateLegalMoves(blackMoves);
         ASSERT_EQ(blackMoves.size(), 0);

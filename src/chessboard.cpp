@@ -87,6 +87,11 @@ namespace cSzd
         }
         return false;
     }
+    // -----------------------------------------------------------------
+    bool ChessBoard::isDrawnPosition() const
+    {
+        return isStaleMate();
+    }
 
     // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)
