@@ -66,6 +66,7 @@ namespace cSzd
         ArmyColor armyInCheck() const ;
         bool armyIsInCheck(ArmyColor a) const;
         bool isCheckMate() const;
+        bool isStaleMate() const;
 
         // --------------------------
         void loadPosition(const FENRecord &fen);

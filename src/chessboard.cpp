@@ -74,6 +74,19 @@ namespace cSzd
         }
         return false;
     }
+    // -----------------------------------------------------------------
+    bool ChessBoard::isStaleMate() const
+    {
+        // If the army with the move is NOT in check and there are
+        // no valid moves, this is stalemate
+        if (armyInCheck() == InvalidArmy) {
+            std::vector<ChessMove> moves;
+            generateLegalMoves(moves);
+            if (moves.size() == 0)
+                return true;
+        }
+        return false;
+    }
 
     // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)
