@@ -128,6 +128,16 @@ namespace cSzd
         return false;
     }
 
+    bool ChessBoard::drawnCanBeCalledAndCannotBeRefused() const
+    {
+        // Drawn can be called by a player (and cannot be refused) for the fifty-moves rules
+        // (see isDrawnPosition() function)
+        if (halfMoveClock >= 100)
+            return true;
+
+        return false;
+    }
+
     // -----------------------------------------------------------------
     void ChessBoard::loadPosition(const FENRecord &fen)
     {

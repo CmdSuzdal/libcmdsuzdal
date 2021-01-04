@@ -68,6 +68,7 @@ namespace cSzd
         bool isCheckMate() const;
         bool isStaleMate() const;
         bool isDrawnPosition() const;
+        bool drawnCanBeCalledAndCannotBeRefused() const;
 
         // --------------------------
         void loadPosition(const FENRecord &fen);
