@@ -1277,5 +1277,16 @@ namespace cSzd
         cb.generateLegalMoves(whiteMoves);
         ASSERT_EQ(whiteMoves.size(), 0);
     }
+    TEST(ChessBoardTester, AnotherStaleMateForBlackPositiveCase)
+    {
+        // https://lichess.org/editor/7k/1Q4rp/7P/8/2BB4/p7/p7/K7_b_-_-_0_1
+        ChessBoard cb {"7k/1Q4rp/7P/8/2BB4/p7/p7/K7 b - - 0 1"};
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_FALSE(cb.isCheckMate());
+        ASSERT_TRUE(cb.isStaleMate());
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves);
+        ASSERT_EQ(blackMoves.size(), 0);
+    }
 
 } // namespace cSzd
