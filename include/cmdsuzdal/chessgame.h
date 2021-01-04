@@ -1,0 +1,47 @@
+#if !defined CSZD_CHESSGAME_HEADER
+#define CSZD_CHESSGAME_HEADER
+
+namespace cSzd
+{
+
+    // ------------------------------------------------------------------------
+    // ChessGame is a class used to represent a complete chess game.
+    // A chess game is composed by a starting position the sequence of moves
+    // of the main variation and a set of secondary variations.
+    // A ChessBoard is used to represent the "current" position of the game.
+    // Due to the fact that a ChessGame can be used for two purposes, *real
+    // time play* and *analysis*, two possible scenarios of usage of the
+    // ChessGame class are possible:
+    //   - Real Time Play: in this case only a variation is present, and the
+    //     ChessBoard is used to represent the last position of the game in
+    //     progress.
+    //   - Analysis: this is the complex case: more than one variation can be
+    //     present, and the ChessBoard can be used to represent any of the
+    //     position of any variation
+    //
+    // Because we proceed using a TDD iterative approach, in the first steps
+    // only the simpler Real Time Play scenario is considered, later we will
+    // introduce the additional functionality and informations to manage the
+    // analysis scenario.
+    //
+    // The other additional requirement that we will address somewhere in the
+    // future, is the support to the PGN format for both import and export
+    // operations
+    //
+    // ChessGame
+    //   |
+    //   ├─ TO BE COMPLETED
+    //   |    └─ ├─
+    //
+    // ------------------------------------------------------------------------
+
+
+    // --- The ChessGame ---------------------------------
+    struct ChessGame {
+
+    };
+    // ---------------------------------------------------
+
+} // namespace cSzd
+
+#endif // #if !defined CSZD_CHESSGAME_HEADER

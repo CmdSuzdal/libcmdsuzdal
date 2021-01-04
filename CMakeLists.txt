@@ -21,6 +21,7 @@ set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/army.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/fenrecord.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessboard.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessgame.h
 )
 
 # ---------------------------------------------------------------
@@ -37,6 +38,7 @@ target_sources(cmdsuzdal PRIVATE
     src/army.cpp
     src/fenrecord.cpp
     src/chessboard.cpp
+    src/chessgame.cpp
 )
 
 # ------------------------------------------------------------------
