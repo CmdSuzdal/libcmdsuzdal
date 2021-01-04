@@ -90,7 +90,42 @@ namespace cSzd
     // -----------------------------------------------------------------
     bool ChessBoard::isDrawnPosition() const
     {
-        return isStaleMate();
+        // If stalemate, position is drawn
+        if (isStaleMate())
+            return true;
+
+        // Fifty-moves rule: if 100 or more half-moves has been performed,
+        // the position can be claimed as draw BUT if half-moves are less than
+        // 150 the position is not declared drawn automatically. If the
+        // half-moves are equal or greater than 150 the position is drawn.
+        // From Wikipedia: https://en.wikipedia.org/wiki/Fifty-move_rule
+        // The relevant part of the official FIDE laws of chess is quoted below:
+        //     9.3 The game is drawn, upon a correct claim by a player having the move, if:
+        //         9.3.1 he writes his move, which cannot be changed, on his scoresheet
+        //               and declares to the arbiter his intention to make this move which
+        //               will result in the last 50 moves by each player having been made
+        //               without the movement of any pawn and without any capture, or
+        //     (b) 9.3.2 the last 50 moves by each player have been completed without the
+        //               movement of any pawn and without any capture.
+        //
+        // A claim does not have to be made at the first opportunity - it can be made any
+        // time when there have been no captures or pawn moves in the last fifty moves.
+        //
+        // A game is not automatically declared a draw under the fifty-move rule - the draw
+        // must be claimed by a player on his turn to move. Therefore, a game can continue
+        // beyond a point where a draw could be claimed under the rule. [...]
+        //
+        // If seventy-five moves are made without a pawn move or capture being made, the
+        // game is drawn unless the seventy-fifth move delivers a checkmate. No claim needs
+        // to be made by either player, the draw is mandatorily applied by the arbiter.
+        //     9.6 If one or both of the following occur(s) then the game is drawn:
+        //         9.6.2 any series of at least 75 moves have been made by each player
+        //               without the movement of any pawn and without any capture. If the
+        //               last move resulted in checkmate, that shall take precedence.
+        if (halfMoveClock >= 150)
+            return true;
+
+        return false;
     }
 
     // -----------------------------------------------------------------

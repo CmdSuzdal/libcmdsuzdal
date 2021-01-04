@@ -1294,4 +1294,29 @@ namespace cSzd
         ASSERT_EQ(blackMoves.size(), 0);
     }
 
+    TEST(ChessBoardTester, NoStaleMateForFiftyFiveMovesRules)
+    {
+        // 50-moves rules: If fifty moves are made without a pawn move or capture being made,
+        // the game is NOT automatically drawn: a player shall claim explicitly the draw
+        // (the draw can be claim).
+        // https://lichess.org/editor/3r4/r1b1qnk1/1pb1p1p1/p1pnPp1p/P2p1P1P/NP1P1BPN/2PB3K/R3R2Q_w_-_-_100_71
+        ChessBoard cb {"3r4/r1b1qnk1/1pb1p1p1/p1pnPp1p/P2p1P1P/NP1P1BPN/2PB3K/R3R2Q w - - 100 71"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_FALSE(cb.isCheckMate());
+        ASSERT_FALSE(cb.isStaleMate());
+        ASSERT_FALSE(cb.isDrawnPosition());
+    }
+    TEST(ChessBoardTester, StaleMateForSeventyFiveMovesRules)
+    {
+        // 75-moves rules: If seventy-five moves are made without a pawn move or capture being made,
+        // the game is drawn unless the seventy-fifth move delivers a checkmate. No claim needs to
+        // be made by either player, the draw is mandatorily applied by the arbiter. 
+        // https://lichess.org/editor/3r4/r1b1qnk1/1pb1p1p1/p1pnPp1p/P2p1P1P/NP1P1BPN/2PB3K/R3R2Q_w_-_-_150_96
+        ChessBoard cb {"3r4/r1b1qnk1/1pb1p1p1/p1pnPp1p/P2p1P1P/NP1P1BPN/2PB3K/R3R2Q w - - 150 96"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_FALSE(cb.isCheckMate());
+        ASSERT_FALSE(cb.isStaleMate());
+        ASSERT_TRUE(cb.isDrawnPosition());
+    }
+
 } // namespace cSzd
