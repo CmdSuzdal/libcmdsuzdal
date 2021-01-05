@@ -101,6 +101,8 @@ namespace cSzd
         //      0100 0000 1000 1111 0011 0110 0110 0100 = 0x408F3664
         ASSERT_EQ(chessMove(Rook, d7, d5), static_cast<ChessMove>(0x408F3664));
     }
+
+    // --- Get sub-elements helpers method testing
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnE2toE4)
     {
         ChessMove cm = chessMove(Pawn, e2, e4);
@@ -190,5 +192,61 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), d5);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), e4);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
+
+    // --- isACastlingMove() method testing ---
+    TEST(ChessMoveTester, White_00_IsACastlingMove)
+    {
+        ChessMove cm = chessMove(King, e1, g1);
+        ASSERT_TRUE(isACastlingMove(cm));
+    }
+    TEST(ChessMoveTester, White_000_IsACastlingMove)
+    {
+        ChessMove cm = chessMove(King, e1, c1);
+        ASSERT_TRUE(isACastlingMove(cm));
+    }
+    TEST(ChessMoveTester, Black_00_IsACastlingMove)
+    {
+        ChessMove cm = chessMove(King, e8, g8);
+        ASSERT_TRUE(isACastlingMove(cm));
+    }
+    TEST(ChessMoveTester, Black_000_IsACastlingMove)
+    {
+        ChessMove cm = chessMove(King, e8, c8);
+        ASSERT_TRUE(isACastlingMove(cm));
+    }
+    TEST(ChessMoveTester, CheckThatOtherKingMovesAreNotCastlingMove)
+    {
+        ChessMove cm = chessMove(King, e1, f1);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(King, e1, d1);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(King, e8, e7);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(King, e8, d7);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(King, f5, f4);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(King, c3, d4);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(King, g7, h8);
+        ASSERT_FALSE(isACastlingMove(cm));
+    }
+    TEST(ChessMoveTester, CheckThatOtherPiecesMovesAreNotCastlingMove)
+    {
+        ChessMove cm = chessMove(Rook, h1, f1);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(Rook, a1, d1);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(Rook, a8, d8);
+        ASSERT_FALSE(isACastlingMove(cm));
+        cm = chessMove(Rook, a8, f8);
+        ASSERT_FALSE(isACastlingMove(cm));
+        ChessMove cm = chessMove(Knight, d3, e5, Pawn);
+        ASSERT_FALSE(isACastlingMove(cm));
+        ChessMove cm = chessMove(Bishop, f6, a1, Rook);
+        ASSERT_FALSE(isACastlingMove(cm));
+        ChessMove cm = chessMove(Bishop, f6, a1, Rook);
+        ASSERT_FALSE(isACastlingMove(cm));
     }
 }

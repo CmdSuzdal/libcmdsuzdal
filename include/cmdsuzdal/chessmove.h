@@ -47,6 +47,18 @@ namespace cSzd
     inline Cell chessMoveGetStartingCell(ChessMove cm) { return static_cast<Cell>((cm.to_ullong() >> StartCellOffset)  & ValidCellMask); }
     inline Cell chessMoveGetDestinationCell(ChessMove cm) { return static_cast<Cell>((cm.to_ullong() >> DestinationCellOffset)  & ValidCellMask); }
     inline Cell chessMoveGetEnPassantCell(ChessMove cm) { return static_cast<Cell>((cm.to_ullong() >> EnPassantCellOffset)  & ValidAndInvalidCellMask); }
+    inline bool isACastlingMove(ChessMove cm)
+    {
+        // It is (maybe) a castling move if moved piece is king and there is one of the following movements:
+        //    e1 --> g1 or e1 --> c1 or e8 --> g8 or e8 --> c8
+        if ((chessMoveGetMovedPiece(cm) == King) && (
+                 (chessMoveGetStartingCell(cm) == e1 &&
+                    ((chessMoveGetDestinationCell(cm) == g1) || (chessMoveGetDestinationCell(cm) == c1))) ||
+                 (chessMoveGetStartingCell(cm) == e8 &&
+                    ((chessMoveGetDestinationCell(cm) == g8) || (chessMoveGetDestinationCell(cm) == c8)))))
+            return true;
+        return false;
+    }
 }
 
 #endif // #if !defined CSZD_CHESSMOVE_HEADER
