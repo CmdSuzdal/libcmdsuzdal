@@ -242,11 +242,11 @@ namespace cSzd
         ASSERT_FALSE(isACastlingMove(cm));
         cm = chessMove(Rook, a8, f8);
         ASSERT_FALSE(isACastlingMove(cm));
-        ChessMove cm = chessMove(Knight, d3, e5, Pawn);
+        cm = chessMove(Knight, d3, e5, Pawn);
         ASSERT_FALSE(isACastlingMove(cm));
-        ChessMove cm = chessMove(Bishop, f6, a1, Rook);
+        cm = chessMove(Bishop, f6, a1, Rook);
         ASSERT_FALSE(isACastlingMove(cm));
-        ChessMove cm = chessMove(Bishop, f6, a1, Rook);
+        cm = chessMove(Bishop, f6, a1, Rook);
         ASSERT_FALSE(isACastlingMove(cm));
     }
 }
