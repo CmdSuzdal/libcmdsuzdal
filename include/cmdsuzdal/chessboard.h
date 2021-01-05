@@ -5,6 +5,18 @@
 #include "cmdsuzdal/fenrecord.h"
 #include "cmdsuzdal/chessmove.h"
 
+// ChessBoard: initial Position!
+//  +-+-+-+-+-+-+-+-+
+// 8|r|n|b|q|k|b|n|r|
+// 7|p|p|p|p|p|p|p|p|
+// 6| | | | | | | | |
+// 5| | | | | | | | |
+// 4| | | | | | | | |
+// 3| | | | | | | | |
+// 2|P|P|P|P|P|P|P|P|
+// 1|R|N|B|Q|K|B|N|R|
+//  +-+-+-+-+-+-+-+-+
+//   a b c d e f g h
 namespace cSzd
 {
 
@@ -81,8 +93,11 @@ namespace cSzd
 
         void checkForEnPassant(Cell c, std::vector<ChessMove> &moves) const;
 
+        void doMove(const ChessMove &m);
+
     private:
         bool checkEnPassantTargetSquareValidity() const;
+        //void doCastlingMove(m);
 
 
     };

@@ -1954,4 +1954,39 @@ namespace cSzd
         ASSERT_TRUE(cb1 == cb2);
     }
 
+    // -------------------------------------------------------------------------------------
+    // DO MOVE TESTING ---
+    TEST(ChessBoardTester, TestSequenceOfMoves_GiuocoPiano)
+    {
+        ChessBoard cb;
+        ASSERT_EQ(cb, ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+        cb.doMove(chessMove(Pawn, e2, e4));
+        ASSERT_EQ(cb, ChessBoard("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"));
+        cb.doMove(chessMove(Pawn, e7, e5));
+        ASSERT_EQ(cb, ChessBoard("rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2"));
+        cb.doMove(chessMove(Knight, g1, f3));
+        ASSERT_EQ(cb, ChessBoard("rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"));
+        cb.doMove(chessMove(Knight, b8, c6));
+        ASSERT_EQ(cb, ChessBoard("r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"));
+        cb.doMove(chessMove(Bishop, f1, c4));
+        ASSERT_EQ(cb, ChessBoard("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3"));
+        cb.doMove(chessMove(Bishop, f8, c5));
+        ASSERT_EQ(cb, ChessBoard("r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4"));
+        cb.doMove(chessMove(Pawn, c2, c3));
+        ASSERT_EQ(cb, ChessBoard("r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4"));
+        cb.doMove(chessMove(Queen, d8, e7));
+        ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R w KQkq - 1 5"));
+        cb.doMove(chessMove(Pawn, d2, d4));
+        ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/2n5/2b1p3/2BPP3/2P2N2/PP3PPP/RNBQK2R b KQkq d3 0 5"));
+        cb.doMove(chessMove(Bishop, c5, b6));
+        ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/1bn5/4p3/2BPP3/2P2N2/PP3PPP/RNBQK2R w KQkq - 1 6"));
+        //cb.doMove(chessMove(King, e1, g1));
+        //ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/1bn5/4p3/2BPP3/2P2N2/PP3PPP/RNBQ1RK1 b kq - 2 6"));
+        // FIXME --- TO BE COMPLETED ---
+    }
+
+
+    // -------------------------------------------------------------------------------------
+
+
 } // namespace cSzd

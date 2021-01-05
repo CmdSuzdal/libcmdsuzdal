@@ -342,6 +342,8 @@ namespace cSzd
                 if (pType == Pawn) {
                     checkForEnPassant(static_cast<Cell>(startPos), moves);
                 }
+                // FIXME --- TO BE COMPLETED ---------
+                // !!! CHECK FOR CASTLING MOVES !!!
             }
         }
     }
@@ -401,6 +403,49 @@ namespace cSzd
                 }
             }
         }
+    }
+
+    // ---------------------------------------------------------------------------------
+    // Modify the ChessBoard assuming the specified move is executed by the active Army.
+    // N.B.: This method does not perform any check on move validity: it is responsibility
+    // of the caller to perform such check (possibly using the generateLegalMoves() method)
+    void ChessBoard::doMove(const ChessMove &m)
+    {
+        ArmyColor enemyArmy = (sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
+        Piece movedPiece = chessMoveGetMovedPiece(m);
+        Piece takenPiece = chessMoveGetTakenPiece(m);
+        Cell startCell = chessMoveGetStartingCell(m);
+        Cell destCell = chessMoveGetDestinationCell(m);
+
+        // Check if it is a castling move
+        //if (isACastlingMove(m)) {
+        //}
+
+        armies[sideToMove].pieces[movedPiece] ^=
+            BitBoard({startCell, destCell});
+        if (takenPiece != InvalidPiece) {
+            // remove the taken piece from the opposite army
+            // FIXME --- TO BE COMPLETED --- manage en-passant capture!
+            armies[enemyArmy].pieces[takenPiece] ^= BitBoard(destCell);
+        }
+        // If we move a Pawn or we capture a piece, reset half move counter,
+        // otherwise increases it
+        if ((movedPiece == Pawn) || (takenPiece != InvalidPiece))
+            halfMoveClock = 0;
+        else
+            ++(halfMoveClock);
+        // If the move was to Black, increase full moves counter
+        if (sideToMove == BlackArmy)
+            ++(fullMoves);
+        // Updates side to move
+        sideToMove = enemyArmy;
+
+        // Updates castling availability
+        // FIXME --- TO BE COMPLETED ---
+
+        // Updates en passant target square
+        enPassantTargetSquare = BitBoard(chessMoveGetEnPassantCell(m));
+
     }
 
 } // namespace cSzd
