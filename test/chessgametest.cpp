@@ -39,5 +39,31 @@ namespace cSzd
         ChessGame cg;
         ASSERT_EQ(cg.initialPosition, FENRecord(FENInitialStandardPosition));
     }
+    TEST(ChessGameTester, AfterTheDefaultInitializationThePossibleMovesAreComputedCorrectly)
+    {
+        ChessGame cg;
+        ASSERT_EQ(cg.possibleMoves.size(), 20);
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, a2, a3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, a2, a4)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, b2, b3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, b2, b4)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, c2, c3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, c2, c4)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, d2, d3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, d2, d4)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, e2, e3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, e2, e4)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, f2, f3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, f2, f4)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, g2, g3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, g2, g4)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, h2, h3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, h2, h4)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, b1, a3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, b1, c3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, g1, f3)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, g1, h3)) != cg.possibleMoves.end());
+
+    }
 
 } // namespace cSzd

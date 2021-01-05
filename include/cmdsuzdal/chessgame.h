@@ -28,11 +28,21 @@ namespace cSzd
     //
     // The other additional requirement that we will address somewhere in the
     // future, is the support of the PGN format for both import and export
-    // operations
+    // operations.
     //
     // ChessGame
     //   |
+    //   ├─ FENRecord initialPosition
+    //   |    The FEN record of the initial position of the game.
     //   ├─ ChessBoard board
+    //   |    The board rapresentation of the current position of the game.
+    //   |    This can be the last position in a real time game, or any
+    //   |    position of a game under analysis.
+    //   ├─ std::vector<ChessMove> possibleMoves
+    //   |    The legal moves available in the current position
+    //   |
+    //   |
+    //   |
     //
     //   ├─ TO BE COMPLETED
     //   |    └─ ├─
@@ -42,8 +52,17 @@ namespace cSzd
 
     // --- The ChessGame ---------------------------------
     struct ChessGame {
-        ChessBoard board;
+
+        // -----------------------------------------------------
         FENRecord initialPosition;
+        ChessBoard board;
+        std::vector<ChessMove> possibleMoves;
+        // -----------------------------------------------------
+
+        // --- Constructor(s) ----------------------------------
+        explicit ChessGame();
+        // -----------------------------------------------------
+
     };
     // ---------------------------------------------------
 
