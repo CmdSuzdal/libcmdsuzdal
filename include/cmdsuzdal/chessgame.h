@@ -61,7 +61,12 @@ namespace cSzd
 
         // --- Constructor(s) ----------------------------------
         explicit ChessGame();
+        explicit ChessGame(const FENRecord &fen);
+        explicit ChessGame(const std::string_view fenStr);
         // -----------------------------------------------------
+
+        // Add a move to the currently active variant
+        void addMove(const ChessMove &m);
 
     };
     // ---------------------------------------------------

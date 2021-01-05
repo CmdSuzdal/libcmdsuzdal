@@ -12,6 +12,24 @@ namespace cSzd
         // moves
         board.generateLegalMoves(possibleMoves);
     }
+    ChessGame::ChessGame(const FENRecord &fen) :
+        initialPosition(fen.fen),
+        board(fen)
+    {
+        board.generateLegalMoves(possibleMoves);
+    }
+    ChessGame::ChessGame(const std::string_view fenStr) :
+        initialPosition(fenStr),
+        board(fenStr)
+    {
+        board.generateLegalMoves(possibleMoves);
+    }
     // ---------------------------------------------------------
+
+    void ChessGame::addMove(const ChessMove &m)
+    {
+        board.doMove(m);
+    }
+
 
 } // namespace cSzd
