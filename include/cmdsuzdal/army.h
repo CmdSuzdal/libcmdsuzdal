@@ -49,6 +49,18 @@ namespace cSzd
         BitBoard piecePossibleMovesCells(Piece pType, Cell nPos, const BitBoard &intfBoard) const;
     };
     // -----------------------------------------------
+    inline bool operator==(const Army &lhs, const Army &rhs)
+    {
+        // Two armies are equal if they have the same BitBoards, and the same color
+        return  ((lhs.pieces[King] == rhs.pieces[King]) &&
+                (lhs.pieces[Queen] == rhs.pieces[Queen]) &&
+                (lhs.pieces[Rook] == rhs.pieces[Rook]) &&
+                (lhs.pieces[Bishop] == rhs.pieces[Bishop]) &&
+                (lhs.pieces[Knight] == rhs.pieces[Knight]) &&
+                (lhs.pieces[Pawn] == rhs.pieces[Pawn]) &&
+                (lhs.color == rhs.color));
+    }
+    inline bool operator!=(const Army &lhs, const Army &rhs) { return !operator==(lhs, rhs); }
 
 } // namespace cSzd
 

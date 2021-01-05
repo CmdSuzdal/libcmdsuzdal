@@ -945,4 +945,128 @@ namespace cSzd
         ASSERT_EQ(a.possibleMovesCellsByPieceTypeAndPosition(static_cast<Piece>(42), a1), BitBoard(EmptyBB));
     }
 
+    // --- Tests for equality operator
+    TEST(ArmyTester, WhiteArmyAndBlackArmyAreNotEqual)
+    {
+        Army w{WhiteArmy};
+        Army b{BlackArmy};
+        ASSERT_TRUE(w != b);
+    }
+    TEST(ArmyTester, WhiteAndBlackArmiesAndDefaultArmyAreNotEqual)
+    {
+        Army w{WhiteArmy};
+        Army b{WhiteArmy};
+        Army a{};
+        ASSERT_TRUE(w != a);
+        ASSERT_TRUE(b != a);
+    }
+    TEST(ArmyTester, WhiteArmiesBuiltInDifferentWaysAreEqual)
+    {
+        Army w1{WhiteArmy};
+        Army w2{};
+        w2.color = WhiteArmy;
+        w2.pieces[King] = BitBoard(e1);
+        w2.pieces[Queen] = BitBoard(d1);
+        w2.pieces[Rook] = BitBoard({a1, h1});
+        w2.pieces[Knight] = BitBoard({b1, g1});
+        w2.pieces[Bishop] = BitBoard({c1, f1});
+        w2.pieces[Pawn] = BitBoard(RanksBB[r_2]);
+        ASSERT_TRUE(w1 == w2);
+    }
+    TEST(ArmyTester, BlackArmiesBuiltInDifferentWaysAreEqual)
+    {
+        Army b1{BlackArmy};
+        Army b2{};
+        b2.color = BlackArmy;
+        b2.pieces[King] = BitBoard(e8);
+        b2.pieces[Queen] = BitBoard(d8);
+        b2.pieces[Rook] = BitBoard({a8, h8});
+        b2.pieces[Knight] = BitBoard({b8, g8});
+        b2.pieces[Bishop] = BitBoard({c8, f8});
+        b2.pieces[Pawn] = BitBoard(RanksBB[r_7]);
+        ASSERT_TRUE(b1 == b2);
+    }
+    TEST(ArmyTester, ArmiesWithAKingInDifferentPositionsAreNotEqual)
+    {
+        Army a{WhiteArmy};
+        Army b{};
+        b.color = WhiteArmy;
+        b.pieces[King] = BitBoard(e3);  // <---
+        b.pieces[Queen] = BitBoard(d1);
+        b.pieces[Rook] = BitBoard({a1, h1});
+        b.pieces[Knight] = BitBoard({b1, g1});
+        b.pieces[Bishop] = BitBoard({c1, f1});
+        b.pieces[Pawn] = BitBoard(RanksBB[r_2]);
+        ASSERT_TRUE(a != b);
+    }
+    TEST(ArmyTester, ArmiesWithAQueenInDifferentPositionsAreNotEqual)
+    {
+        Army a{WhiteArmy};
+        Army b{};
+        b.color = WhiteArmy;
+        b.pieces[King] = BitBoard(e1);
+        b.pieces[Queen] = BitBoard(g5);  // <---
+        b.pieces[Rook] = BitBoard({a1, h1});
+        b.pieces[Knight] = BitBoard({b1, g1});
+        b.pieces[Bishop] = BitBoard({c1, f1});
+        b.pieces[Pawn] = BitBoard(RanksBB[r_2]);
+        ASSERT_TRUE(a != b);
+    }
+    TEST(ArmyTester, ArmiesWithARookInDifferentPositionsAreNotEqual)
+    {
+        Army a{WhiteArmy};
+        Army b{};
+        b.color = WhiteArmy;
+        b.pieces[King] = BitBoard(e1);
+        b.pieces[Queen] = BitBoard(d1);
+        b.pieces[Rook] = BitBoard({f4, h1}); // <---
+        b.pieces[Knight] = BitBoard({b1, g1});
+        b.pieces[Bishop] = BitBoard({c1, f1});
+        b.pieces[Pawn] = BitBoard(RanksBB[r_2]);
+        ASSERT_TRUE(a != b);
+    }
+    TEST(ArmyTester, ArmiesWithAKnightInDifferentPositionsAreNotEqual)
+    {
+        Army a{WhiteArmy};
+        Army b{};
+        b.color = WhiteArmy;
+        b.pieces[King] = BitBoard(e1);
+        b.pieces[Queen] = BitBoard(d1);
+        b.pieces[Rook] = BitBoard({a1, h1});
+        b.pieces[Knight] = BitBoard({b1, f3}); // <---
+        b.pieces[Bishop] = BitBoard({c1, f1});
+        b.pieces[Pawn] = BitBoard(RanksBB[r_2]);
+        ASSERT_TRUE(a != b);
+    }
+    TEST(ArmyTester, ArmiesWithABishopInDifferentPositionsAreNotEqual)
+    {
+        Army a{WhiteArmy};
+        Army b{};
+        b.color = WhiteArmy;
+        b.pieces[King] = BitBoard(e1);
+        b.pieces[Queen] = BitBoard(d1);
+        b.pieces[Rook] = BitBoard({a1, h1});
+        b.pieces[Knight] = BitBoard({b1, g1});
+        b.pieces[Bishop] = BitBoard({h6, f1}); // <---
+        b.pieces[Pawn] = BitBoard(RanksBB[r_2]);
+        ASSERT_TRUE(a != b);
+    }
+    TEST(ArmyTester, ArmiesWithAPawnInDifferentPositionsAreNotEqual)
+    {
+        Army a{BlackArmy};
+        Army b{};
+        b.color = BlackArmy;
+        b.pieces[King] = BitBoard(e8);
+        b.pieces[Queen] = BitBoard(d8);
+        b.pieces[Rook] = BitBoard({a8, h8});
+        b.pieces[Knight] = BitBoard({b8, g8});
+        b.pieces[Bishop] = BitBoard({c8, f8});
+        b.pieces[Pawn] = BitBoard({a7, b7, c7, d7, e7, f7, g7, h7});
+        ASSERT_TRUE(a == b);
+        b.pieces[Pawn] = BitBoard({a7, b7, c7, d5, e7, f7, g7, h7});
+        ASSERT_TRUE(a != b);
+        a.pieces[Pawn] = BitBoard({a7, b7, c7, d5, e7, f7, g7, h7});
+        ASSERT_TRUE(a == b);
+    }
+
 } // namespace cSzd
