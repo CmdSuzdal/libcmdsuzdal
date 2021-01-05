@@ -87,6 +87,24 @@ namespace cSzd
 
     };
     // -----------------------------------------------
+    inline bool operator==(const ChessBoard &lhs, const ChessBoard &rhs)
+    {
+        // ChessBoards are equal if:
+        //   - Armies are equal
+        //   - sideToMove are the same
+        //   - castlingAvailability are the same
+        //   - enPassantTargetSquare are the same
+        //   - halfMoveClock are equal
+        //   - fullMoves are equal
+        return ((lhs.armies[WhiteArmy] == rhs.armies[WhiteArmy]) &&
+                (lhs.armies[BlackArmy] == rhs.armies[BlackArmy]) &&
+                (lhs.sideToMove == rhs.sideToMove) &&
+                (lhs.castlingAvailability == rhs.castlingAvailability) &&
+                (lhs.enPassantTargetSquare == rhs.enPassantTargetSquare) &&
+                (lhs.halfMoveClock == rhs.halfMoveClock) &&
+                (lhs.fullMoves == rhs.fullMoves));
+    }
+    inline bool operator!=(const ChessBoard &lhs, const ChessBoard &rhs) { return !operator==(lhs, rhs); }
 
 } // namespace cSzd
 

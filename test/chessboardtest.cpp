@@ -1707,4 +1707,251 @@ namespace cSzd
         ASSERT_TRUE(cb.isDrawnPosition());
     }
 
+    // --- Equality operators testing ---
+    TEST(ChessBoardTester, TwoChessBoardsBuiltWithDefaultConstructorAreEqual)
+    {
+        ChessBoard cb1{};
+        ChessBoard cb2{};
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingTheInitialPositionBuiltInDifferentWaysAreEqual)
+    {
+        ChessBoard cb1{};
+        ChessBoard cb2 {FENRecord(FENInitialStandardPosition)};
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingTwoDifferentPositionsAreNotEqual)
+    {
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2 {FENRecord(FENInitialStandardPosition)};
+        ASSERT_TRUE(cb1 != cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingTheSamePositionDifferentFromInitialAreEqual)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"8/8/8/8/8/8/8/8 w - - 0 1"};
+        cb2.armies[WhiteArmy].color = WhiteArmy;
+        cb2.armies[WhiteArmy].pieces[King] = BitBoard{g1};
+        cb2.armies[WhiteArmy].pieces[Queen] = BitBoard(EmptyBB);
+        cb2.armies[WhiteArmy].pieces[Rook] = BitBoard{d1};
+        cb2.armies[WhiteArmy].pieces[Knight] = BitBoard{b5};
+        cb2.armies[WhiteArmy].pieces[Bishop] = BitBoard{d3};
+        cb2.armies[WhiteArmy].pieces[Pawn] = BitBoard({a2, b2, c2, e3, g2, h2});
+        cb2.armies[BlackArmy].color = BlackArmy;
+        cb2.armies[BlackArmy].pieces[King] = BitBoard{g8};
+        cb2.armies[BlackArmy].pieces[Queen] = BitBoard(EmptyBB);
+        cb2.armies[BlackArmy].pieces[Rook] = BitBoard{d8};
+        cb2.armies[BlackArmy].pieces[Knight] = BitBoard({f2, g4});
+        cb2.armies[BlackArmy].pieces[Bishop] = BitBoard(EmptyBB);
+        cb2.armies[BlackArmy].pieces[Pawn] = BitBoard({a7, b7, c7, f7, g7, h7});
+        cb2.sideToMove = WhiteArmy;
+        cb2.castlingAvailability = BitBoard(EmptyBB);
+        cb2.enPassantTargetSquare = BitBoard(EmptyBB);
+        cb2.halfMoveClock = 3;
+        cb2.fullMoves = 19;
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_FirstArmyColorDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[WhiteArmy].color = InvalidArmy;
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[WhiteArmy].color = WhiteArmy;
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_FirstArmyKingPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[WhiteArmy].pieces[King] ^= BitBoard({g1, f1});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[WhiteArmy].pieces[King] ^= BitBoard({g1, f1});
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_FirstArmyQueenPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[WhiteArmy].pieces[Queen] ^= BitBoard(d2);
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[WhiteArmy].pieces[Queen] ^= BitBoard(d2);
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_FirstArmyRookPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[WhiteArmy].pieces[Rook] ^= BitBoard({d1, c5});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[WhiteArmy].pieces[Rook] ^= BitBoard({d1, c5});
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_FirstArmyBishopPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[WhiteArmy].pieces[Bishop] ^= BitBoard({d3, c4});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[WhiteArmy].pieces[Bishop] ^= BitBoard({d3, c4});
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_FirstArmyKnightPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[WhiteArmy].pieces[Knight] ^= BitBoard({b5, d4});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[WhiteArmy].pieces[Knight] ^= BitBoard({b5, d4});
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_FirstArmyPawnPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[WhiteArmy].pieces[Pawn] ^= BitBoard({b2, b3});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[WhiteArmy].pieces[Pawn] ^= BitBoard({b2, b3});
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_SecondArmyKingPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[BlackArmy].pieces[King] ^= BitBoard({g8, h8});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[BlackArmy].pieces[King] ^= BitBoard({g8, h8});
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_SecondArmyQueenPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[BlackArmy].pieces[Queen] = BitBoard(g5);
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[BlackArmy].pieces[Queen] = BitBoard(EmptyBB);
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_SecondArmyRookPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[BlackArmy].pieces[Rook] ^= BitBoard({d8, e8});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[BlackArmy].pieces[Rook] ^= BitBoard({d8, e8});
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_SecondArmyBishopPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[BlackArmy].pieces[Bishop] = BitBoard(g4);
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[BlackArmy].pieces[Bishop] = BitBoard(EmptyBB);
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_SecondArmyKnightPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[BlackArmy].pieces[Knight] ^= BitBoard({g4, e4});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[BlackArmy].pieces[Knight] = BitBoard({g4, f2});
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_SecondArmyPawnPositionDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.armies[BlackArmy].pieces[Pawn] ^= BitBoard({c7, c6});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.armies[BlackArmy].pieces[Pawn].setCell(c7);
+        cb2.armies[BlackArmy].pieces[Pawn].resetCell(c6);
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_SideToMoveDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.sideToMove = BlackArmy;
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.sideToMove = WhiteArmy;
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_CastlingAvailabilityDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.castlingAvailability = BitBoard({g1, g8});
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.castlingAvailability = BitBoard(EmptyBB);
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_EnPassantTargetSquareDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        cb2.enPassantTargetSquare = BitBoard(c3);
+        ASSERT_TRUE(cb1 != cb2);
+        cb2.enPassantTargetSquare = BitBoard(EmptyBB);
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_HalfMoveClockDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        ++(cb2.halfMoveClock);
+        ASSERT_EQ(cb2.halfMoveClock, 4);
+        ASSERT_TRUE(cb1 != cb2);
+        --(cb2.halfMoveClock);
+        ASSERT_TRUE(cb1 == cb2);
+    }
+    TEST(ChessBoardTester, TwoChessBoardsContainingQuiteTheSamePositionAreNotEqual_FullMovesDifferent)
+    {
+        // https://lichess.org/WqXdBTUg#36
+        ChessBoard cb1{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ChessBoard cb2{"3r2k1/ppp2ppp/8/1N6/6n1/3BP3/PPP2nPP/3R2K1 w - - 3 19"};
+        ASSERT_TRUE(cb1 == cb2);
+        ++(cb2.fullMoves);
+        ASSERT_EQ(cb2.fullMoves, 20);
+        ASSERT_TRUE(cb1 != cb2);
+        --(cb2.fullMoves);
+        ASSERT_TRUE(cb1 == cb2);
+    }
+
 } // namespace cSzd
