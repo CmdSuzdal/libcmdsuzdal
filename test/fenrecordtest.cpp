@@ -161,4 +161,104 @@ namespace cSzd
         ASSERT_EQ(f.extractBitBoard(BlackArmy, Pawn),   BitBoard({a7, b7, c7, d6, e7, f7, g4, h7}));
     }
 
+    // --- Equality operator testing ---
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithDefaultConstructorAreEqual)
+    {
+        FENRecord fr1{};
+        FENRecord fr2{};
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithTheSameStringAreEqual)
+    {
+        FENRecord fr1{FENEmptyChessBoard};
+        FENRecord fr2{FENEmptyChessBoard};
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithDifferentStringAreNotEqual)
+    {
+        FENRecord fr1{FENInitialStandardPosition};
+        FENRecord fr2{FENEmptyChessBoard};
+        ASSERT_TRUE(fr1 != fr2);
+        fr2.loadPosition(FENInitialStandardPosition);
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithTheSameStringAndThenChangedAreNotEqual_FENString)
+    {
+        FENRecord fr1{FENInitialStandardPosition};
+        FENRecord fr2{FENInitialStandardPosition};
+        ASSERT_TRUE(fr1 == fr2);
+        fr2.fen = "rnbqkbnr/1ppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        ASSERT_TRUE(fr1 != fr2);
+        fr2.fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithTheSameStringAndThenChangedAreNotEqual_PiecePlacementView)
+    {
+        FENRecord fr1{FENInitialStandardPosition};
+        FENRecord fr2{FENInitialStandardPosition};
+        ASSERT_TRUE(fr1 == fr2);
+        fr2.pPlacement = "rnbqkbnr/1ppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+        ASSERT_TRUE(fr1 != fr2);
+        fr2.pPlacement = std::string_view {fr2.fen.c_str(), fr2.fen.find_first_of(FENDelim)};
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithTheSameStringAndThenChangedAreNotEqual_ActiveArmy)
+    {
+        FENRecord fr1{FENInitialStandardPosition};
+        FENRecord fr2{FENInitialStandardPosition};
+        ASSERT_TRUE(fr1 == fr2);
+        fr2.activeArmy = BlackArmy;
+        ASSERT_TRUE(fr1 != fr2);
+        fr2.activeArmy = WhiteArmy;
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithTheSameStringAndThenChangedAreNotEqual_CastlingAvailability)
+    {
+        FENRecord fr1{FENInitialStandardPosition};
+        FENRecord fr2{FENInitialStandardPosition};
+        ASSERT_TRUE(fr1 == fr2);
+        fr2.cstlAvail ^= BitBoard(b1);
+        ASSERT_TRUE(fr1 != fr2);
+        fr2.cstlAvail ^= BitBoard(b1);
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithTheSameStringAndThenChangedAreNotEqual_EnPassantCell)
+    {
+        FENRecord fr1{FENInitialStandardPosition};
+        FENRecord fr2{FENInitialStandardPosition};
+        ASSERT_TRUE(fr1 == fr2);
+        fr2.enPassantCell ^= BitBoard(e3);
+        ASSERT_TRUE(fr1 != fr2);
+        fr2.enPassantCell = BitBoard(EmptyBB);
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithTheSameStringAndThenChangedAreNotEqual_HalfMoveClock)
+    {
+        FENRecord fr1{FENInitialStandardPosition};
+        FENRecord fr2{FENInitialStandardPosition};
+        ASSERT_TRUE(fr1 == fr2);
+        ++(fr2.hmc);
+        ASSERT_TRUE(fr1 != fr2);
+        --(fr2.hmc);
+        ASSERT_TRUE(fr1 == fr2);
+        fr2.hmc -= 33;
+        ASSERT_TRUE(fr1 != fr2);
+        fr2.hmc += 33;
+        ASSERT_TRUE(fr1 == fr2);
+    }
+    TEST(FENRecordTester,TwoFENRecordsBuiltWithTheSameStringAndThenChangedAreNotEqual_FullMove)
+    {
+        FENRecord fr1{FENInitialStandardPosition};
+        FENRecord fr2{FENInitialStandardPosition};
+        ASSERT_TRUE(fr1 == fr2);
+        ++(fr2.fm);
+        ASSERT_TRUE(fr1 != fr2);
+        --(fr2.fm);
+        ASSERT_TRUE(fr1 == fr2);
+        fr2.fm -= 42;
+        ASSERT_TRUE(fr1 != fr2);
+        fr2.fm += 42;
+        ASSERT_TRUE(fr1 == fr2);
+    }
+
 } // namespace cSzd

@@ -63,6 +63,15 @@ namespace cSzd
     // base struct for FEN Record representation
     struct FENRecord
     {
+        // -------------------------------------------------------------------
+        std::string fen {FENInitialStandardPosition};
+        std::string_view pPlacement;
+        ArmyColor activeArmy;
+        BitBoard cstlAvail;
+        BitBoard enPassantCell;
+        unsigned int hmc;
+        unsigned int fm;
+        // -------------------------------------------------------------------
 
         // -------------------------
         explicit FENRecord();
@@ -84,14 +93,18 @@ namespace cSzd
     private:
         static const std::string pieceSetFENCharacters(ArmyColor c, Piece p);
 
-        std::string fen {FENInitialStandardPosition};
-        std::string_view pPlacement;
-        ArmyColor activeArmy;
-        BitBoard cstlAvail;
-        BitBoard enPassantCell;
-        unsigned int hmc;
-        unsigned int fm;
     };
+    inline bool operator==(const FENRecord &lhs, const FENRecord &rhs)
+    {
+        return ((lhs.fen == rhs.fen) &&
+                (lhs.pPlacement == rhs.pPlacement) &&
+                (lhs.activeArmy == rhs.activeArmy) &&
+                (lhs.cstlAvail == rhs.cstlAvail) &&
+                (lhs.enPassantCell == rhs.enPassantCell) &&
+                (lhs.hmc == rhs.hmc) &&
+                (lhs.fm == rhs.fm));
+    }
+    inline bool operator!=(const FENRecord &lhs, const FENRecord &rhs) { return !operator==(lhs, rhs); }
 
 } // namespace cSzd
 
