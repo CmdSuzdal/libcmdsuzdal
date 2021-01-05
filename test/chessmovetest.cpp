@@ -101,4 +101,94 @@ namespace cSzd
         //      0100 0000 1000 1111 0011 0110 0110 0100 = 0x408F3664
         ASSERT_EQ(chessMove(Rook, d7, d5), static_cast<ChessMove>(0x408F3664));
     }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnE2toE4)
+    {
+        ChessMove cm = chessMove(Pawn, e2, e4);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), Pawn);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), e2);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), e4);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), e3);
+    }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnB4toC5TakingAKnight)
+    {
+        ChessMove cm = chessMove(Pawn, b4, c5, Knight);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), Pawn);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), Knight);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), b4);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), c5);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnF7toF8PromotingToQueen)
+    {
+        ChessMove cm = chessMove(Pawn, f7, f8, InvalidPiece, Queen);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), Pawn);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), Queen);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), f7);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), f8);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnB2toC1TakingABishopPromotingToKnight)
+    {
+        ChessMove cm = chessMove(Pawn, b2, c1, Bishop, Knight);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), Pawn);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), Bishop);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), Knight);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), b2);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), c1);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_RookG3toB3)
+    {
+        ChessMove cm = chessMove(Rook, g3, b3);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), Rook);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), g3);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), b3);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_KnightE4toC5TakingPawn)
+    {
+        ChessMove cm = chessMove(Knight, e4, c5, Pawn);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), Knight);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), Pawn);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), e4);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), c5);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_BishopA3toF8TakingQueen)
+    {
+        ChessMove cm = chessMove(Bishop, a3, f8, Queen);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), Bishop);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), Queen);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), a3);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), f8);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_QueenA6toE2)
+    {
+        ChessMove cm = chessMove(Queen, a6, e2);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), Queen);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), a6);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), e2);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
+    TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_KingD5toE4TakingRook)
+    {
+        ChessMove cm = chessMove(King, d5, e4, Rook);
+        ASSERT_EQ(chessMoveGetMovedPiece(cm), King);
+        ASSERT_EQ(chessMoveGetTakenPiece(cm), Rook);
+        ASSERT_EQ(chessMoveGetPromotedPiece(cm), InvalidPiece);
+        ASSERT_EQ(chessMoveGetStartingCell(cm), d5);
+        ASSERT_EQ(chessMoveGetDestinationCell(cm), e4);
+        ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+    }
 }

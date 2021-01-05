@@ -41,6 +41,12 @@ namespace cSzd
                         Piece takenPiece = InvalidPiece,
                         Piece promotedPiece = InvalidPiece);
     Cell computeEnPassant(Cell from, Cell to);
+    inline Piece chessMoveGetMovedPiece(ChessMove cm) { return static_cast<Piece>((cm.to_ullong() >> MovedPieceOffset)  & PieceMask); }
+    inline Piece chessMoveGetTakenPiece(ChessMove cm) { return static_cast<Piece>((cm.to_ullong() >> TakenPieceOffset)  & PieceMask); }
+    inline Piece chessMoveGetPromotedPiece(ChessMove cm) { return static_cast<Piece>((cm.to_ullong() >> PromotedPieceOffset)  & PieceMask); }
+    inline Cell chessMoveGetStartingCell(ChessMove cm) { return static_cast<Cell>((cm.to_ullong() >> StartCellOffset)  & ValidCellMask); }
+    inline Cell chessMoveGetDestinationCell(ChessMove cm) { return static_cast<Cell>((cm.to_ullong() >> DestinationCellOffset)  & ValidCellMask); }
+    inline Cell chessMoveGetEnPassantCell(ChessMove cm) { return static_cast<Cell>((cm.to_ullong() >> EnPassantCellOffset)  & ValidAndInvalidCellMask); }
 }
 
 #endif // #if !defined CSZD_CHESSMOVE_HEADER
