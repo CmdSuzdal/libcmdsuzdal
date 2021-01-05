@@ -282,6 +282,11 @@ namespace cSzd
         else {
             bbToCheck = armies[sideToMove].pieces[pType];
         }
+
+        // Clear the vector of moves
+        moves.clear();
+
+        // Search for moves...
         for (auto startPos = 0; (startPos < 64) && (foundPieces < bbToCheck.popCount()); startPos++) {
             if (bbToCheck.bbs[startPos] != 0) {
                 // piece found in position startPos
