@@ -3,5 +3,4 @@
 namespace cSzd
 {
 
-
 } // namespace cSzd

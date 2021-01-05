@@ -1,6 +1,8 @@
 #if !defined CSZD_CHESSGAME_HEADER
 #define CSZD_CHESSGAME_HEADER
 
+#include "cmdsuzdal/chessboard.h"
+
 namespace cSzd
 {
 
@@ -25,11 +27,13 @@ namespace cSzd
     // analysis scenario.
     //
     // The other additional requirement that we will address somewhere in the
-    // future, is the support to the PGN format for both import and export
+    // future, is the support of the PGN format for both import and export
     // operations
     //
     // ChessGame
     //   |
+    //   ├─ ChessBoard board
+    //
     //   ├─ TO BE COMPLETED
     //   |    └─ ├─
     //
@@ -38,7 +42,8 @@ namespace cSzd
 
     // --- The ChessGame ---------------------------------
     struct ChessGame {
-
+        ChessBoard board;
+        FENRecord initialPosition;
     };
     // ---------------------------------------------------
 
