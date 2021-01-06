@@ -1,6 +1,7 @@
 #if !defined CSZD_BITBOARD_HEADER
 #define CSZD_BITBOARD_HEADER
 
+#include <iostream>
 #include <vector>
 
 #include "cmdsuzdal/bbdefines.h"
@@ -154,6 +155,9 @@ namespace cSzd
         bool isActive(File f, Rank r) const { return isActive(toCell(f, r)); }
         // returns true if at least one of the cell in the given mask is active
         bool activeCellsInMask(BitBoardState bbMask) const { return ((bbs & bbMask) != EmptyBB); }
+
+        // iostream << operator
+        friend std::ostream &operator<<(std::ostream &os, const BitBoard &bb);
     };
 
     // In C++ 20 it is possible to define a default three way comparison operator:
