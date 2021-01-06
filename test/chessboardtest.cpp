@@ -24,7 +24,7 @@ namespace cSzd
         ASSERT_EQ(cb.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
         ASSERT_EQ(cb.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
         ASSERT_EQ(cb.sideToMove, WhiteArmy);
-        ASSERT_EQ(cb.castlingAvailability, BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
         ASSERT_EQ(cb.enPassantTargetSquare, BitBoard(EmptyBB));
         ASSERT_EQ(cb.halfMoveClock, 0);
         ASSERT_EQ(cb.fullMoves, 1);
@@ -70,7 +70,7 @@ namespace cSzd
         ASSERT_EQ(cb2.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
         ASSERT_EQ(cb2.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
         ASSERT_EQ(cb2.sideToMove, WhiteArmy);
-        ASSERT_EQ(cb2.castlingAvailability, BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(cb2.castlingAvailability, BitBoard({c1, g1, c8, g8}));
         ASSERT_EQ(cb2.enPassantTargetSquare, BitBoard(EmptyBB));
         ASSERT_EQ(cb2.halfMoveClock, 0);
         ASSERT_EQ(cb2.fullMoves, 1);
@@ -107,7 +107,7 @@ namespace cSzd
         ASSERT_EQ(cb2.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
         ASSERT_EQ(cb2.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
         ASSERT_EQ(cb2.sideToMove, WhiteArmy);
-        ASSERT_EQ(cb2.castlingAvailability, BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(cb2.castlingAvailability, BitBoard({c1, g1, c8, g8}));
         ASSERT_EQ(cb2.enPassantTargetSquare, BitBoard(EmptyBB));
         ASSERT_EQ(cb2.halfMoveClock, 0);
         ASSERT_EQ(cb2.fullMoves, 1);
@@ -136,7 +136,7 @@ namespace cSzd
         ASSERT_EQ(cb.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
         ASSERT_EQ(cb.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
         ASSERT_EQ(cb.sideToMove, WhiteArmy);
-        ASSERT_EQ(cb.castlingAvailability, BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
         ASSERT_EQ(cb.enPassantTargetSquare, BitBoard(EmptyBB));
         ASSERT_EQ(cb.halfMoveClock, 0);
         ASSERT_EQ(cb.fullMoves, 1);
@@ -1980,9 +1980,8 @@ namespace cSzd
         ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/2n5/2b1p3/2BPP3/2P2N2/PP3PPP/RNBQK2R b KQkq d3 0 5"));
         cb.doMove(chessMove(Bishop, c5, b6));
         ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/1bn5/4p3/2BPP3/2P2N2/PP3PPP/RNBQK2R w KQkq - 1 6"));
-        //cb.doMove(chessMove(King, e1, g1));
-        //ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/1bn5/4p3/2BPP3/2P2N2/PP3PPP/RNBQ1RK1 b kq - 2 6"));
-        // FIXME --- TO BE COMPLETED ---
+        cb.doMove(chessMove(King, e1, g1));
+        ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/1bn5/4p3/2BPP3/2P2N2/PP3PPP/RNBQ1RK1 b kq - 2 6"));
     }
 
 

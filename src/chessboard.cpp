@@ -418,10 +418,36 @@ namespace cSzd
         Cell startCell = chessMoveGetStartingCell(m);
         Cell destCell = chessMoveGetDestinationCell(m);
 
-        // Check if it is a castling move
-        //if (isACastlingMove(m)) {
-        //}
-
+        // Check if it is a castling move and in such a case move the rook
+        // (the king will be moved by the "normal move" code below).
+        // Additionally, the castlingAvailability bitboard is updated
+        if (isACastlingMove(m)) {
+            if (sideToMove == WhiteArmy) {
+                // white army
+                if (destCell == g1) {
+                    // white 0-0
+                    armies[sideToMove].pieces[Rook] ^=
+                                BitBoard({h1, f1});
+                } else {
+                    // white 0-0-0
+                    armies[sideToMove].pieces[Rook] ^=
+                                BitBoard({a1, d1});
+                }
+                castlingAvailability &= ~BitBoard({c1, g1});
+            } else {
+                // black army
+                if (destCell == g8) {
+                    // black 0-0
+                    armies[sideToMove].pieces[Rook] ^=
+                                BitBoard({h8, f8});
+                } else {
+                    // black 0-0-0
+                    armies[sideToMove].pieces[Rook] ^=
+                                BitBoard({a8, d8});
+                }
+                castlingAvailability &= ~BitBoard({c8, g8});
+            }
+        }
         armies[sideToMove].pieces[movedPiece] ^=
             BitBoard({startCell, destCell});
         if (takenPiece != InvalidPiece) {

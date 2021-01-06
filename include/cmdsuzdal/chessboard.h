@@ -57,7 +57,7 @@ namespace cSzd
         // --------------------------
         Army armies[2] = { Army(WhiteArmy), Army(BlackArmy) };
         ArmyColor sideToMove = WhiteArmy;
-        BitBoard castlingAvailability = BitBoard({b1, g1, b8, g8});
+        BitBoard castlingAvailability = BitBoard({c1, g1, c8, g8});
         BitBoard enPassantTargetSquare;
         unsigned int halfMoveClock = 0;
         unsigned int fullMoves = 1;
@@ -101,8 +101,6 @@ namespace cSzd
 
     private:
         bool checkEnPassantTargetSquareValidity() const;
-        //void doCastlingMove(m);
-
 
     };
     // -----------------------------------------------

@@ -24,7 +24,7 @@ namespace cSzd
         ASSERT_EQ(cg.board.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
         ASSERT_EQ(cg.board.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
         ASSERT_EQ(cg.board.sideToMove, WhiteArmy);
-        ASSERT_EQ(cg.board.castlingAvailability, BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(cg.board.castlingAvailability, BitBoard({c1, g1, c8, g8}));
         ASSERT_EQ(cg.board.enPassantTargetSquare, BitBoard(EmptyBB));
         ASSERT_EQ(cg.board.halfMoveClock, 0);
         ASSERT_EQ(cg.board.fullMoves, 1);

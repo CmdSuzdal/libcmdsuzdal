@@ -43,13 +43,13 @@ namespace cSzd
         // castling availability
         ss >> fld;
         if (fld.find('Q') != std::string::npos) {
-            cstlAvail.setCell(b1);
+            cstlAvail.setCell(c1);
         }
         if (fld.find('K') != std::string::npos) {
             cstlAvail.setCell(g1);
         }
         if (fld.find('q') != std::string::npos) {
-            cstlAvail.setCell(b8);
+            cstlAvail.setCell(c8);
         }
         if (fld.find('k') != std::string::npos) {
             cstlAvail.setCell(g8);

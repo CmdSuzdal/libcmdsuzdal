@@ -48,7 +48,7 @@ namespace cSzd
         FENRecord f;
         ASSERT_EQ(f.piecePlacement(), "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
         ASSERT_EQ(f.sideToMove(), WhiteArmy);
-        ASSERT_EQ(f.castlingAvailability(), BitBoard({b1, g1, b8, g8}));
+        ASSERT_EQ(f.castlingAvailability(), BitBoard({c1, g1, c8, g8}));
         ASSERT_EQ(f.enPassantTargetSquare(), BitBoard(EmptyBB));
         ASSERT_EQ(f.halfMoveClock(), 0);
         ASSERT_EQ(f.fullMoves(), 1);
@@ -69,7 +69,7 @@ namespace cSzd
         f.loadPosition(FENExampleCastlingEnPassantTest);
         ASSERT_EQ(f.piecePlacement(), "rnbqkr2/ppp1ppbp/3p1n2/8/1PPPPPp1/P1N5/6PP/1RBQKBNR");
         ASSERT_EQ(f.sideToMove(), BlackArmy);
-        ASSERT_EQ(f.castlingAvailability(), BitBoard({g1, b8}));
+        ASSERT_EQ(f.castlingAvailability(), BitBoard({g1, c8}));
         ASSERT_EQ(f.enPassantTargetSquare(), BitBoard({f3}));
         ASSERT_EQ(f.halfMoveClock(), 0);
         ASSERT_EQ(f.fullMoves(), 8);
