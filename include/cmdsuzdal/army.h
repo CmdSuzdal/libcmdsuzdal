@@ -45,6 +45,9 @@ namespace cSzd
         BitBoard queenPossibleMovesCells(Cell c, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
         BitBoard pawnPossibleMovesCells(Cell c, const BitBoard &intfBoard = BitBoard(EmptyBB)) const;
 
+        // iostream << operator
+        friend std::ostream &operator<<(std::ostream &os, const Army &a);
+
     private:
         BitBoard piecePossibleMovesCells(Piece pType, Cell nPos, const BitBoard &intfBoard) const;
     };
