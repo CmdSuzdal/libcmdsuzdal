@@ -28,9 +28,6 @@ namespace cSzd
     //
     struct BitBoard
     {
-
-        BitBoardState bbs{};
-
         BitBoard() = default;
         explicit BitBoard(const Cell &c) { setCell(c); }
         explicit BitBoard(const std::vector<Cell> &cells) { setCell(cells); }
@@ -153,25 +150,31 @@ namespace cSzd
         // Check functions: return a boolean check on various conditions
         bool isActive(Cell c) const { return ((bbs & BitBoard(c).bbs) != EmptyBB); }
         bool isActive(File f, Rank r) const { return isActive(toCell(f, r)); }
-        // returns true if at least one of the cell in the given mask is active
-        bool activeCellsInMask(BitBoardState bbMask) const { return ((bbs & bbMask) != EmptyBB); }
 
         // iostream << operator
         friend std::ostream &operator<<(std::ostream &os, const BitBoard &bb);
+
+        // Cell status extraction operator
+        int operator[](int i) const;
+
+        // In C++ 20 it is possible to define a default three way comparison operator:
+        //    bool operator<=>(const BitBoard &) const = default;
+        // Note that We cannot currently use the C++20 default comparison operator
+        // to allow compilation in OSX environment (Travis) with AppleCLang 9
+        friend inline bool operator==(const BitBoard &lhs, const BitBoard &rhs) { return lhs.bbs == rhs.bbs; }
+        friend inline bool operator!=(const BitBoard &lhs, const BitBoard &rhs) { return !operator==(lhs, rhs); }
+        // Note that we do not implement the <, <=, >= and > operators because them are not defined for bitset
+        // and because it is not clear what is the meaning of these operators for a generic BitBoard:
+        //   - a BitBoard can be considered "less than" a second one if it has less active cells
+        //     than the second, but in this case it possible to have different BitBoards
+        //     that are != followind the definition of the == operator above, but that are not "<" nor ">"
+        //     one of the other (any bitboard with the same number of active cells in different positions)
+
+    private:
+        BitBoardState bbs{};
+
     };
 
-    // In C++ 20 it is possible to define a default three way comparison operator:
-    //    bool operator<=>(const BitBoard &) const = default;
-    // Note that We cannot currently use the C++20 default comparison operator
-    // to allow compilation in OSX environment (Travis) with AppleCLang 9
-    inline bool operator==(const BitBoard &lhs, const BitBoard &rhs) { return lhs.bbs == rhs.bbs; }
-    inline bool operator!=(const BitBoard &lhs, const BitBoard &rhs) { return !operator==(lhs, rhs); }
-    // Note that we do not implement the <, <=, >= and > operators because them are not defined for bitset
-    // and because it is not clear what is the meaning of these operators for a generic BitBoard:
-    //   - a BitBoard can be considered "less than" a second one if it has less active cells
-    //     than the second, but in this case it possible to have different BitBoards
-    //     that are != followind the definition of the == operator above, but that are not "<" nor ">"
-    //     one of the other (any bitboard with the same number of active cells in different positions)
 
 } // namespace cSzd
 

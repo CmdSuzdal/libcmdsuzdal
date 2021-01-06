@@ -118,4 +118,10 @@ namespace cSzd
         return os;
     }
 
+    int BitBoard::operator[](int i) const
+    {
+        return bbs[i];
+    }
+
+
 } // namespace cSzd
