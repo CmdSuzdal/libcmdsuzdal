@@ -461,66 +461,64 @@ namespace cSzd
     TEST(BBTester, IfCellE3IsActiveThereAreActiveCellsInRank3AndFileE)
     {
         BitBoard bb {e3};
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_3])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_e])) != BitBoard(EmptyBB));
-
-        ASSERT_FALSE((bb & BitBoard(RanksBB[r_1])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(RanksBB[r_2])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(RanksBB[r_4])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(RanksBB[r_5])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(RanksBB[r_6])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(RanksBB[r_7])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(RanksBB[r_8])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_a])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_b])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_c])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_d])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_f])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_g])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_h])) != BitBoard(EmptyBB));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_3]));
+        ASSERT_TRUE (bb & BitBoard(FilesBB[f_e]));
+        ASSERT_FALSE(bb & BitBoard(RanksBB[r_1]));
+        ASSERT_FALSE(bb & BitBoard(RanksBB[r_2]));
+        ASSERT_FALSE(bb & BitBoard(RanksBB[r_4]));
+        ASSERT_FALSE(bb & BitBoard(RanksBB[r_5]));
+        ASSERT_FALSE(bb & BitBoard(RanksBB[r_6]));
+        ASSERT_FALSE(bb & BitBoard(RanksBB[r_7]));
+        ASSERT_FALSE(bb & BitBoard(RanksBB[r_8]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_a]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_b]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_c]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_d]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_f]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_g]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_h]));
     }
 
     TEST(BBTester, DiagonalTouchAllRanskAndFiles)
     {
         BitBoard bb {DiagonalBB};
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_1])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_2])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_3])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_4])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_5])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_6])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_7])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_8])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_a])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_b])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_c])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_d])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_e])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_f])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_g])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(FilesBB[f_h])) != BitBoard(EmptyBB));
+        ASSERT_TRUE(bb & BitBoard(RanksBB[r_1]));
+        ASSERT_TRUE(bb & BitBoard(RanksBB[r_2]));
+        ASSERT_TRUE(bb & BitBoard(RanksBB[r_3]));
+        ASSERT_TRUE(bb & BitBoard(RanksBB[r_4]));
+        ASSERT_TRUE(bb & BitBoard(RanksBB[r_5]));
+        ASSERT_TRUE(bb & BitBoard(RanksBB[r_6]));
+        ASSERT_TRUE(bb & BitBoard(RanksBB[r_7]));
+        ASSERT_TRUE(bb & BitBoard(RanksBB[r_8]));
+        ASSERT_TRUE(bb & BitBoard(FilesBB[f_a]));
+        ASSERT_TRUE(bb & BitBoard(FilesBB[f_b]));
+        ASSERT_TRUE(bb & BitBoard(FilesBB[f_c]));
+        ASSERT_TRUE(bb & BitBoard(FilesBB[f_d]));
+        ASSERT_TRUE(bb & BitBoard(FilesBB[f_e]));
+        ASSERT_TRUE(bb & BitBoard(FilesBB[f_f]));
+        ASSERT_TRUE(bb & BitBoard(FilesBB[f_g]));
+        ASSERT_TRUE(bb & BitBoard(FilesBB[f_h]));
     }
 
     TEST(BBTester, DiagonalsMaskOfA4DoesNotTouchLastThreeFiles)
     {
         BitBoard bb {diagonalsMask(a4)};
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_1])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_2])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_3])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_4])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_5])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_6])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_7])) != BitBoard(EmptyBB));
-        ASSERT_TRUE((bb & BitBoard(RanksBB[r_8])) != BitBoard(EmptyBB));
-
-        ASSERT_TRUE ((bb & BitBoard(FilesBB[f_a])) != BitBoard(EmptyBB));
-        ASSERT_TRUE ((bb & BitBoard(FilesBB[f_b])) != BitBoard(EmptyBB));
-        ASSERT_TRUE ((bb & BitBoard(FilesBB[f_c])) != BitBoard(EmptyBB));
-        ASSERT_TRUE ((bb & BitBoard(FilesBB[f_d])) != BitBoard(EmptyBB));
-        ASSERT_TRUE ((bb & BitBoard(FilesBB[f_e])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_f])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_g])) != BitBoard(EmptyBB));
-        ASSERT_FALSE((bb & BitBoard(FilesBB[f_h])) != BitBoard(EmptyBB));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_1]));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_2]));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_3]));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_4]));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_5]));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_6]));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_7]));
+        ASSERT_TRUE (bb & BitBoard(RanksBB[r_8]));
+        ASSERT_TRUE (bb & BitBoard(FilesBB[f_a]));
+        ASSERT_TRUE (bb & BitBoard(FilesBB[f_b]));
+        ASSERT_TRUE (bb & BitBoard(FilesBB[f_c]));
+        ASSERT_TRUE (bb & BitBoard(FilesBB[f_d]));
+        ASSERT_TRUE (bb & BitBoard(FilesBB[f_e]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_f]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_g]));
+        ASSERT_FALSE(bb & BitBoard(FilesBB[f_h]));
     }
 
     // Evaluations of file/rank/diagonals evaluation

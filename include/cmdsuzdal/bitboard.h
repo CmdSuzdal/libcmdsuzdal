@@ -170,6 +170,8 @@ namespace cSzd
         //     that are != followind the definition of the == operator above, but that are not "<" nor ">"
         //     one of the other (any bitboard with the same number of active cells in different positions)
 
+        operator bool() const { return bbs != EmptyBB; }
+
     private:
         BitBoardState bbs{};
 

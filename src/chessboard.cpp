@@ -39,8 +39,7 @@ namespace cSzd
         // An army is in check if King position intersecates
         // the controlled cells of the opposite army
         ArmyColor enemyColor = (a == WhiteArmy) ? BlackArmy : WhiteArmy;
-        return ((armies[a].pieces[King] & controlledCells(enemyColor))
-             != BitBoard(EmptyBB)) ? true : false;
+        return (armies[a].pieces[King] & controlledCells(enemyColor));
     }
     // -----------------------------------------------------------------
     ArmyColor ChessBoard::armyInCheck() const
@@ -174,14 +173,16 @@ namespace cSzd
             return false;
         }
         // kings shall not be in contact
-        if (armies[WhiteArmy].pieces[King].activeCellsInMask(
-            armies[BlackArmy].pieces[King].neighbourCells().bbs)) return false;
+        if (armies[WhiteArmy].pieces[King] &
+            armies[BlackArmy].pieces[King].neighbourCells()) {
+            return false;
+        }
 
         // No pawns (of any color) in 1st or 8th ranks
-        if (armies[WhiteArmy].pieces[Pawn].activeCellsInMask(
-            RanksBB[r_1] | RanksBB[r_8])) return false;
-        if (armies[BlackArmy].pieces[Pawn].activeCellsInMask(
-            RanksBB[r_1] | RanksBB[r_8])) return false;
+        if ((armies[WhiteArmy].pieces[Pawn] | armies[BlackArmy].pieces[Pawn]) &
+              BitBoard(RanksBB[r_1] | RanksBB[r_8])) {
+            return false;
+        }
 
         // No More that 16 pieces for army shall be present
         if (armies[WhiteArmy].numPieces() > 16) return false;
@@ -215,23 +216,23 @@ namespace cSzd
 
         // if e.p. target square is not in 3rd or 6th rank,
         // position is not valid
-        if (!enPassantTargetSquare.activeCellsInMask(RanksBB[r_3] | RanksBB[r_6]))
+        if (enPassantTargetSquare & ~BitBoard(RanksBB[r_3] | RanksBB[r_6]))
             return false;
 
         // if here, exactly one cell in 3rd or 6th row is marked
         // as an en passant target
         BitBoard frontCell = enPassantTargetSquare;
         BitBoard backCell = enPassantTargetSquare;
-        if (enPassantTargetSquare.activeCellsInMask(RanksBB[r_3])) {
+        if (enPassantTargetSquare & BitBoard(RanksBB[r_3])) {
             // e.p. target square is in 3rd row. Side to move shall
             // be the black, front (north) cell shall be occupied by
             // a white pawn and back (south) cell shall be empty
             if (sideToMove == BlackArmy) {
                 frontCell.shiftNorth(1);
                 backCell.shiftSouth(1);
-                if ((armies[WhiteArmy].pieces[Pawn] & frontCell) == BitBoard(EmptyBB))
+                if (!(armies[WhiteArmy].pieces[Pawn] & frontCell))
                     return false;
-                if ((wholeArmyBitBoard() & backCell) != BitBoard(EmptyBB))
+                if (wholeArmyBitBoard() & backCell)
                     return false;
             }
             else {
@@ -245,9 +246,9 @@ namespace cSzd
             if (sideToMove == WhiteArmy) {
                 frontCell.shiftSouth(1);
                 backCell.shiftNorth(1);
-                if ((armies[BlackArmy].pieces[Pawn] & frontCell) == BitBoard(EmptyBB))
+                if (!(armies[BlackArmy].pieces[Pawn] & frontCell))
                     return false;
-                if ((wholeArmyBitBoard() & backCell) != BitBoard(EmptyBB))
+                if (wholeArmyBitBoard() & backCell)
                     return false;
             }
             else {
@@ -288,7 +289,7 @@ namespace cSzd
 
         // Search for moves...
         for (auto startPos = 0; (startPos < 64) && (foundPieces < bbToCheck.popCount()); startPos++) {
-            if (bbToCheck.bbs[startPos] != 0) {
+            if (bbToCheck[startPos] != 0) {
                 // piece found in position startPos
                 foundPieces++;
                 pType = armies[sideToMove].getPieceInCell(static_cast<Cell>(startPos));
@@ -296,7 +297,7 @@ namespace cSzd
                                 static_cast<Cell>(startPos), armies[opponentColor].occupiedCells());
                 auto foundMove = 0;
                 for (auto destPos = 0; (destPos < 64) && (foundMove < moveBB.popCount()); destPos++) {
-                    if (moveBB.bbs[destPos] != 0) {
+                    if (moveBB[destPos] != 0) {
                         ++foundMove;
                         auto takenPiece = armies[opponentColor].getPieceInCell(static_cast<Cell>(destPos));
                         // Possible move found:

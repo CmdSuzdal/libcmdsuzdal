@@ -61,7 +61,7 @@ namespace cSzd
         BitBoard bb{c};
         int pieceNdx;
         for (pieceNdx = King; pieceNdx < InvalidPiece; pieceNdx++) {
-            if ((pieces[pieceNdx] & bb) != BitBoard(EmptyBB))
+            if (pieces[pieceNdx] & bb)
                 break;
         }
         return static_cast<Piece>(pieceNdx);
@@ -136,7 +136,7 @@ namespace cSzd
         BitBoard bb;
         auto foundCells = 0;
         for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Pawn].popCount()); ndx++) {
-            if (pieces[Pawn].bbs[ndx] != 0) {
+            if (pieces[Pawn][ndx] != 0) {
                 // pawn in position ndx
                 foundCells++;
                 bb |= singlePawnControlledCells(static_cast<Cell>(ndx));
@@ -164,7 +164,7 @@ namespace cSzd
         BitBoard bb;
         auto foundCells = 0;
         for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Knight].popCount()); ndx++) {
-            if (pieces[Knight].bbs[ndx] != 0) {
+            if (pieces[Knight][ndx] != 0) {
                 // knight in position ndx
                 foundCells++;
                 // FIXME --- This can be do probably better using the BitBoard shift functions
@@ -193,7 +193,7 @@ namespace cSzd
         BitBoard busyCells = occupiedCells() | intfBoard;
         auto foundCells = 0;
         for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Bishop].popCount()); ndx++) {
-            if (pieces[Bishop].bbs[ndx] != 0) {
+            if (pieces[Bishop][ndx] != 0) {
                 foundCells++;
                 auto r = rank(static_cast<Cell>(ndx));
                 auto f = file(static_cast<Cell>(ndx));
@@ -262,7 +262,7 @@ namespace cSzd
         BitBoard busyCells = occupiedCells() | intfBoard;
         auto foundCells = 0;
         for (auto ndx = 0; (ndx < 64) && (foundCells < pieces[Rook].popCount()); ndx++) {
-            if (pieces[Rook].bbs[ndx] != 0) {
+            if (pieces[Rook][ndx] != 0) {
                 // rook in position ndx
                 foundCells++;
                 auto r = rank(static_cast<Cell>(ndx));
@@ -411,17 +411,17 @@ namespace cSzd
     {
         BitBoard bb {};
         Cell tentativeCell;
-        if ((pieces[Pawn] & BitBoard(c)) == BitBoard(EmptyBB))
+        if (!(pieces[Pawn] & BitBoard(c)))
             return bb;
 
         if (color == WhiteArmy) {
             tentativeCell = static_cast<Cell>(c + 8);
-            if (((occupiedCells() | intfBoard) & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+            if (!((occupiedCells() | intfBoard) & BitBoard(tentativeCell))) {
                 // the tentative cell is free. Add to the BitBoard of possible moves
                 bb.setCell(tentativeCell);
                 if (rank(c) == r_2) {
                     tentativeCell = static_cast<Cell>(c + 16);
-                    if (((occupiedCells() | intfBoard) & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+                    if (!((occupiedCells() | intfBoard) & BitBoard(tentativeCell))) {
                         // the tentative cell is free. Add to the BitBoard of possible moves
                         bb.setCell(tentativeCell);
                     }
@@ -430,12 +430,12 @@ namespace cSzd
         }
         else if (color == BlackArmy) {
             tentativeCell = static_cast<Cell>(c - 8);
-            if (((occupiedCells() | intfBoard) & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+            if (!((occupiedCells() | intfBoard) & BitBoard(tentativeCell))) {
                 // the tentative cell is free. Add to the BitBoard of possible moves
                 bb.setCell(tentativeCell);
                 if (rank(c) == r_7) {
                     tentativeCell = static_cast<Cell>(c - 16);
-                    if (((occupiedCells() | intfBoard) & BitBoard(tentativeCell)) == BitBoard(EmptyBB)) {
+                    if (!((occupiedCells() | intfBoard) & BitBoard(tentativeCell))) {
                         // the tentative cell is free. Add to the BitBoard of possible moves
                         bb.setCell(tentativeCell);
                     }
@@ -457,7 +457,7 @@ namespace cSzd
         //   - Bishops
         //   - Rooks
         //   - Queens
-        if ((pieces[pType] & BitBoard(c)) == BitBoard(EmptyBB))
+        if (!(pieces[pType] & BitBoard(c)))
             return BitBoard(EmptyBB);
         Army fakeArmy = *this;
         fakeArmy.pieces[Pawn] |= (pieces[pType] ^ BitBoard(c));
