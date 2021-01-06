@@ -95,6 +95,10 @@ namespace cSzd
 
         void doMove(const ChessMove &m);
 
+        // iostream << operator
+        friend std::ostream &operator<<(std::ostream &os, const ChessBoard &cb);
+
+
     private:
         bool checkEnPassantTargetSquareValidity() const;
         //void doCastlingMove(m);

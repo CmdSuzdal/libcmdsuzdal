@@ -449,4 +449,74 @@ namespace cSzd
 
     }
 
+    std::ostream &operator<<(std::ostream &os, const ChessBoard &cb)
+    {
+        // We want to represent an ChessBoard like a Bitboard, with
+        // piece symbols instead of the 'x' in the active cells of there
+        // two armies. We use "K Q B N R P" for white pieces
+        // and "k q b n r p" for black pieces. Additional info, like
+        // side to move, castling availability, etc. are also printed
+        //
+        // Examples:
+        //  - ChessBoard in initial position:
+        //   _ _ _ _ _ _ _ _
+        // 8|r|n|b|q|k|b|n|r|
+        // 7|p|p|p|p|p|p|p|p|
+        // 6| | | | | | | | |
+        // 5| | | | | | | | |
+        // 4| | | | | | | | |
+        // 3| | | | | | | | |
+        // 2|P|P|P|P|P|P|P|P|
+        // 1|R|N|B|Q|K|B|N|R|
+        //   a b c d e f g h
+        //
+
+        os << std::endl << "  * ChessBoard *";
+        os << std::endl << "  _ _ _ _ _ _ _ _";
+        auto fillchar = ' ';
+        for (auto rank = 7; rank >= 0; rank--) {
+            os << std::endl << rank+1 << '|';
+            auto startPos = rank * 8;
+            if (rank == 0) fillchar = '_';
+            for (auto file = 0; file < 8; file++) {
+                if (cb.armies[WhiteArmy].pieces[King][startPos + file] != 0)
+                   os << 'K' << '|';
+                else if (cb.armies[WhiteArmy].pieces[Queen][startPos + file] != 0)
+                   os << 'Q' << '|';
+                else if (cb.armies[WhiteArmy].pieces[Bishop][startPos + file] != 0)
+                   os << 'B' << '|';
+                else if (cb.armies[WhiteArmy].pieces[Knight][startPos + file] != 0)
+                   os << 'N' << '|';
+                else if (cb.armies[WhiteArmy].pieces[Rook][startPos + file] != 0)
+                   os << 'R' << '|';
+                else if (cb.armies[WhiteArmy].pieces[Pawn][startPos + file] != 0)
+                   os << 'P' << '|';
+                else if (cb.armies[BlackArmy].pieces[King][startPos + file] != 0)
+                   os << 'k' << '|';
+                else if (cb.armies[BlackArmy].pieces[Queen][startPos + file] != 0)
+                   os << 'q' << '|';
+                else if (cb.armies[BlackArmy].pieces[Bishop][startPos + file] != 0)
+                   os << 'b' << '|';
+                else if (cb.armies[BlackArmy].pieces[Knight][startPos + file] != 0)
+                   os << 'n' << '|';
+                else if (cb.armies[BlackArmy].pieces[Rook][startPos + file] != 0)
+                   os << 'r' << '|';
+                else if (cb.armies[BlackArmy].pieces[Pawn][startPos + file] != 0)
+                   os << 'p' << '|';
+                else
+                   os << fillchar << '|';
+            }
+        }
+        os << std::endl << "  a b c d e f g h" << std::endl;
+
+        os << std::endl << "  *Castling av.*";
+        os << cb.castlingAvailability << std::endl;
+        os << "  *en-pass. t.s.*";
+        os << cb.enPassantTargetSquare << std::endl;
+
+
+        return os;
+    }
+
+
 } // namespace cSzd
