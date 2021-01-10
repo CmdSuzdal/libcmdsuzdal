@@ -92,6 +92,8 @@ namespace cSzd
                                 Cell destPos, Piece takenPiece) const;
 
         void checkForEnPassant(Cell c, std::vector<ChessMove> &moves) const;
+        void checkForCastlingMoves(std::vector<ChessMove> &moves) const;
+
 
         void doMove(const ChessMove &m);
 

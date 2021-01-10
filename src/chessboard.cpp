@@ -343,8 +343,9 @@ namespace cSzd
                 if (pType == Pawn) {
                     checkForEnPassant(static_cast<Cell>(startPos), moves);
                 }
-                // FIXME --- TO BE COMPLETED ---------
-                // !!! CHECK FOR CASTLING MOVES !!!
+                if (pType == King) {
+                    checkForCastlingMoves(moves);
+                }
             }
         }
     }
@@ -405,6 +406,78 @@ namespace cSzd
             }
         }
     }
+
+    // ---------------------------------------------------------------------------------
+    void ChessBoard::checkForCastlingMoves(std::vector<ChessMove> &moves) const
+    {
+        // This function checks is king castling moves are currently possible.
+        // For the castling to be possible, the appropriate Cells in the
+        // castlingAvailability BitBoard shall be set, and the temporarly
+        // inhibit factor shall not be present at this time. Inhibit factors are:
+        //  - king is in check
+        //  - Friendly or foe pieces shall not be present between the king and the rook(s)
+        //  - No one of the cells when the king pass or the destination cell of the king
+        //    shall be under check of any enemy piece
+
+        // If any king is in check we are unlucky...
+        if (armyInCheck() != InvalidArmy)
+            return;
+
+        if (sideToMove == WhiteArmy) {
+            if (castlingAvailability & BitBoard(g1)) {
+                // White 0-0 is still possible, checks for inhibit factors
+                // 1. Friend or foe pieces occupy one of f1 and g1
+                // 2. During movement, the king shall not occupy any
+                //    foe controlled cell
+                if (!((wholeArmyBitBoard() | controlledCells(BlackArmy)) & BitBoard({f1, g1}))) {
+                    // ***** Add white 0-0 ******
+                    moves.push_back(chessMove(King, e1, g1));
+                }
+            }
+            if (castlingAvailability & BitBoard(c1)) {
+                // White 0-0-0 is still possible, checks for inhibit factors
+                // 1. Friend or foe pieces occupy one of b1, c1, d1
+                // 2. During movement, the king shall not occupy any
+                //    foe controlled cell
+                if (!((wholeArmyBitBoard() | controlledCells(BlackArmy)) & BitBoard({b1, c1, d1}))) {
+                    // Cells are free and not controlled by enemy
+                    // ***** Add white 0-0-0 ******
+                    moves.push_back(chessMove(King, e1, c1));
+                }
+            }
+        }
+        // Black to be completed
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // ---------------------------------------------------------------------------------
     // Modify the ChessBoard assuming the specified move is executed by the active Army.
@@ -583,6 +656,5 @@ namespace cSzd
 
         return os;
     }
-
 
 } // namespace cSzd
