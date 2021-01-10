@@ -464,15 +464,40 @@ namespace cSzd
         // If the move was to Black, increase full moves counter
         if (sideToMove == BlackArmy)
             ++(fullMoves);
-        // Updates side to move
-        sideToMove = enemyArmy;
 
         // Updates castling availability
-        // FIXME --- TO BE COMPLETED ---
+        // If a King move is performed from the king initial position,
+        // castling availability could change
+        if (movedPiece == King) {
+            if ((sideToMove == WhiteArmy) && (startCell == e1)) {
+                castlingAvailability &= ~BitBoard({c1, g1});
+            }
+            else if ((sideToMove == BlackArmy) && (startCell == e8)) {
+                castlingAvailability &= ~BitBoard({c8, g8});
+            }
+        }
+        // If a Rook move from initial position is performed,
+        // castling availability could change
+        if (movedPiece == Rook) {
+            if (sideToMove == WhiteArmy) {
+                if (startCell == a1)
+                    castlingAvailability &= ~BitBoard(c1);
+                if (startCell == h1)
+                    castlingAvailability &= ~BitBoard(g1);
+            }
+            else if (sideToMove == BlackArmy) {
+                if (startCell == a8)
+                    castlingAvailability &= ~BitBoard(c8);
+                if (startCell == h8)
+                    castlingAvailability &= ~BitBoard(g8);
+            }
+        }
 
         // Updates en passant target square
         enPassantTargetSquare = BitBoard(chessMoveGetEnPassantCell(m));
 
+        // Updates side to move
+        sideToMove = enemyArmy;
     }
 
     std::ostream &operator<<(std::ostream &os, const ChessBoard &cb)

@@ -1958,6 +1958,11 @@ namespace cSzd
     // DO MOVE TESTING ---
     TEST(ChessBoardTester, TestSequenceOfMoves_GiuocoPiano)
     {
+        // 1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Qe7
+        // 5. d4 Bb6 6. O-O Nf6 7. Re1 d6 8. a4 a6
+        // 9. Na3 Bg4 10. Nc2 O-O 11. Ne3 Bc8 12. Nd5 Qd8
+        // 13. Bg5 exd4 14. cxd4 Bg4 15. e5 Bxf3 16. Qxf3 Nxd4
+        // 17. Qh3 dxe5 18. Bxf6 gxf6 19. Qh6
         ChessBoard cb;
         ASSERT_EQ(cb, ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
         cb.doMove(chessMove(Pawn, e2, e4));
@@ -1982,7 +1987,177 @@ namespace cSzd
         ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/1bn5/4p3/2BPP3/2P2N2/PP3PPP/RNBQK2R w KQkq - 1 6"));
         cb.doMove(chessMove(King, e1, g1));
         ASSERT_EQ(cb, ChessBoard("r1b1k1nr/ppppqppp/1bn5/4p3/2BPP3/2P2N2/PP3PPP/RNBQ1RK1 b kq - 2 6"));
+        cb.doMove(chessMove(Knight, g8, f6));
+        ASSERT_EQ(cb, ChessBoard("r1b1k2r/ppppqppp/1bn2n2/4p3/2BPP3/2P2N2/PP3PPP/RNBQ1RK1 w kq - 3 7"));
+        cb.doMove(chessMove(Rook, f1, e1));
+        ASSERT_EQ(cb, ChessBoard("r1b1k2r/ppppqppp/1bn2n2/4p3/2BPP3/2P2N2/PP3PPP/RNBQR1K1 b kq - 4 7"));
+        cb.doMove(chessMove(Pawn, d7, d6));
+        ASSERT_EQ(cb, ChessBoard("r1b1k2r/ppp1qppp/1bnp1n2/4p3/2BPP3/2P2N2/PP3PPP/RNBQR1K1 w kq - 0 8"));
+        cb.doMove(chessMove(Pawn, a2, a4));
+        ASSERT_EQ(cb, ChessBoard("r1b1k2r/ppp1qppp/1bnp1n2/4p3/P1BPP3/2P2N2/1P3PPP/RNBQR1K1 b kq a3 0 8"));
+        cb.doMove(chessMove(Pawn, a7, a6));
+        ASSERT_EQ(cb, ChessBoard("r1b1k2r/1pp1qppp/pbnp1n2/4p3/P1BPP3/2P2N2/1P3PPP/RNBQR1K1 w kq - 0 9"));
+        cb.doMove(chessMove(Knight, b1, a3));
+        ASSERT_EQ(cb, ChessBoard("r1b1k2r/1pp1qppp/pbnp1n2/4p3/P1BPP3/N1P2N2/1P3PPP/R1BQR1K1 b kq - 1 9"));
+        cb.doMove(chessMove(Bishop, c8, g4));
+        ASSERT_EQ(cb, ChessBoard("r3k2r/1pp1qppp/pbnp1n2/4p3/P1BPP1b1/N1P2N2/1P3PPP/R1BQR1K1 w kq - 2 10"));
+        cb.doMove(chessMove(Knight, a3, c2));
+        ASSERT_EQ(cb, ChessBoard("r3k2r/1pp1qppp/pbnp1n2/4p3/P1BPP1b1/2P2N2/1PN2PPP/R1BQR1K1 b kq - 3 10"));
+        cb.doMove(chessMove(King, e8, g8));
+        ASSERT_EQ(cb, ChessBoard("r4rk1/1pp1qppp/pbnp1n2/4p3/P1BPP1b1/2P2N2/1PN2PPP/R1BQR1K1 w - - 4 11"));
+        cb.doMove(chessMove(Knight, c2, e3));
+        ASSERT_EQ(cb, ChessBoard("r4rk1/1pp1qppp/pbnp1n2/4p3/P1BPP1b1/2P1NN2/1P3PPP/R1BQR1K1 b - - 5 11"));
+        cb.doMove(chessMove(Bishop, g4, c8));
+        ASSERT_EQ(cb, ChessBoard("r1b2rk1/1pp1qppp/pbnp1n2/4p3/P1BPP3/2P1NN2/1P3PPP/R1BQR1K1 w - - 6 12"));
+        cb.doMove(chessMove(Knight, e3, d5));
+        ASSERT_EQ(cb, ChessBoard("r1b2rk1/1pp1qppp/pbnp1n2/3Np3/P1BPP3/2P2N2/1P3PPP/R1BQR1K1 b - - 7 12"));
+        cb.doMove(chessMove(Queen, e7, d8));
+        ASSERT_EQ(cb, ChessBoard("r1bq1rk1/1pp2ppp/pbnp1n2/3Np3/P1BPP3/2P2N2/1P3PPP/R1BQR1K1 w - - 8 13"));
+        cb.doMove(chessMove(Bishop, c1, g5));
+        ASSERT_EQ(cb, ChessBoard("r1bq1rk1/1pp2ppp/pbnp1n2/3Np1B1/P1BPP3/2P2N2/1P3PPP/R2QR1K1 b - - 9 13"));
+        cb.doMove(chessMove(Pawn, e5, d4, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r1bq1rk1/1pp2ppp/pbnp1n2/3N2B1/P1BpP3/2P2N2/1P3PPP/R2QR1K1 w - - 0 14"));
+        cb.doMove(chessMove(Pawn, c3, d4, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r1bq1rk1/1pp2ppp/pbnp1n2/3N2B1/P1BPP3/5N2/1P3PPP/R2QR1K1 b - - 0 14"));
+        cb.doMove(chessMove(Bishop, c8, g4));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2ppp/pbnp1n2/3N2B1/P1BPP1b1/5N2/1P3PPP/R2QR1K1 w - - 1 15"));
+        cb.doMove(chessMove(Pawn, e4, e5));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2ppp/pbnp1n2/3NP1B1/P1BP2b1/5N2/1P3PPP/R2QR1K1 b - - 0 15"));
+        cb.doMove(chessMove(Bishop, g4, f3, Knight));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2ppp/pbnp1n2/3NP1B1/P1BP4/5b2/1P3PPP/R2QR1K1 w - - 0 16"));
+        cb.doMove(chessMove(Queen, d1, f3, Bishop));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2ppp/pbnp1n2/3NP1B1/P1BP4/5Q2/1P3PPP/R3R1K1 b - - 0 16"));
+        cb.doMove(chessMove(Knight, c6, d4, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2ppp/pb1p1n2/3NP1B1/P1Bn4/5Q2/1P3PPP/R3R1K1 w - - 0 17"));
+        cb.doMove(chessMove(Queen, f3, h3));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2ppp/pb1p1n2/3NP1B1/P1Bn4/7Q/1P3PPP/R3R1K1 b - - 1 17"));
+        cb.doMove(chessMove(Pawn, d6, e5, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2ppp/pb3n2/3Np1B1/P1Bn4/7Q/1P3PPP/R3R1K1 w - - 0 18"));
+        cb.doMove(chessMove(Bishop, g5, f6, Knight));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2ppp/pb3B2/3Np3/P1Bn4/7Q/1P3PPP/R3R1K1 b - - 0 18"));
+        cb.doMove(chessMove(Pawn, g7, f6, Bishop));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2p1p/pb3p2/3Np3/P1Bn4/7Q/1P3PPP/R3R1K1 w - - 0 19"));
+        cb.doMove(chessMove(Queen, h3, h6));
+        ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2p1p/pb3p1Q/3Np3/P1Bn4/8/1P3PPP/R3R1K1 b - - 1 19"));
     }
+
+
+    TEST(ChessBoardTester, TestSequenceOfMoves_QueenIndianDefense)
+    {
+        // 1. d4 Nf6 2. Nf3 b6 3. e3 Bb7 4. Bd3 d6
+        // 5. O-O Nbd7 6. Nbd2 e5 7. e4 exd4 8. Nxd4 g6
+        // 9. Bb5 a6 10. Bc6 Qc8 11. e5 dxe5 12. Qf3 Bxc6
+        // 13. Nxc6 Bd6 14. Nc4 e4 15. Re1 h6 16. Qc3 Qb7
+        // 17. Nxd6+ cxd6 18. Rxe4+ Kf8
+        ChessBoard cb;
+        ASSERT_EQ(cb, ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+        cb.doMove(chessMove(Pawn, d2, d4));
+        ASSERT_EQ(cb, ChessBoard("rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1"));
+        cb.doMove(chessMove(Knight, g8, f6));
+        ASSERT_EQ(cb, ChessBoard("rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2"));
+        cb.doMove(chessMove(Knight, g1, f3));
+        ASSERT_EQ(cb, ChessBoard("rnbqkb1r/pppppppp/5n2/8/3P4/5N2/PPP1PPPP/RNBQKB1R b KQkq - 2 2"));
+        cb.doMove(chessMove(Pawn, b7, b6));
+        ASSERT_EQ(cb, ChessBoard("rnbqkb1r/p1pppppp/1p3n2/8/3P4/5N2/PPP1PPPP/RNBQKB1R w KQkq - 0 3"));
+        cb.doMove(chessMove(Pawn, e2, e3));
+        ASSERT_EQ(cb, ChessBoard("rnbqkb1r/p1pppppp/1p3n2/8/3P4/4PN2/PPP2PPP/RNBQKB1R b KQkq - 0 3"));
+        cb.doMove(chessMove(Bishop, c8, b7));
+        ASSERT_EQ(cb, ChessBoard("rn1qkb1r/pbpppppp/1p3n2/8/3P4/4PN2/PPP2PPP/RNBQKB1R w KQkq - 1 4"));
+        cb.doMove(chessMove(Bishop, f1, d3));
+        ASSERT_EQ(cb, ChessBoard("rn1qkb1r/pbpppppp/1p3n2/8/3P4/3BPN2/PPP2PPP/RNBQK2R b KQkq - 2 4"));
+        cb.doMove(chessMove(Pawn, d7, d6));
+        ASSERT_EQ(cb, ChessBoard("rn1qkb1r/pbp1pppp/1p1p1n2/8/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 0 5"));
+        cb.doMove(chessMove(King, e1, g1));
+        ASSERT_EQ(cb, ChessBoard("rn1qkb1r/pbp1pppp/1p1p1n2/8/3P4/3BPN2/PPP2PPP/RNBQ1RK1 b kq - 1 5"));
+        cb.doMove(chessMove(Knight, b8, d7));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/pbpnpppp/1p1p1n2/8/3P4/3BPN2/PPP2PPP/RNBQ1RK1 w kq - 2 6"));
+        cb.doMove(chessMove(Knight, b1, d2));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/pbpnpppp/1p1p1n2/8/3P4/3BPN2/PPPN1PPP/R1BQ1RK1 b kq - 3 6"));
+        cb.doMove(chessMove(Pawn, e7, e5));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/pbpn1ppp/1p1p1n2/4p3/3P4/3BPN2/PPPN1PPP/R1BQ1RK1 w kq e6 0 7"));
+        cb.doMove(chessMove(Pawn, e3, e4));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/pbpn1ppp/1p1p1n2/4p3/3PP3/3B1N2/PPPN1PPP/R1BQ1RK1 b kq - 0 7"));
+        cb.doMove(chessMove(Pawn, e5, d4, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/pbpn1ppp/1p1p1n2/8/3pP3/3B1N2/PPPN1PPP/R1BQ1RK1 w kq - 0 8"));
+        cb.doMove(chessMove(Knight, f3, d4, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/pbpn1ppp/1p1p1n2/8/3NP3/3B4/PPPN1PPP/R1BQ1RK1 b kq - 0 8"));
+        cb.doMove(chessMove(Pawn, g7, g6));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/pbpn1p1p/1p1p1np1/8/3NP3/3B4/PPPN1PPP/R1BQ1RK1 w kq - 0 9"));
+        cb.doMove(chessMove(Bishop, d3, b5));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/pbpn1p1p/1p1p1np1/1B6/3NP3/8/PPPN1PPP/R1BQ1RK1 b kq - 1 9"));
+        cb.doMove(chessMove(Pawn, a7, a6));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/1bpn1p1p/pp1p1np1/1B6/3NP3/8/PPPN1PPP/R1BQ1RK1 w kq - 0 10"));
+        cb.doMove(chessMove(Bishop, b5, c6));
+        ASSERT_EQ(cb, ChessBoard("r2qkb1r/1bpn1p1p/ppBp1np1/8/3NP3/8/PPPN1PPP/R1BQ1RK1 b kq - 1 10"));
+        cb.doMove(chessMove(Queen, d8, c8));
+        ASSERT_EQ(cb, ChessBoard("r1q1kb1r/1bpn1p1p/ppBp1np1/8/3NP3/8/PPPN1PPP/R1BQ1RK1 w kq - 2 11"));
+        cb.doMove(chessMove(Pawn, e4, e5));
+        ASSERT_EQ(cb, ChessBoard("r1q1kb1r/1bpn1p1p/ppBp1np1/4P3/3N4/8/PPPN1PPP/R1BQ1RK1 b kq - 0 11"));
+        cb.doMove(chessMove(Pawn, d6, e5, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r1q1kb1r/1bpn1p1p/ppB2np1/4p3/3N4/8/PPPN1PPP/R1BQ1RK1 w kq - 0 12"));
+        cb.doMove(chessMove(Queen, d1, f3));
+        ASSERT_EQ(cb, ChessBoard("r1q1kb1r/1bpn1p1p/ppB2np1/4p3/3N4/5Q2/PPPN1PPP/R1B2RK1 b kq - 1 12"));
+        cb.doMove(chessMove(Bishop, b7, c6, Bishop));
+        ASSERT_EQ(cb, ChessBoard("r1q1kb1r/2pn1p1p/ppb2np1/4p3/3N4/5Q2/PPPN1PPP/R1B2RK1 w kq - 0 13"));
+        cb.doMove(chessMove(Knight, d4, c6, Bishop));
+        ASSERT_EQ(cb, ChessBoard("r1q1kb1r/2pn1p1p/ppN2np1/4p3/8/5Q2/PPPN1PPP/R1B2RK1 b kq - 0 13"));
+        cb.doMove(chessMove(Bishop, f8, d6));
+        ASSERT_EQ(cb, ChessBoard("r1q1k2r/2pn1p1p/ppNb1np1/4p3/8/5Q2/PPPN1PPP/R1B2RK1 w kq - 1 14"));
+        cb.doMove(chessMove(Knight, d2, c4));
+        ASSERT_EQ(cb, ChessBoard("r1q1k2r/2pn1p1p/ppNb1np1/4p3/2N5/5Q2/PPP2PPP/R1B2RK1 b kq - 2 14"));
+        cb.doMove(chessMove(Pawn, e5, e4));
+        ASSERT_EQ(cb, ChessBoard("r1q1k2r/2pn1p1p/ppNb1np1/8/2N1p3/5Q2/PPP2PPP/R1B2RK1 w kq - 0 15"));
+        cb.doMove(chessMove(Rook, f1, e1));
+        ASSERT_EQ(cb, ChessBoard("r1q1k2r/2pn1p1p/ppNb1np1/8/2N1p3/5Q2/PPP2PPP/R1B1R1K1 b kq - 1 15"));
+        cb.doMove(chessMove(Pawn, h7, h6));
+        ASSERT_EQ(cb, ChessBoard("r1q1k2r/2pn1p2/ppNb1npp/8/2N1p3/5Q2/PPP2PPP/R1B1R1K1 w kq - 0 16"));
+        cb.doMove(chessMove(Queen, f3, c3));
+        ASSERT_EQ(cb, ChessBoard("r1q1k2r/2pn1p2/ppNb1npp/8/2N1p3/2Q5/PPP2PPP/R1B1R1K1 b kq - 1 16"));
+        cb.doMove(chessMove(Queen, c8, b7));
+        ASSERT_EQ(cb, ChessBoard("r3k2r/1qpn1p2/ppNb1npp/8/2N1p3/2Q5/PPP2PPP/R1B1R1K1 w kq - 2 17"));
+        cb.doMove(chessMove(Knight, c4, d6, Bishop));
+        ASSERT_EQ(cb, ChessBoard("r3k2r/1qpn1p2/ppNN1npp/8/4p3/2Q5/PPP2PPP/R1B1R1K1 b kq - 0 17"));
+        cb.doMove(chessMove(Pawn, c7, d6, Knight));
+        ASSERT_EQ(cb, ChessBoard("r3k2r/1q1n1p2/ppNp1npp/8/4p3/2Q5/PPP2PPP/R1B1R1K1 w kq - 0 18"));
+        cb.doMove(chessMove(Rook, e1, e4, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r3k2r/1q1n1p2/ppNp1npp/8/4R3/2Q5/PPP2PPP/R1B3K1 b kq - 0 18"));
+        cb.doMove(chessMove(King, e8, f8));
+        ASSERT_EQ(cb, ChessBoard("r4k1r/1q1n1p2/ppNp1npp/8/4R3/2Q5/PPP2PPP/R1B3K1 w - - 1 19"));
+    }
+
+    TEST(ChessBoardTester, CastlingAvailabilityUpdateAfterMoveOfWhiteRookInA1)
+    {
+        ChessBoard cb{"r3k2r/pppq1ppp/2n2n2/1B1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/R3K2R w KQkq - 10 8"};
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        cb.doMove(chessMove(Rook, a1, b1));
+        ASSERT_EQ(cb, ChessBoard("r3k2r/pppq1ppp/2n2n2/1B1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/1R2K2R b Kkq - 11 8"));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({g1, c8, g8}));
+    }
+    TEST(ChessBoardTester, CastlingAvailabilityUpdateAfterMoveOfWhiteRookInH1)
+    {
+        ChessBoard cb{"r3k2r/pppq1ppp/2n2n2/1B1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/R3K2R w KQkq - 10 8"};
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        cb.doMove(chessMove(Rook, h1, f1));
+        ASSERT_EQ(cb, ChessBoard("r3k2r/pppq1ppp/2n2n2/1B1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/R3KR2 b Qkq - 11 8"));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, c8, g8}));
+    }
+    TEST(ChessBoardTester, CastlingAvailabilityUpdateAfterMoveOfBlackRookInA8)
+    {
+        ChessBoard cb{"r3k2r/pppq1ppp/2n2n2/3pp1B1/Bb1PP1b1/2N2N2/PPPQ1PPP/R3K2R b KQkq - 11 8"};
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        cb.doMove(chessMove(Rook, a8, c8));
+        ASSERT_EQ(cb, ChessBoard("2r1k2r/pppq1ppp/2n2n2/3pp1B1/Bb1PP1b1/2N2N2/PPPQ1PPP/R3K2R w KQk - 12 9"));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, g8}));
+    }
+    TEST(ChessBoardTester, CastlingAvailabilityUpdateAfterMoveOfBlackRookInH8)
+    {
+        ChessBoard cb{"r3k2r/pppq1ppp/2n2n2/3pp1B1/Bb1PP1b1/2N2N2/PPPQ1PPP/R3K2R b KQkq - 11 8"};
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        cb.doMove(chessMove(Rook, h8, g8));
+        ASSERT_EQ(cb, ChessBoard("r3k1r1/pppq1ppp/2n2n2/3pp1B1/Bb1PP1b1/2N2N2/PPPQ1PPP/R3K2R w KQq - 12 9"));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8}));
+    }
+
 
 
     // -------------------------------------------------------------------------------------
