@@ -492,6 +492,21 @@ namespace cSzd
                     castlingAvailability &= ~BitBoard(g8);
             }
         }
+        // If a Rook is taken, castling availability could change
+        if (takenPiece == Rook) {
+            if (sideToMove == WhiteArmy) {
+                if (destCell == a8)
+                    castlingAvailability &= ~BitBoard(c8);
+                else if (destCell == h8)
+                    castlingAvailability &= ~BitBoard(g8);
+            }
+            else if (sideToMove == BlackArmy) {
+                if (destCell == a1)
+                    castlingAvailability &= ~BitBoard(c1);
+                else if (destCell == h1)
+                    castlingAvailability &= ~BitBoard(g1);
+            }
+        }
 
         // Updates en passant target square
         enPassantTargetSquare = BitBoard(chessMoveGetEnPassantCell(m));

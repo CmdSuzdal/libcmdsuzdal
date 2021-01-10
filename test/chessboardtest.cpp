@@ -2157,6 +2157,38 @@ namespace cSzd
         ASSERT_EQ(cb, ChessBoard("r3k1r1/pppq1ppp/2n2n2/3pp1B1/Bb1PP1b1/2N2N2/PPPQ1PPP/R3K2R w KQq - 12 9"));
         ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8}));
     }
+    TEST(ChessBoardTester, CastlingAvailabilityUpdateAfterWhiteRookInH1Taken)
+    {
+        ChessBoard cb{"rn1qkbnr/pbpp1ppp/1p6/4p3/2B5/4P1P1/PPPPNP1P/RNBQK2R b KQkq - 0 4"};
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        cb.doMove(chessMove(Bishop, b7, h1, Rook));
+        ASSERT_EQ(cb, ChessBoard("rn1qkbnr/p1pp1ppp/1p6/4p3/2B5/4P1P1/PPPPNP1P/RNBQK2b w Qkq - 0 5"));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, c8, g8}));
+    }
+    TEST(ChessBoardTester, CastlingAvailabilityUpdateAfterWhiteRookInA1Taken)
+    {
+        ChessBoard cb{"rnbqk1nr/ppppppbp/6p1/8/8/1P1PB3/P1P1PPPP/RN1QKBNR b KQkq - 0 3"};
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        cb.doMove(chessMove(Bishop, g7, a1, Rook));
+        ASSERT_EQ(cb, ChessBoard("rnbqk1nr/pppppp1p/6p1/8/8/1P1PB3/P1P1PPPP/bN1QKBNR w Kkq - 0 4"));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({g1, c8, g8}));
+    }
+    TEST(ChessBoardTester, CastlingAvailabilityUpdateAfterBlackRookInH8Taken)
+    {
+        ChessBoard cb{"rnbqk1nr/ppppb2p/6p1/4Q3/4P3/8/PPPP2PP/RNB1KBNR w KQkq - 1 6"};
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        cb.doMove(chessMove(Queen, e5, h8, Rook));
+        ASSERT_EQ(cb, ChessBoard("rnbqk1nQ/ppppb2p/6p1/8/4P3/8/PPPP2PP/RNB1KBNR b KQq - 0 6"));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8}));
+    }
+    TEST(ChessBoardTester, CastlingAvailabilityUpdateAfterBlackRookInA8Taken)
+    {
+        ChessBoard cb{"rnbqkb1r/p1pppppp/1p3n2/8/8/6P1/PPPPPPBP/RNBQK1NR w KQkq - 2 3"};
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        cb.doMove(chessMove(Bishop, g2, a8, Rook));
+        ASSERT_EQ(cb, ChessBoard("Bnbqkb1r/p1pppppp/1p3n2/8/8/6P1/PPPPPP1P/RNBQK1NR b KQk - 0 3"));
+        ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, g8}));
+    }
 
 
 
