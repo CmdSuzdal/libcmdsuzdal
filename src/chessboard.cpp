@@ -446,38 +446,30 @@ namespace cSzd
                 }
             }
         }
-        // Black to be completed
+        else if (sideToMove == BlackArmy) {
+            if (castlingAvailability & BitBoard(g8)) {
+                // Black 0-0 is still possible, checks for inhibit factors
+                // 1. Friend or foe pieces occupy one of f8 and g8
+                // 2. During movement, the king shall not occupy any
+                //    foe controlled cell
+                if (!((wholeArmyBitBoard() | controlledCells(WhiteArmy)) & BitBoard({f8, g8}))) {
+                    // ***** Add black 0-0 ******
+                    moves.push_back(chessMove(King, e8, g8));
+                }
+            }
+            if (castlingAvailability & BitBoard(c8)) {
+                // Black 0-0-0 is still possible, checks for inhibit factors
+                // 1. Friend or foe pieces occupy one of b8, c8, d8
+                // 2. During movement, the king shall not occupy any
+                //    foe controlled cell
+                if (!((wholeArmyBitBoard() | controlledCells(WhiteArmy)) & BitBoard({b8, c8, d8}))) {
+                    // Cells are free and not controlled by enemy
+                    // ***** Add black 0-0-0 ******
+                    moves.push_back(chessMove(King, e8, c8));
+                }
+            }
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // ---------------------------------------------------------------------------------
     // Modify the ChessBoard assuming the specified move is executed by the active Army.

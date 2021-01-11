@@ -2241,8 +2241,9 @@ namespace cSzd
     {
         // In the initial position, no king movement are possible at all
         ChessBoard cb {FENRecord(FENInitialStandardPosition)};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 0);
@@ -2251,8 +2252,9 @@ namespace cSzd
     {
         // After a white move, no black king movement are possible at all
         ChessBoard cb {"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
         std::vector<ChessMove> blackMoves;
         cb.generateLegalMoves(blackMoves, King);
         ASSERT_EQ(blackMoves.size(), 0);
@@ -2261,8 +2263,9 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenAllCastlingArePossibleForWhite)
     {
         ChessBoard cb {"r3k2r/pppq1ppp/2n2n2/1B1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/R3K2R w KQkq - 10 8"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 5);
@@ -2276,8 +2279,9 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly00IsPossibleForWhiteForFriendPiecesInterference)
     {
         ChessBoard cb {"r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 3);
@@ -2289,8 +2293,9 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly000IsPossibleForWhiteForFriendPiecesInterference)
     {
         ChessBoard cb {"r1bqk2r/ppp1bpp1/2np1n1p/4p1B1/4P3/2NP1N2/PPPQ1PPP/R3KB1R w KQkq - 0 7"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 3);
@@ -2302,8 +2307,9 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly00IsPossibleForWhiteForRookInA1Moved)
     {
         ChessBoard cb {"r3k2r/1ppq1ppp/2n2n2/pB1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/1R2K2R w Kkq - 0 9"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 4);
@@ -2316,8 +2322,9 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly000IsPossibleForWhiteForRookInH1Moved)
     {
         ChessBoard cb {"r3k2r/1ppq1ppp/2n2n2/pB1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/R3K1R1 w Qkq - 0 9"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 4);
@@ -2330,8 +2337,9 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly00IsPossibleForWhiteForCheckInKingTraiectoryFor000_d1)
     {
         ChessBoard cb {"r3k2r/1ppq1ppp/p1n2n2/1B1pN1B1/1b1PP1b1/2N5/PPPQ1PPP/R3K2R w KQkq - 0 9"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 2);
@@ -2342,8 +2350,9 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly00IsPossibleForWhiteForCheckInKingTraiectoryFor000_c1)
     {
         ChessBoard cb {"r3k2r/p1p2ppp/2q5/3p4/3P2bB/b1P5/P1PQ1PPP/R3K2R w KQkq - 1 13"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 2);
@@ -2354,8 +2363,9 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly000IsPossibleForWhiteForCheckInKingTraiectoryFor00)
     {
         ChessBoard cb {"r3k2r/1pp2ppp/p3bn2/1q1pN1B1/1b1PP2P/2N5/PPPQ1PP1/R3K2R w KQkq - 1 11"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         std::vector<ChessMove> whiteMoves;
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 2);
@@ -2366,18 +2376,20 @@ namespace cSzd
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenNoCastlingIsPossibleForWhiteForChecksInKingTraiectory)
     {
         ChessBoard cb {"r3k2r/1pp2ppp/p4n2/1q1pN1B1/1b1PP1bP/2N5/PPPQ1PP1/R3K2R w KQkq - 1 11"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         std::vector<ChessMove> whiteMoves;
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 0);
     }
     TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenNoCastlingIsPossibleForWhiteKingInCheck)
     {
         ChessBoard cb {"r3k2r/p1p2ppp/4q3/3p4/1b1P2bB/2P5/P1PQ1PPP/R3K2R w KQkq - 1 13"};
-        ASSERT_EQ(cb.armyInCheck(), WhiteArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), WhiteArmy);
         std::vector<ChessMove> whiteMoves;
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 1);
         ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, e1, f1)) != whiteMoves.end());
@@ -2385,9 +2397,10 @@ namespace cSzd
     TEST(ChessBoardTester, White00NotPossibleForEnemyPieceInterference)
     {
         ChessBoard cb {"rnbqkb1r/pppppppp/8/8/2B1P3/2N5/PPPPNPPP/R1BQKn1R w KQkq - 7 5"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         std::vector<ChessMove> whiteMoves;
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 1);
         ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, e1, f1, Knight)) != whiteMoves.end());
@@ -2395,15 +2408,212 @@ namespace cSzd
     TEST(ChessBoardTester, White000NotPossibleForEnemyPieceInterference)
     {
         ChessBoard cb {"r1bqkb1r/pppp1pp1/4pn1p/8/3PPB2/3Q1N2/PPPNBPPP/R1n1K2R w KQkq - 0 8"};
-        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
         std::vector<ChessMove> whiteMoves;
+        ASSERT_EQ(cb.sideToMove, WhiteArmy);
         cb.generateLegalMoves(whiteMoves, King);
         ASSERT_EQ(whiteMoves.size(), 3);
         ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, e1, f1)) != whiteMoves.end());
         ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, e1, d1)) != whiteMoves.end());
         // Castling moves:
         ASSERT_TRUE(std::find(whiteMoves.begin(), whiteMoves.end(), chessMove(King, e1, g1)) != whiteMoves.end());
+    }
+
+    // -----------------------------------------------------------------------------
+    // generateLegalMoves(): check for castling moves
+    // -----------------------------------------------------------------------------
+    // --- BLACK TURN ---
+    // Position where both black castling are possible:
+    //   - r3k2r/pppq1ppp/2n2n2/1B1pp1B1/1b1PP1bP/2N2N2/PPPQ1PP1/R3K2R b KQkq - 0 8
+    //
+    // Position where both black castling are still possible, but 0-0-0 is
+    // temporarly inhibited by friend  piece presence in the 8th rank:
+    //   - r2qk2r/ppp2ppp/2n2n2/1B1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/R3K2R b KQkq - 9 7
+    //
+    // Position where both black castling are still possible, but 0-0 is
+    // temporarly inhibited by friend  piece presence in the 8th rank:
+    //   - r3kb1r/pppq1ppp/2n2n2/1B1pp1B1/3PP1bP/2N2N2/PPP2PP1/R2QK2R b KQkq - 0 7
+    //
+    // Position where only black 0-0 is possible: rook in a8 moved
+    //   - 1r2kb1r/pppq1ppp/2n2n2/1B1pp1B1/3PP1bP/P1N2N2/1PP2PP1/R2QK2R b KQk - 0 8
+    //
+    // Position where only black 0-0-0 is possible: rook in h8 moved
+    //   - r2qk1r1/ppp2ppp/2n2n2/1B1pp1B1/Pb1PP1bP/2N2N2/1PP2PP1/R2QK2R b KQq - 0 8
+    //
+    // Position where both black castling are still possible, but 0-0-0 is
+    // temporarly inhibited by enemy bishop position that causes check in c8:
+    //   - r3k2r/ppp2ppp/n1bq3B/3pp3/3PP1B1/P2Q3N/P1P2PPP/R3K2R b KQkq - 2 9
+    //
+    // Position where both black castling are still possible, but 0-0 is
+    // temporarly inhibited by enemy bishop position that causes check in f8:
+    //   - r3k2r/pppq1ppp/n4b1n/3pp3/1B1PP1b1/7N/PPPQBPPP/RN2K2R b KQkq - 13 9
+    //
+    // Position where both black castling are still possible, but both are
+    // temporarly inhibited by enemy pieces position that causes check in b8, d8 and f8
+    //   - r3k2r/2p2ppp/ppN2n2/2Bq4/2p1P1b1/3P3P/PPPQ1PP1/RN2K2R b KQkq - 0 11
+    //
+    // black 00 not possible for enemy piece interference
+    //   - r3kB1r/2p2pp1/1p3n2/p2q3p/1Np1P1b1/3P3P/PPPQ1PP1/RN2K2R b KQkq - 1 13
+    //
+    // black 000 not possible for enemy piece interference
+    //   - rN2k2r/2p2ppp/p4n2/2pq4/2p1P1b1/3P3P/PPPQ1PP1/RN2K2R b KQkq - 1 12
+    //
+    // Position where both white castling are still possible but bot 0-0 and 0-0-0
+    // are temporarly inhibited by king in check
+    //   - r3k2r/ppp2ppp/n2q1n2/2bpp3/B3P1bP/3PBN2/PPP2PP1/RN1QK2R b KQkq - 2 8
+    //
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenAllCastlingArePossibleForBlack)
+    {
+        ChessBoard cb {"r3k2r/pppq1ppp/2n2n2/1B1pp1B1/1b1PP1bP/2N2N2/PPPQ1PP1/R3K2R b KQkq - 0 8"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 5);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, e7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, f8)) != blackMoves.end());
+        // Castling moves:
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, c8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, g8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly00IsPossibleForBlackForFriendPiecesInterference)
+    {
+        ChessBoard cb {"r2qk2r/ppp2ppp/2n2n2/1B1pp1B1/1b1PP1b1/2N2N2/PPPQ1PPP/R3K2R b KQkq - 9 7"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 4);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, e7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, f8)) != blackMoves.end());
+        // Castling moves:
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, g8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly000IsPossibleForBlackForFriendPiecesInterference)
+    {
+        ChessBoard cb {"r3kb1r/pppq1ppp/2n2n2/1B1pp1B1/3PP1bP/2N2N2/PPP2PP1/R2QK2R b KQkq - 0 7"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 3);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, e7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
+        // Castling moves:
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, c8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly00IsPossibleForBlackForRookInA8Moved)
+    {
+        ChessBoard cb {"1r2kb1r/pppq1ppp/2n2n2/1B1pp1B1/3PP1bP/P1N2N2/1PP2PP1/R2QK2R b KQk - 0 8"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 2);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, e7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly000IsPossibleForBlackForRookInH8Moved)
+    {
+        ChessBoard cb {"r2qk1r1/ppp2ppp/2n2n2/1B1pp1B1/Pb1PP1bP/2N2N2/1PP2PP1/R2QK2R b KQq - 0 8"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 3);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, e7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, f8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly00IsPossibleForBlackForCheckInKingTraiectoryFor000)
+    {
+        ChessBoard cb {"r3k2r/ppp2ppp/n1bq3B/3pp3/3PP1B1/P2Q3N/P1P2PPP/R3K2R b KQkq - 2 9"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 4);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, e7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, f8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
+        // Castling moves:
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, g8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenOnly000IsPossibleForBlackForCheckInKingTraiectoryFor00)
+    {
+        ChessBoard cb {"r3k2r/pppq1ppp/n4b1n/3pp3/1B1PP1b1/7N/PPPQBPPP/RN2K2R b KQkq - 13 9"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 2);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
+        // Castling moves:
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, c8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenNoCastlingIsPossibleForBlackForChecksInKingTraiectory)
+    {
+        ChessBoard cb {"r3k2r/2p2ppp/ppN2n2/2Bq4/2p1P1b1/3P3P/PPPQ1PP1/RN2K2R b KQkq - 0 11"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 1);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d7)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, Black00NotPossibleForEnemyPieceInterference)
+    {
+        ChessBoard cb {"r3kB1r/2p2pp1/1p3n2/p2q3p/1Np1P1b1/3P3P/PPPQ1PP1/RN2K2R b KQkq - 1 13"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 4);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, f8, Bishop)) != blackMoves.end());
+        // Castling moves:
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, c8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, Black000NotPossibleForEnemyPieceInterference)
+    {
+        ChessBoard cb {"rN2k2r/2p2ppp/p4n2/2pq4/2p1P1b1/3P3P/PPPQ1PP1/RN2K2R b KQkq - 1 12"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), InvalidArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 4);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, e7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, f8)) != blackMoves.end());
+        // Castling moves:
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, g8)) != blackMoves.end());
+    }
+    TEST(ChessBoardTester, GenerateLegalMoveCastlingConsiderationWhenNoCastlingIsPossibleForBlackKingInCheck)
+    {
+        ChessBoard cb {"r3k2r/ppp2ppp/n2q1n2/2bpp3/B3P1bP/3PBN2/PPP2PP1/RN1QK2R b KQkq - 2 8"};
+        ASSERT_TRUE(cb.isValid());
+        ASSERT_EQ(cb.armyInCheck(), BlackArmy);
+        ASSERT_EQ(cb.sideToMove, BlackArmy);
+        std::vector<ChessMove> blackMoves;
+        cb.generateLegalMoves(blackMoves, King);
+        ASSERT_EQ(blackMoves.size(), 3);
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, f8)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, e7)) != blackMoves.end());
+        ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
     }
 
 } // namespace cSzd
