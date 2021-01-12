@@ -149,6 +149,27 @@ namespace cSzd
         ChessGame cg;
         cg.addMove(chessMove(Pawn, e2, e4));
         ASSERT_EQ(cg.board, ChessBoard("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"));
+        ASSERT_EQ(cg.possibleMoves.size(), 20);
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , a7, a6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , a7, a5)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , b7, b6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , b7, b5)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , c7, c6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , c7, c5)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , d7, d6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , d7, d5)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , e7, e6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , e7, e5)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , f7, f6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , f7, f5)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , g7, g6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , g7, g5)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , h7, h6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn  , h7, h5)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, b8, a6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, b8, c6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, g8, f6)) != cg.possibleMoves.end());
+        ASSERT_TRUE(std::find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, g8, h6)) != cg.possibleMoves.end());
     }
 
 

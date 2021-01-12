@@ -28,7 +28,10 @@ namespace cSzd
 
     void ChessGame::addMove(const ChessMove &m)
     {
+        // do the moves
         board.doMove(m);
+        // updates possible Moves
+        board.generateLegalMoves(possibleMoves);
     }
 
 
