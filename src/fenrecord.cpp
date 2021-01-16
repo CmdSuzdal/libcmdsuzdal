@@ -12,7 +12,10 @@ namespace cSzd
     // -------------------------------------------------------------
     FENRecord::FENRecord(const std::string_view f)
     {
-        loadPosition(f);
+        if (f != "")
+            loadPosition(f);
+        else
+            loadPosition(FENEmptyChessBoard);
     }
 
     // -------------------------------------------------------------

@@ -32,6 +32,11 @@ namespace cSzd
         FENRecord f {FENEmptyChessBoard};
         ASSERT_EQ(f.value(), FENEmptyChessBoard);
     }
+    TEST(FENRecordTester, IfInitializedWithEmptyStringEmptyChessBoardIsUsed)
+    {
+        FENRecord f {""};
+        ASSERT_EQ(f.value(), FENEmptyChessBoard);
+    }
 
     // Change position function
     TEST(FENRecordTester, ChangePositionToEmptyWorksOK)
