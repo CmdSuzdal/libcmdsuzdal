@@ -88,8 +88,8 @@ namespace cSzd
             set((bbs >> (npos * 8)) & SouthShiftClearMask[npos - 1]);
     }
 
-    std::ostream &operator<<(std::ostream &os, const BitBoard &bb)
-    {
+    std::ostream &operator<<(std::ostream &os, const BitBoard &bb)                  // GCOV_EXCL_LINE
+    {                                                                               // GCOV_EXCL_LINE
         // We want to represent a BitBoard in the following way:
         //
         // 8| | | | | | | | |
@@ -104,19 +104,19 @@ namespace cSzd
         //
         // with the "x" representing the active cells
 
-        os << std::endl << "  _ _ _ _ _ _ _ _";
-        auto fillchar = ' ';
-        for (auto rank = 7; rank >= 0; rank--) {
-            os << std::endl << rank+1 << '|';
-            auto startPos = rank * 8;
-            if (rank == 0) fillchar = '_';
-            for (auto file = 0; file < 8; file++) {
-                os << ((bb.bbs[startPos + file] == 0) ? fillchar : 'x') << '|';
-            }
-        }
-        os << std::endl << "  a b c d e f g h" << std::endl;
-        return os;
-    }
+        os << std::endl << "  _ _ _ _ _ _ _ _";                                     // GCOV_EXCL_LINE
+        auto fillchar = ' ';                                                        // GCOV_EXCL_LINE
+        for (auto rank = 7; rank >= 0; rank--) {                                    // GCOV_EXCL_LINE
+            os << std::endl << rank+1 << '|';                                       // GCOV_EXCL_LINE
+            auto startPos = rank * 8;                                               // GCOV_EXCL_LINE
+            if (rank == 0) fillchar = '_';                                          // GCOV_EXCL_LINE
+            for (auto file = 0; file < 8; file++) {                                 // GCOV_EXCL_LINE
+                os << ((bb.bbs[startPos + file] == 0) ? fillchar : 'x') << '|';     // GCOV_EXCL_LINE
+            }                                                                       // GCOV_EXCL_LINE
+        }                                                                           // GCOV_EXCL_LINE
+        os << std::endl << "  a b c d e f g h" << std::endl;                        // GCOV_EXCL_LINE
+        return os;                                                                  // GCOV_EXCL_LINE
+    }                                                                               // GCOV_EXCL_LINE
 
     int BitBoard::operator[](int i) const
     {

@@ -465,8 +465,8 @@ namespace cSzd
         return ((fakeArmy.controlledCellsByPieceType(pType, intfBoard) | occupiedCells()) ^ occupiedCells());
     }
 
-    std::ostream &operator<<(std::ostream &os, const Army &a)
-    {
+    std::ostream &operator<<(std::ostream &os, const Army &a)           // GCOV_EXCL_LINE
+    {                                                                   // GCOV_EXCL_LINE
         // We want to represent an Army like a Bitboard, with piece symbols
         // instead of the 'x' in the active cells
         // We use "K Q B N R P" for white and "k q b n r p" for black
@@ -497,49 +497,49 @@ namespace cSzd
         //   a b c d e f g h
         //
 
-        os << std::endl << "  _ _ _ _ _ _ _ _";
-        auto fillchar = ' ';
-        for (auto rank = 7; rank >= 0; rank--) {
-            os << std::endl << rank+1 << '|';
-            auto startPos = rank * 8;
-            if (rank == 0) fillchar = '_';
-            for (auto file = 0; file < 8; file++) {
-                if (a.color == WhiteArmy) {
-                    if (a.pieces[King][startPos + file] != 0)
-                       os << 'K' << '|';
-                    else if (a.pieces[Queen][startPos + file] != 0)
-                       os << 'Q' << '|';
-                    else if (a.pieces[Bishop][startPos + file] != 0)
-                       os << 'B' << '|';
-                    else if (a.pieces[Knight][startPos + file] != 0)
-                       os << 'N' << '|';
-                    else if (a.pieces[Rook][startPos + file] != 0)
-                       os << 'R' << '|';
-                    else if (a.pieces[Pawn][startPos + file] != 0)
-                       os << 'P' << '|';
-                    else
-                       os << fillchar << '|';
-                }
-                else if (a.color == BlackArmy) {
-                    if (a.pieces[King][startPos + file] != 0)
-                       os << 'k' << '|';
-                    else if (a.pieces[Queen][startPos + file] != 0)
-                       os << 'q' << '|';
-                    else if (a.pieces[Bishop][startPos + file] != 0)
-                       os << 'b' << '|';
-                    else if (a.pieces[Knight][startPos + file] != 0)
-                       os << 'n' << '|';
-                    else if (a.pieces[Rook][startPos + file] != 0)
-                       os << 'r' << '|';
-                    else if (a.pieces[Pawn][startPos + file] != 0)
-                       os << 'p' << '|';
-                    else
-                       os << fillchar << '|';
-                }
-            }
-        }
-        os << std::endl << "  a b c d e f g h" << std::endl;
-        return os;
-    }
+        os << std::endl << "  _ _ _ _ _ _ _ _";                         // GCOV_EXCL_LINE
+        auto fillchar = ' ';                                            // GCOV_EXCL_LINE
+        for (auto rank = 7; rank >= 0; rank--) {                        // GCOV_EXCL_LINE
+            os << std::endl << rank+1 << '|';                           // GCOV_EXCL_LINE
+            auto startPos = rank * 8;                                   // GCOV_EXCL_LINE
+            if (rank == 0) fillchar = '_';                              // GCOV_EXCL_LINE
+            for (auto file = 0; file < 8; file++) {                     // GCOV_EXCL_LINE
+                if (a.color == WhiteArmy) {                             // GCOV_EXCL_LINE
+                    if (a.pieces[King][startPos + file] != 0)           // GCOV_EXCL_LINE
+                       os << 'K' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Queen][startPos + file] != 0)     // GCOV_EXCL_LINE
+                       os << 'Q' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Bishop][startPos + file] != 0)    // GCOV_EXCL_LINE
+                       os << 'B' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Knight][startPos + file] != 0)    // GCOV_EXCL_LINE
+                       os << 'N' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Rook][startPos + file] != 0)      // GCOV_EXCL_LINE
+                       os << 'R' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Pawn][startPos + file] != 0)      // GCOV_EXCL_LINE
+                       os << 'P' << '|';                                // GCOV_EXCL_LINE
+                    else                                                // GCOV_EXCL_LINE
+                       os << fillchar << '|';                           // GCOV_EXCL_LINE
+                }                                                       // GCOV_EXCL_LINE
+                else if (a.color == BlackArmy) {                        // GCOV_EXCL_LINE
+                    if (a.pieces[King][startPos + file] != 0)           // GCOV_EXCL_LINE
+                       os << 'k' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Queen][startPos + file] != 0)     // GCOV_EXCL_LINE
+                       os << 'q' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Bishop][startPos + file] != 0)    // GCOV_EXCL_LINE
+                       os << 'b' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Knight][startPos + file] != 0)    // GCOV_EXCL_LINE
+                       os << 'n' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Rook][startPos + file] != 0)      // GCOV_EXCL_LINE
+                       os << 'r' << '|';                                // GCOV_EXCL_LINE
+                    else if (a.pieces[Pawn][startPos + file] != 0)      // GCOV_EXCL_LINE
+                       os << 'p' << '|';                                // GCOV_EXCL_LINE
+                    else                                                // GCOV_EXCL_LINE
+                       os << fillchar << '|';                           // GCOV_EXCL_LINE
+                }                                                       // GCOV_EXCL_LINE
+            }                                                           // GCOV_EXCL_LINE
+        }                                                               // GCOV_EXCL_LINE
+        os << std::endl << "  a b c d e f g h" << std::endl;            // GCOV_EXCL_LINE
+        return os;                                                      // GCOV_EXCL_LINE
+    }                                                                   // GCOV_EXCL_LINE
 
 } // namespace cSzd
