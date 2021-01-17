@@ -82,19 +82,7 @@ namespace cSzd
         Cell activeCell() const;
 
         // -------------------------------------------------------------------------------
-        // waiting for apolis comments
-        // -------------------------------------------------------------------------------
         // Bitboard modification methods
-        //
-        // Note that all these methods currently returns the BitBoard internal state for
-        // an idea of "supposed efficiency" but I am not really sure that this is the
-        // best solution. Maybe the approach used for the function:
-        //    const BitBoard &setCell(File f, Rank r)
-        // is clearer.... See f.e. test Cell_0_0_CorrespondToA1
-        //
-        // Another approach is not to return anything, like in the case of:
-        //    void resetCell(File f, Rank r)
-        // see test IfACellIsSetAndThenResetBitboardIsEmpty
         //
         void clear() { bbs = EmptyBB; }
         void set(BitBoardState newBbs) { bbs = newBbs; }
