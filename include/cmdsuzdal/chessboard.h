@@ -94,12 +94,12 @@ namespace cSzd
         void checkForEnPassant(Cell c, std::vector<ChessMove> &moves) const;
         void checkForCastlingMoves(std::vector<ChessMove> &moves) const;
 
-
         void doMove(const ChessMove &m);
+
+        ChessMove notation2Move(const std::string_view nMove);
 
         // iostream << operator
         friend std::ostream &operator<<(std::ostream &os, const ChessBoard &cb);
-
 
     private:
         bool checkEnPassantTargetSquareValidity() const;
