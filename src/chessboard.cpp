@@ -200,66 +200,6 @@ namespace cSzd
         return checkEnPassantTargetSquareValidity();
     }
 
-    // -----------------------------------------------------------------
-    bool ChessBoard::checkEnPassantTargetSquareValidity() const
-    {
-        // If en passant target square not defined, there is no problem
-        if (enPassantTargetSquare.popCount() == 0)
-            return true;
-
-        // if more than one e.p. target square are defined,
-        // there are problems for sure
-        if (enPassantTargetSquare.popCount() > 1)
-            return false;
-
-        // if here, exactly one cell is marked as en passant targets
-
-        // if e.p. target square is not in 3rd or 6th rank,
-        // position is not valid
-        if (enPassantTargetSquare & ~BitBoard(RanksBB[r_3] | RanksBB[r_6]))
-            return false;
-
-        // if here, exactly one cell in 3rd or 6th row is marked
-        // as an en passant target
-        BitBoard frontCell = enPassantTargetSquare;
-        BitBoard backCell = enPassantTargetSquare;
-        if (enPassantTargetSquare & BitBoard(RanksBB[r_3])) {
-            // e.p. target square is in 3rd row. Side to move shall
-            // be the black, front (north) cell shall be occupied by
-            // a white pawn and back (south) cell shall be empty
-            if (sideToMove == BlackArmy) {
-                frontCell.shiftNorth(1);
-                backCell.shiftSouth(1);
-                if (!(armies[WhiteArmy].pieces[Pawn] & frontCell))
-                    return false;
-                if (wholeArmyBitBoard() & backCell)
-                    return false;
-            }
-            else {
-                return false;
-            }
-        }
-        else {
-            // e.p. target square is in 6th row. Side to move shall
-            // be the white, front (south) cell shall be occupied by
-            // a black pawn and back (north) cell shall be empty
-            if (sideToMove == WhiteArmy) {
-                frontCell.shiftSouth(1);
-                backCell.shiftNorth(1);
-                if (!(armies[BlackArmy].pieces[Pawn] & frontCell))
-                    return false;
-                if (wholeArmyBitBoard() & backCell)
-                    return false;
-            }
-            else {
-                return false;
-            }
-        }
-
-        // if here, e.p. target cell is OK
-        return true;
-    }
-
     // ---------------------------------------------------------------------------------
     // Generates all the legal moves for the Army starting from the current position
     // taking into account an opponent Army. The opponent army is necessary to generate
@@ -592,53 +532,12 @@ namespace cSzd
     // In any case, the returned move shall be checked for legality; for
     // example this function does not perform checks on king check condition
     // or does not perform checks for inconsistent cell occupation
-    ChessMove ChessBoard::notation2Move(const std::string_view nMove)
+    ChessMove ChessBoard::notation2Move(const std::string_view nMove) const
     {
         if (nMove.size() == 2) {
             // just the destination cell is present, so this is a
-            // simple (no-capture) pawn move. The only problem is
-            // to find the starting cell. The position depends on
-            // side to move and destination rank.
-            // For example, "e4" when the side to move is white can be converted in:
-            //    chessMove(Pawn, e2, e4) or
-            //    chessMove(Pawn, e2, e3)
-            // depending on the starting position of the pawn
-            // If instead the side to move is black, "e4" can only be converted in:
-            //    chessMove(Pawn, e5, e4)
-            // If no pawn is found in the possible starting position,
-            // InvalidMove is returned
-            Cell destCell = toCell(nMove);
-            // destination cell shall be free...
-            if (wholeArmyBitBoard() & BitBoard(destCell))
-                return InvalidMove;
-            if (sideToMove == WhiteArmy) {
-                if (rank(destCell) > r_2) {
-                    Cell startCell = static_cast<Cell>(destCell - 8);
-                    Piece p = armies[sideToMove].getPieceInCell(startCell);
-                    if (p == Pawn)
-                        return chessMove(Pawn, startCell, destCell);
-                    else if (p == InvalidPiece && (rank(destCell) == r_4)) {
-                        startCell = static_cast<Cell>(destCell - 16);
-                        p = armies[sideToMove].getPieceInCell(startCell);
-                        if (p == Pawn)
-                            return chessMove(Pawn, startCell, destCell);
-                    }
-                }
-            }
-            else if (sideToMove == BlackArmy) {
-                if (rank(destCell) < r_7) {
-                    Cell startCell = static_cast<Cell>(destCell + 8);
-                    Piece p = armies[sideToMove].getPieceInCell(startCell);
-                    if (p == Pawn)
-                        return chessMove(Pawn, startCell, destCell);
-                    else if (p == InvalidPiece && (rank(destCell) == r_5)) {
-                        startCell = static_cast<Cell>(destCell + 16);
-                        p = armies[sideToMove].getPieceInCell(startCell);
-                        if (p == Pawn)
-                            return chessMove(Pawn, startCell, destCell);
-                    }
-                }
-            }
+            // simple (no-capture) pawn move.
+            return simplePawnMoveNotationEvaluationAndConversion(nMove);
         }
         return InvalidMove;
     }
@@ -712,5 +611,119 @@ namespace cSzd
 
         return os;                                                                      // GCOV_EXCL_LINE
     }                                                                                   // GCOV_EXCL_LINE
+
+    // --------------------------------------------------------------------------------------------------
+    // Private methods
+
+    // -----------------------------------------------------------------
+    bool ChessBoard::checkEnPassantTargetSquareValidity() const
+    {
+        // If en passant target square not defined, there is no problem
+        if (enPassantTargetSquare.popCount() == 0)
+            return true;
+
+        // if more than one e.p. target square are defined,
+        // there are problems for sure
+        if (enPassantTargetSquare.popCount() > 1)
+            return false;
+
+        // if here, exactly one cell is marked as en passant targets
+
+        // if e.p. target square is not in 3rd or 6th rank,
+        // position is not valid
+        if (enPassantTargetSquare & ~BitBoard(RanksBB[r_3] | RanksBB[r_6]))
+            return false;
+
+        // if here, exactly one cell in 3rd or 6th row is marked
+        // as an en passant target
+        BitBoard frontCell = enPassantTargetSquare;
+        BitBoard backCell = enPassantTargetSquare;
+        if (enPassantTargetSquare & BitBoard(RanksBB[r_3])) {
+            // e.p. target square is in 3rd row. Side to move shall
+            // be the black, front (north) cell shall be occupied by
+            // a white pawn and back (south) cell shall be empty
+            if (sideToMove == BlackArmy) {
+                frontCell.shiftNorth(1);
+                backCell.shiftSouth(1);
+                if (!(armies[WhiteArmy].pieces[Pawn] & frontCell))
+                    return false;
+                if (wholeArmyBitBoard() & backCell)
+                    return false;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            // e.p. target square is in 6th row. Side to move shall
+            // be the white, front (south) cell shall be occupied by
+            // a black pawn and back (north) cell shall be empty
+            if (sideToMove == WhiteArmy) {
+                frontCell.shiftSouth(1);
+                backCell.shiftNorth(1);
+                if (!(armies[BlackArmy].pieces[Pawn] & frontCell))
+                    return false;
+                if (wholeArmyBitBoard() & backCell)
+                    return false;
+            }
+            else {
+                return false;
+            }
+        }
+
+        // if here, e.p. target cell is OK
+        return true;
+    }
+
+    // -----------------------------------------------------------------
+    ChessMove ChessBoard::simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const
+    {
+        // just the destination cell is present, so this is a
+        // simple (no-capture) pawn move. The only problem is
+        // to find the starting cell. The position depends on
+        // side to move and destination rank.
+        // For example, "e4" when the side to move is white can be converted in:
+        //    chessMove(Pawn, e2, e4) or
+        //    chessMove(Pawn, e2, e3)
+        // depending on the starting position of the pawn
+        // If instead the side to move is black, "e4" can only be converted in:
+        //    chessMove(Pawn, e5, e4)
+        // If no pawn is found in the possible starting position,
+        // InvalidMove is returned
+        Cell destCell = toCell(nMove);
+        // destination cell shall be free...
+        if (wholeArmyBitBoard() & BitBoard(destCell))
+            return InvalidMove;
+        if (sideToMove == WhiteArmy) {
+            if (rank(destCell) > r_2) {
+                Cell startCell = static_cast<Cell>(destCell - 8);
+                Piece p = armies[sideToMove].getPieceInCell(startCell);
+                if (p == Pawn)
+                    return chessMove(Pawn, startCell, destCell);
+                else if (p == InvalidPiece && (rank(destCell) == r_4)) {
+                    startCell = static_cast<Cell>(destCell - 16);
+                    p = armies[sideToMove].getPieceInCell(startCell);
+                    if (p == Pawn)
+                        return chessMove(Pawn, startCell, destCell);
+                }
+            }
+        }
+        else if (sideToMove == BlackArmy) {
+            if (rank(destCell) < r_7) {
+                Cell startCell = static_cast<Cell>(destCell + 8);
+                Piece p = armies[sideToMove].getPieceInCell(startCell);
+                if (p == Pawn)
+                    return chessMove(Pawn, startCell, destCell);
+                else if (p == InvalidPiece && (rank(destCell) == r_5)) {
+                    startCell = static_cast<Cell>(destCell + 16);
+                    p = armies[sideToMove].getPieceInCell(startCell);
+                    if (p == Pawn)
+                        return chessMove(Pawn, startCell, destCell);
+                }
+            }
+        }
+        return InvalidMove;
+    }
+
 
 } // namespace cSzd

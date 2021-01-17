@@ -96,13 +96,14 @@ namespace cSzd
 
         void doMove(const ChessMove &m);
 
-        ChessMove notation2Move(const std::string_view nMove);
+        ChessMove notation2Move(const std::string_view nMove) const;
 
         // iostream << operator
         friend std::ostream &operator<<(std::ostream &os, const ChessBoard &cb);
 
     private:
         bool checkEnPassantTargetSquareValidity() const;
+        ChessMove simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
 
     };
     // -----------------------------------------------
