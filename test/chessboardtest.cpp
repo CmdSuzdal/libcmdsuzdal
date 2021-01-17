@@ -2039,6 +2039,14 @@ namespace cSzd
         cb.doMove(chessMove(Queen, h3, h6));
         ASSERT_EQ(cb, ChessBoard("r2q1rk1/1pp2p1p/pb3p1Q/3Np3/P1Bn4/8/1P3PPP/R3R1K1 b - - 1 19"));
     }
+    TEST(ChessBoardTester, TestSequenceOfMoves_000_ForWhiteAndBlack)
+    {
+        ChessBoard cb{"r3kbnr/pppq1ppp/2npb3/4p3/4P3/2NPB3/PPPQ1PPP/R3KBNR w KQkq - 4 6"};
+        cb.doMove(chessMove(King, e1, c1));
+        ASSERT_EQ(cb, ChessBoard("r3kbnr/pppq1ppp/2npb3/4p3/4P3/2NPB3/PPPQ1PPP/2KR1BNR b kq - 5 6"));
+        cb.doMove(chessMove(King, e8, c8));
+        ASSERT_EQ(cb, ChessBoard("2kr1bnr/pppq1ppp/2npb3/4p3/4P3/2NPB3/PPPQ1PPP/2KR1BNR w - - 6 7"));
+    }
 
 
     TEST(ChessBoardTester, TestSequenceOfMoves_QueenIndianDefense)
