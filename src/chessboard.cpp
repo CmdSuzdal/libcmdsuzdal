@@ -520,29 +520,6 @@ namespace cSzd
         sideToMove = enemyArmy;
     }
 
-    // ----------------------------------------------------------------------------------
-    // Converts a string with a move in notational format to a ChessMove.
-    // This function performs some checks, for example search the piece
-    // that can perform the move and "complete" the move appropriately.
-    // For example, il the string "e4" is found, this is a pawn move, and
-    // of the side to move is White, the pawn can be only on "e3" or "e2".
-    // If for example the pawn is present in e2, the following move is returned:
-    //     chessMove(Pawn, e2, e4)
-    // Consistency about the side to move are also performed.
-    // In any case, the returned move shall be checked for legality; for
-    // example this function does not perform checks on king check condition
-    // or does not perform checks for inconsistent cell occupation
-    ChessMove ChessBoard::notation2Move(const std::string_view nMove) const
-    {
-        if (nMove.size() == 2) {
-            // just the destination cell is present, so this is a
-            // simple (no-capture) pawn move.
-            return simplePawnMoveNotationEvaluationAndConversion(nMove);
-        }
-        return InvalidMove;
-    }
-    // ----------------------------------------------------------------------------------
-
     std::ostream &operator<<(std::ostream &os, const ChessBoard &cb)                    // GCOV_EXCL_LINE
     {                                                                                   // GCOV_EXCL_LINE
         // We want to represent an ChessBoard like a Bitboard, with
@@ -673,58 +650,6 @@ namespace cSzd
 
         // if here, e.p. target cell is OK
         return true;
-    }
-
-    // -----------------------------------------------------------------
-    ChessMove ChessBoard::simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const
-    {
-        // just the destination cell is present, so this is a
-        // simple (no-capture) pawn move. The only problem is
-        // to find the starting cell. The position depends on
-        // side to move and destination rank.
-        // For example, "e4" when the side to move is white can be converted in:
-        //    chessMove(Pawn, e2, e4) or
-        //    chessMove(Pawn, e2, e3)
-        // depending on the starting position of the pawn
-        // If instead the side to move is black, "e4" can only be converted in:
-        //    chessMove(Pawn, e5, e4)
-        // If no pawn is found in the possible starting position,
-        // InvalidMove is returned
-        // -----------------------------
-        // N.B. This function, like all the notation conversion function, can generate
-        // an illegal move, so the returned move shall be checked in any case for legality
-        // by the caller!
-        // -----------------------------
-        Cell destCell = toCell(nMove);
-        if (sideToMove == WhiteArmy) {
-            if (rank(destCell) > r_2) {
-                Cell startCell = static_cast<Cell>(destCell - 8);
-                Piece p = armies[sideToMove].getPieceInCell(startCell);
-                if (p == Pawn)
-                    return chessMove(Pawn, startCell, destCell);
-                else if (rank(destCell) == r_4) {
-                    startCell = static_cast<Cell>(destCell - 16);
-                    p = armies[sideToMove].getPieceInCell(startCell);
-                    if (p == Pawn)
-                        return chessMove(Pawn, startCell, destCell);
-                }
-            }
-        }
-        else if (sideToMove == BlackArmy) {
-            if (rank(destCell) < r_7) {
-                Cell startCell = static_cast<Cell>(destCell + 8);
-                Piece p = armies[sideToMove].getPieceInCell(startCell);
-                if (p == Pawn)
-                    return chessMove(Pawn, startCell, destCell);
-                else if (rank(destCell) == r_5) {
-                    startCell = static_cast<Cell>(destCell + 16);
-                    p = armies[sideToMove].getPieceInCell(startCell);
-                    if (p == Pawn)
-                        return chessMove(Pawn, startCell, destCell);
-                }
-            }
-        }
-        return InvalidMove;
     }
 
 

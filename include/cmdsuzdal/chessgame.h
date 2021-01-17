@@ -68,6 +68,14 @@ namespace cSzd
         // Add a move to the currently active variant
         void addMove(const ChessMove &m);
 
+        // Check a move in notation format, and convert to
+        // ChessMove if valid and legal. Returns InvalidMove
+        // if not legal respect to the current position
+        ChessMove checkNotationMove(const std::string_view nMove) const;
+
+    private:
+        ChessMove simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
+
     };
     // ---------------------------------------------------
 

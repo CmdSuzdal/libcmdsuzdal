@@ -805,4 +805,67 @@ namespace cSzd
         // White resigns
     }
 
+    // ------------------------------------------------------------------------------
+    // Move Generation from notation function test
+
+    TEST(ChessGameTester, NotationToMove_EmptyStringGeneratesInvalidMove)
+    {
+        ChessGame cg {FENInitialStandardPosition};
+        ASSERT_EQ(cg.checkNotationMove(""), InvalidMove);
+    }
+    TEST(ChessGameTester, NotationToMove_FromInitialPosition_e4_Generates_Pawn_e2_e4_Move)
+    {
+        ChessGame cg {FENInitialStandardPosition};
+        ASSERT_EQ(cg.checkNotationMove("e4"), chessMove(Pawn, e2, e4));
+    }
+    TEST(ChessGameTester, NotationToMove_FromInitialPosition_d3_Generates_Pawn_d2_d3_Move)
+    {
+        ChessGame cg {FENInitialStandardPosition};
+        ASSERT_EQ(cg.checkNotationMove("d3"), chessMove(Pawn, d2, d3));
+    }
+    TEST(ChessGameTester, NotationToMove_FromInitialPosition_g1_Generates_InvalidMove)
+    {
+        ChessGame cg {FENInitialStandardPosition};
+        ASSERT_EQ(cg.checkNotationMove("g1"), InvalidMove);
+    }
+    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_WhiteToMove_ConvertPawnMoves)
+    {
+        ChessGame cg {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R w - - 5 11"};
+        ASSERT_EQ(cg.checkNotationMove("f4"), chessMove(Pawn, f3, f4));
+        ASSERT_EQ(cg.checkNotationMove("h4"), chessMove(Pawn, h2, h4));
+        ASSERT_EQ(cg.checkNotationMove("h3"), chessMove(Pawn, h2, h3));
+    }
+    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_WhiteToMove_ConvertInvalidPawnMove)
+    {
+        ChessGame cg {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R w - - 5 11"};
+        ASSERT_EQ(cg.checkNotationMove("f5"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("g6"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("e5"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("c3"), InvalidMove);
+    }
+    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_BlackToMove_ConvertPawnMoves)
+    {
+        ChessGame cg {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P1P1/1NN1BP2/PPPQ3P/2KR1B1R b - - 0 11"};
+        ASSERT_EQ(cg.checkNotationMove("d5"), chessMove(Pawn, d6, d5));
+        ASSERT_EQ(cg.checkNotationMove("g5"), chessMove(Pawn, g7, g5));
+        ASSERT_EQ(cg.checkNotationMove("a5"), chessMove(Pawn, a6, a5));
+        ASSERT_EQ(cg.checkNotationMove("b6"), chessMove(Pawn, b7, b6));
+        ASSERT_EQ(cg.checkNotationMove("b5"), chessMove(Pawn, b7, b5));
+    }
+    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_BlackToMove_ConvertInvalidPawnMove)
+    {
+        ChessGame cg {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P1P1/1NN1BP2/PPPQ3P/2KR1B1R b - - 0 11"};
+        ASSERT_EQ(cg.checkNotationMove("e4"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("a4"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("b7"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("f6"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("f5"), InvalidMove);
+    }
+
+
+
+
+
+
+
 } // namespace cSzd
