@@ -2653,12 +2653,12 @@ namespace cSzd
         ASSERT_EQ(cb.notation2Move("f4"), chessMove(Pawn, f3, f4));
         ASSERT_EQ(cb.notation2Move("h4"), chessMove(Pawn, h2, h4));
         ASSERT_EQ(cb.notation2Move("h4"), chessMove(Pawn, h2, h4));
+        ASSERT_EQ(cb.notation2Move("e5"), chessMove(Pawn, e4, e5));
+        ASSERT_EQ(cb.notation2Move("c3"), chessMove(Pawn, c2, c3));
     }
     TEST(ChessBoardTester, NotationToMove_FromASicilianVariantPosition_WhiteToMove_ConvertInvalidPawnMove)
     {
         ChessBoard cb {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R w - - 5 11"};
-        ASSERT_EQ(cb.notation2Move("e5"), InvalidMove);
-        ASSERT_EQ(cb.notation2Move("c3"), InvalidMove);
         ASSERT_EQ(cb.notation2Move("f5"), InvalidMove);
         ASSERT_EQ(cb.notation2Move("g6"), InvalidMove);
     }
@@ -2671,14 +2671,14 @@ namespace cSzd
         ASSERT_EQ(cb.notation2Move("a5"), chessMove(Pawn, a6, a5));
         ASSERT_EQ(cb.notation2Move("b6"), chessMove(Pawn, b7, b6));
         ASSERT_EQ(cb.notation2Move("b5"), chessMove(Pawn, b7, b5));
+        ASSERT_EQ(cb.notation2Move("e4"), chessMove(Pawn, e5, e4));
+        ASSERT_EQ(cb.notation2Move("f6"), chessMove(Pawn, f7, f6));
+        ASSERT_EQ(cb.notation2Move("f5"), chessMove(Pawn, f7, f5));
     }
     TEST(ChessBoardTester, NotationToMove_FromASicilianVariantPosition_BlackToMove_ConvertInvalidPawnMove)
     {
         ChessBoard cb {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P1P1/1NN1BP2/PPPQ3P/2KR1B1R b - - 0 11"};
         ASSERT_EQ(cb.notation2Move("a4"), InvalidMove);
-        ASSERT_EQ(cb.notation2Move("e4"), InvalidMove);
-        ASSERT_EQ(cb.notation2Move("f6"), InvalidMove);
-        ASSERT_EQ(cb.notation2Move("f5"), InvalidMove);
         ASSERT_EQ(cb.notation2Move("b7"), InvalidMove);
     }
 

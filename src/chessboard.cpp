@@ -690,17 +690,19 @@ namespace cSzd
         //    chessMove(Pawn, e5, e4)
         // If no pawn is found in the possible starting position,
         // InvalidMove is returned
+        // -----------------------------
+        // N.B. This function, like all the notation conversion function, can generate
+        // an illegal move, so the returned move shall be checked in any case for legality
+        // by the caller!
+        // -----------------------------
         Cell destCell = toCell(nMove);
-        // destination cell shall be free...
-        if (wholeArmyBitBoard() & BitBoard(destCell))
-            return InvalidMove;
         if (sideToMove == WhiteArmy) {
             if (rank(destCell) > r_2) {
                 Cell startCell = static_cast<Cell>(destCell - 8);
                 Piece p = armies[sideToMove].getPieceInCell(startCell);
                 if (p == Pawn)
                     return chessMove(Pawn, startCell, destCell);
-                else if (p == InvalidPiece && (rank(destCell) == r_4)) {
+                else if (rank(destCell) == r_4) {
                     startCell = static_cast<Cell>(destCell - 16);
                     p = armies[sideToMove].getPieceInCell(startCell);
                     if (p == Pawn)
@@ -714,7 +716,7 @@ namespace cSzd
                 Piece p = armies[sideToMove].getPieceInCell(startCell);
                 if (p == Pawn)
                     return chessMove(Pawn, startCell, destCell);
-                else if (p == InvalidPiece && (rank(destCell) == r_5)) {
+                else if (rank(destCell) == r_5) {
                     startCell = static_cast<Cell>(destCell + 16);
                     p = armies[sideToMove].getPieceInCell(startCell);
                     if (p == Pawn)
