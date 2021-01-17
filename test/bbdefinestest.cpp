@@ -120,7 +120,7 @@ namespace cSzd
     }
 
     // File+Rank to Cell method (toCell())
-    TEST(BBTester, chechFileRankToCellMethod)
+    TEST(BBDefinesTester, chechFileRankToCellMethod)
     {
         ASSERT_EQ(toCell(f_a, r_1), a1);
         ASSERT_EQ(toCell(f_b, r_5), b5);
@@ -131,8 +131,19 @@ namespace cSzd
         ASSERT_EQ(toCell(f_g, r_3), g3);
         ASSERT_EQ(toCell(f_h, r_6), h6);
     }
+    TEST(BBDefinesTester, CheckFileRankToCellMethodForInvalidValues)
+    {
+        ASSERT_EQ(toCell(InvalidFile, r_1), InvalidCell);
+        ASSERT_EQ(toCell(f_a, InvalidRank), InvalidCell);
+        ASSERT_EQ(toCell(static_cast<File>(8), r_1), InvalidCell);
+        ASSERT_EQ(toCell(static_cast<File>(9), r_3), InvalidCell);
+        ASSERT_EQ(toCell(static_cast<File>(42), r_7), InvalidCell);
+        ASSERT_EQ(toCell(f_b, static_cast<Rank>(8)), InvalidCell);
+        ASSERT_EQ(toCell(f_c, static_cast<Rank>(9)), InvalidCell);
+        ASSERT_EQ(toCell(f_h, static_cast<Rank>(112345)), InvalidCell);
+    }
 
-    TEST(BBTester, FileMasksAreComputedCorrectly)
+    TEST(BBDefinesTester, FileMasksAreComputedCorrectly)
     {
         ASSERT_EQ(fileMask(a2), FilesBB[f_a]);
         ASSERT_EQ(fileMask(b1), FilesBB[f_b]);
@@ -144,7 +155,7 @@ namespace cSzd
         ASSERT_EQ(fileMask(h7), FilesBB[f_h]);
     }
 
-    TEST(BBTester, RankMasksAreComputedCorrectly)
+    TEST(BBDefinesTester, RankMasksAreComputedCorrectly)
     {
         ASSERT_EQ(rankMask(a6), RanksBB[r_6]);
         ASSERT_EQ(rankMask(b7), RanksBB[r_7]);
@@ -156,7 +167,7 @@ namespace cSzd
         ASSERT_EQ(rankMask(h5), RanksBB[r_5]);
     }
 
-    TEST(BBTester, FileRankMasksAreComputedCorrectly)
+    TEST(BBDefinesTester, FileRankMasksAreComputedCorrectly)
     {
         ASSERT_EQ(fileRankMask(a6), FilesBB[f_a] | RanksBB[r_6]);
         ASSERT_EQ(fileRankMask(b7), FilesBB[f_b] | RanksBB[r_7]);
@@ -168,7 +179,7 @@ namespace cSzd
         ASSERT_EQ(fileRankMask(h5), FilesBB[f_h] | RanksBB[r_5]);
     }
 
-    TEST(BBTester, DiagonalMasksAreComputedCorrectly)
+    TEST(BBDefinesTester, DiagonalMasksAreComputedCorrectly)
     {
         ASSERT_EQ(diagMask(a8), DiagsBB[d_0]);
         ASSERT_EQ(diagMask(b8), DiagsBB[d_1]);
@@ -187,7 +198,7 @@ namespace cSzd
         ASSERT_EQ(diagMask(h1), DiagsBB[d_14]);
     }
 
-    TEST(BBTester, AntiDiagonalMasksAreComputedCorrectly)
+    TEST(BBDefinesTester, AntiDiagonalMasksAreComputedCorrectly)
     {
         ASSERT_EQ(antiDiagMask(a1), AntiDiagsBB[a_0]);
         ASSERT_EQ(antiDiagMask(a2), AntiDiagsBB[a_1]);
@@ -206,7 +217,7 @@ namespace cSzd
         ASSERT_EQ(antiDiagMask(h8), AntiDiagsBB[a_14]);
     }
 
-    TEST(BBTester, DiagonalAntiDiagonalMasksAreComputedCorrectly)
+    TEST(BBDefinesTester, DiagonalAntiDiagonalMasksAreComputedCorrectly)
     {
         ASSERT_EQ(diagonalsMask(a6), DiagsBB[d_2] | AntiDiagsBB[a_5]);
         ASSERT_EQ(diagonalsMask(b7), DiagsBB[d_2] | AntiDiagsBB[a_7]);
@@ -218,7 +229,7 @@ namespace cSzd
         ASSERT_EQ(diagonalsMask(h5), DiagsBB[d_10] | AntiDiagsBB[a_11]);
     }
 
-    TEST(BBTester, QueenMasksAreComputedCorrectly)
+    TEST(BBDefinesTester, QueenMasksAreComputedCorrectly)
     {
         ASSERT_EQ(queenMask(a8), FilesBB[f_a] | RanksBB[r_8] | DiagsBB[d_0]  | AntiDiagsBB[a_7]);
         ASSERT_EQ(queenMask(b8), FilesBB[f_b] | RanksBB[r_8] | DiagsBB[d_1]  | AntiDiagsBB[a_8]);
@@ -252,5 +263,149 @@ namespace cSzd
         ASSERT_EQ(queenMask(h8), FilesBB[f_h] | RanksBB[r_8] | DiagsBB[d_7] | AntiDiagsBB[a_14]);
     }
 
+    // String to file/rank/cell conversion functions
+    TEST(BBDefinesTester, StringToFileConvertion_ValidFiles)
+    {
+        ASSERT_EQ(toFile('a'), f_a);
+        ASSERT_EQ(toFile('b'), f_b);
+        ASSERT_EQ(toFile('c'), f_c);
+        ASSERT_EQ(toFile('d'), f_d);
+        ASSERT_EQ(toFile('e'), f_e);
+        ASSERT_EQ(toFile('f'), f_f);
+        ASSERT_EQ(toFile('g'), f_g);
+        ASSERT_EQ(toFile('h'), f_h);
+    }
+    TEST(BBDefinesTester, StringToFileConvertion_InvalidFiles)
+    {
+        ASSERT_EQ(toFile('i'), InvalidFile);
+        ASSERT_EQ(toFile('j'), InvalidFile);
+        ASSERT_EQ(toFile('A'), InvalidFile);
+        ASSERT_EQ(toFile('H'), InvalidFile);
+        ASSERT_EQ(toFile('K'), InvalidFile);
+        ASSERT_EQ(toFile(' '), InvalidFile);
+        ASSERT_EQ(toFile('\0'), InvalidFile);
+        ASSERT_EQ(toFile('\\'), InvalidFile);
+        ASSERT_EQ(toFile('1'), InvalidFile);
+        ASSERT_EQ(toFile('2'), InvalidFile);
+        ASSERT_EQ(toFile('3'), InvalidFile);
+        ASSERT_EQ(toFile('4'), InvalidFile);
+        ASSERT_EQ(toFile('5'), InvalidFile);
+        ASSERT_EQ(toFile('6'), InvalidFile);
+        ASSERT_EQ(toFile('7'), InvalidFile);
+        ASSERT_EQ(toFile('8'), InvalidFile);
+    }
+    TEST(BBDefinesTester, StringToRankConvertion_ValidRanks)
+    {
+        ASSERT_EQ(toRank('1'), r_1);
+        ASSERT_EQ(toRank('2'), r_2);
+        ASSERT_EQ(toRank('3'), r_3);
+        ASSERT_EQ(toRank('4'), r_4);
+        ASSERT_EQ(toRank('5'), r_5);
+        ASSERT_EQ(toRank('6'), r_6);
+        ASSERT_EQ(toRank('7'), r_7);
+        ASSERT_EQ(toRank('8'), r_8);
+    }
+    TEST(BBDefinesTester, StringToRankConvertion_InvalidRanks)
+    {
+        ASSERT_EQ(toRank('0'), InvalidRank);
+        ASSERT_EQ(toRank('9'), InvalidRank);
+        ASSERT_EQ(toRank('a'), InvalidRank);
+        ASSERT_EQ(toRank('b'), InvalidRank);
+        ASSERT_EQ(toRank('c'), InvalidRank);
+        ASSERT_EQ(toRank('d'), InvalidRank);
+        ASSERT_EQ(toRank('e'), InvalidRank);
+        ASSERT_EQ(toRank('f'), InvalidRank);
+        ASSERT_EQ(toRank('g'), InvalidRank);
+        ASSERT_EQ(toRank('h'), InvalidRank);
+    }
+    TEST(BBDefinesTester, StringToCellConvertion_ValidCells)
+    {
+        ASSERT_EQ(toCell("a1"), a1);
+        ASSERT_EQ(toCell("a2"), a2);
+        ASSERT_EQ(toCell("a3"), a3);
+        ASSERT_EQ(toCell("a4"), a4);
+        ASSERT_EQ(toCell("a5"), a5);
+        ASSERT_EQ(toCell("a6"), a6);
+        ASSERT_EQ(toCell("a7"), a7);
+        ASSERT_EQ(toCell("a8"), a8);
+
+        ASSERT_EQ(toCell("b1"), b1);
+        ASSERT_EQ(toCell("b2"), b2);
+        ASSERT_EQ(toCell("b3"), b3);
+        ASSERT_EQ(toCell("b4"), b4);
+        ASSERT_EQ(toCell("b5"), b5);
+        ASSERT_EQ(toCell("b6"), b6);
+        ASSERT_EQ(toCell("b7"), b7);
+        ASSERT_EQ(toCell("b8"), b8);
+
+        ASSERT_EQ(toCell("c1"), c1);
+        ASSERT_EQ(toCell("c2"), c2);
+        ASSERT_EQ(toCell("c3"), c3);
+        ASSERT_EQ(toCell("c4"), c4);
+        ASSERT_EQ(toCell("c5"), c5);
+        ASSERT_EQ(toCell("c6"), c6);
+        ASSERT_EQ(toCell("c7"), c7);
+        ASSERT_EQ(toCell("c8"), c8);
+
+        ASSERT_EQ(toCell("d1"), d1);
+        ASSERT_EQ(toCell("d2"), d2);
+        ASSERT_EQ(toCell("d3"), d3);
+        ASSERT_EQ(toCell("d4"), d4);
+        ASSERT_EQ(toCell("d5"), d5);
+        ASSERT_EQ(toCell("d6"), d6);
+        ASSERT_EQ(toCell("d7"), d7);
+        ASSERT_EQ(toCell("d8"), d8);
+
+        ASSERT_EQ(toCell("e1"), e1);
+        ASSERT_EQ(toCell("e2"), e2);
+        ASSERT_EQ(toCell("e3"), e3);
+        ASSERT_EQ(toCell("e4"), e4);
+        ASSERT_EQ(toCell("e5"), e5);
+        ASSERT_EQ(toCell("e6"), e6);
+        ASSERT_EQ(toCell("e7"), e7);
+        ASSERT_EQ(toCell("e8"), e8);
+
+        ASSERT_EQ(toCell("f1"), f1);
+        ASSERT_EQ(toCell("f2"), f2);
+        ASSERT_EQ(toCell("f3"), f3);
+        ASSERT_EQ(toCell("f4"), f4);
+        ASSERT_EQ(toCell("f5"), f5);
+        ASSERT_EQ(toCell("f6"), f6);
+        ASSERT_EQ(toCell("f7"), f7);
+        ASSERT_EQ(toCell("f8"), f8);
+
+        ASSERT_EQ(toCell("g1"), g1);
+        ASSERT_EQ(toCell("g2"), g2);
+        ASSERT_EQ(toCell("g3"), g3);
+        ASSERT_EQ(toCell("g4"), g4);
+        ASSERT_EQ(toCell("g5"), g5);
+        ASSERT_EQ(toCell("g6"), g6);
+        ASSERT_EQ(toCell("g7"), g7);
+        ASSERT_EQ(toCell("g8"), g8);
+
+        ASSERT_EQ(toCell("h1"), h1);
+        ASSERT_EQ(toCell("h2"), h2);
+        ASSERT_EQ(toCell("h3"), h3);
+        ASSERT_EQ(toCell("h4"), h4);
+        ASSERT_EQ(toCell("h5"), h5);
+        ASSERT_EQ(toCell("h6"), h6);
+        ASSERT_EQ(toCell("h7"), h7);
+        ASSERT_EQ(toCell("h8"), h8);
+
+    }
+    TEST(BBDefinesTester, StringToCellConvertion_InvalidCells)
+    {
+        ASSERT_EQ(toCell("d0"), InvalidCell);
+        ASSERT_EQ(toCell("a9"), InvalidCell);
+        ASSERT_EQ(toCell("i1"), InvalidCell);
+        ASSERT_EQ(toCell("A1"), InvalidCell);
+        ASSERT_EQ(toCell("a11"), InvalidCell);
+        ASSERT_EQ(toCell(""), InvalidCell);
+        ASSERT_EQ(toCell("d"), InvalidCell);
+        ASSERT_EQ(toCell("2"), InvalidCell);
+        ASSERT_EQ(toCell("  "), InvalidCell);
+        ASSERT_EQ(toCell("\0"), InvalidCell);
+        ASSERT_EQ(toCell("h7\0"), h7);   // is this correct ??
+    }
 
 }

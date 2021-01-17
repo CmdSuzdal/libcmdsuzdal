@@ -256,6 +256,12 @@ namespace cSzd
     BitBoardState diagonalsMask(const Cell &c);
     BitBoardState queenMask(const Cell &c);
 
+    // conversion from string functions
+    File toFile(const char &f);
+    Rank toRank(const char &r);
+    Cell toCell(const std::string_view c);
+
+
 } // namespace cSzd
 
 #endif // if !defined CSZD_BBDEFINES_HEADER

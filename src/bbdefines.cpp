@@ -3,7 +3,12 @@
 namespace cSzd
 {
     // Given file and rank returns the cell
-    Cell toCell(File f, Rank r) { return static_cast<Cell>(r * 8 + f); }
+    Cell toCell(File f, Rank r)
+    {
+        if ((f >= f_a) && (f <= f_h) && (r >= r_1) && (r <= r_8))
+            return static_cast<Cell>(r * 8 + f);
+        return InvalidCell;
+    }
 
     // Given a cell, returns File, Rank, Diagonal, AntiDiagonal (and combinations)
     File file(const Cell &c) { return static_cast<File>(c % 8); }
@@ -89,6 +94,24 @@ namespace cSzd
     BitBoardState diagonalsMask(const Cell &c) { return diagMask(c) | antiDiagMask(c); }
     BitBoardState queenMask(const Cell &c) { return fileMask(c) | rankMask(c) | diagMask(c) | antiDiagMask(c); }
 
-
+    // conversion from string functions
+    File toFile(const char &f)
+    {
+        if (f >= 'a' && f <= 'h')
+            return static_cast<File>(f - 'a');
+        return InvalidFile;
+    }
+    Rank toRank(const char &r)
+    {
+        if (r >= '1' && r <= '8')
+            return static_cast<Rank>(r - '1');
+        return InvalidRank;
+    }
+    Cell toCell(const std::string_view c)
+    {
+        if (c.size() == 2)
+            return toCell(toFile(c.at(0)), toRank(c.at(1)));
+        return InvalidCell;
+    }
 
 }
