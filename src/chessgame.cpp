@@ -57,6 +57,10 @@ namespace cSzd
             // This can be an castling move
             cm = castlingMoveNotationEvaluationAndConversion(nMove);
         }
+        else if (nMove.find("=") != std::string::npos) {
+            // Promotion move!
+            cm = promotionMoveNotationEvaluationAndConversion(nMove);
+        }
         else if (nMove.size() == 2) {
             // just the destination cell is present, so this is a
             // simple (no-capture) pawn move.
@@ -94,6 +98,66 @@ namespace cSzd
             }
             if ((nMove == "0-0-0") || (nMove == "000")) {
                 return chessMove(King, e8, c8);
+            }
+        }
+        return InvalidMove;
+    }
+
+    // -----------------------------------------------------------------
+    ChessMove ChessGame::promotionMoveNotationEvaluationAndConversion(const std::string_view nMove) const
+    {
+        if (nMove.size() == 4) {
+            // If the lengh is 4, the move is the simplest form of the promotion move
+            // For example, for white:
+            //   <f>8=<P>   - where <f> is the file (a...h),
+            //        <P> the promoted piece (one of (Q, R, B, N))
+            // The '=' shall be in the 3rd positions
+            if (nMove.at(2) != '=') {
+                // invalid notation move
+                return InvalidMove;
+            }
+            // extract the file from the 1st char
+            char file_c = nMove.at(0) - 'a';
+            if ((file_c < 0) || (file_c >= 8)) {
+                // invalid file
+                return InvalidMove;
+            }
+            File file = static_cast<File>(file_c);
+            // extract the promoted piece from the 4th character in string
+            char ppiece_c =  nMove.at(3);
+            Piece ppiece = InvalidPiece;
+            switch (ppiece_c) {
+                case 'Q':
+                    ppiece = Queen;
+                    break;
+                case 'N':
+                    ppiece = Knight;
+                    break;
+                case 'R':
+                    ppiece = Rook;
+                    break;
+                case 'B':
+                    ppiece = Bishop;
+                    break;
+                default:
+                    return InvalidMove;
+                    break;
+            }
+            if  (board.sideToMove == WhiteArmy) {
+                // The destination cell shall be in the 2nd position and shall be an 8
+                if (nMove.at(1) != '8') {
+                    // invalid notation move
+                    return InvalidMove;
+                }
+                return chessMove(Pawn, toCell(file, r_7), toCell(file, r_8), InvalidPiece, ppiece);
+            }
+            if  (board.sideToMove == BlackArmy) {
+                // The destination cell shall be in the 2nd position and shall be an 1
+                if (nMove.at(1) != '1') {
+                    // invalid notation move
+                    return InvalidMove;
+                }
+                return chessMove(Pawn, toCell(file, r_2), toCell(file, r_1), InvalidPiece, ppiece);
             }
         }
         return InvalidMove;
@@ -146,10 +210,5 @@ namespace cSzd
         }
         return InvalidMove;
     }
-
-
-
-
-
 
 } // namespace cSzd
