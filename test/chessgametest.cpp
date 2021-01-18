@@ -861,5 +861,69 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("f6"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("f5"), InvalidMove);
     }
+    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_BlackToMove_Convert00)
+    {
+        ChessGame cg {"rn1qk2r/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/R3KB1R b KQkq - 2 9"};
+        // In this position 0-0 is possibile, 0-0-0 is not
+        ASSERT_EQ(cg.checkNotationMove("0-0"), chessMove(King, e8, g8));
+        ASSERT_EQ(cg.checkNotationMove("00"), chessMove(King, e8, g8));
+        ASSERT_EQ(cg.checkNotationMove("0-0-0"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("000"), InvalidMove);
+    }
+    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_WhiteToMove_Convert000)
+    {
+        ChessGame cg {"rn1q1rk1/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/R3KB1R w KQ - 3 10"};
+        // In this position 0-0-0 is possibile, 0-0 is not
+        ASSERT_EQ(cg.checkNotationMove("0-0"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("00"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("0-0-0"), chessMove(King, e1, c1));
+        ASSERT_EQ(cg.checkNotationMove("000"), chessMove(King, e1, c1));
+    }
+    TEST(ChessGameTester, NotationToMove_FromAnItalianGame_WhiteToMove_Convert00_and000)
+    {
+        ChessGame cg {"r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/R3K2R w KQkq - 0 9"};
+        // In this position both 0-0 and 0-0-0 are possibile
+        ASSERT_EQ(cg.checkNotationMove("0-0"), chessMove(King, e1, g1));
+        ASSERT_EQ(cg.checkNotationMove("00"), chessMove(King, e1, g1));
+        ASSERT_EQ(cg.checkNotationMove("0-0-0"), chessMove(King, e1, c1));
+        ASSERT_EQ(cg.checkNotationMove("000"), chessMove(King, e1, c1));
+    }
+    TEST(ChessGameTester, NotationToMove_FromAnItalianGame_BlackToMove_Convert00_and000)
+    {
+        ChessGame cg {"r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/2KR3R b kq - 1 9"};
+        // In this position both 0-0 and 0-0-0 are possibile
+        ASSERT_EQ(cg.checkNotationMove("0-0"), chessMove(King, e8, g8));
+        ASSERT_EQ(cg.checkNotationMove("00"), chessMove(King, e8, g8));
+        ASSERT_EQ(cg.checkNotationMove("0-0-0"), chessMove(King, e8, c8));
+        ASSERT_EQ(cg.checkNotationMove("000"), chessMove(King, e8, c8));
+    }
+    TEST(ChessGameTester, NotationToMove_FromAnItalianGame_WhiteToMove_PositionNotValidForCastling)
+    {
+        ChessGame cg {"r4rk1/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/2KR3R w - - 2 10"};
+        // In this position no castling is possibile
+        ASSERT_EQ(cg.checkNotationMove("0-0")  , InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("00")   , InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("0-0-0"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("000")  , InvalidMove);
+    }
+    TEST(ChessGameTester, NotationToMove_FromAnItalianGame_BlackToMove_PositionNotValidForCastling)
+    {
+        ChessGame cg {"r4rk1/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/P1NP1N2/1PPQ1PPP/2KR3R b - - 0 10"};
+        // In this position no castling is possibile
+        ASSERT_EQ(cg.checkNotationMove("0-0")  , InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("00")   , InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("0-0-0"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("000")  , InvalidMove);
+    }
+    TEST(ChessGameTester, NotationToMove_ManageInvalidCastlingMoves)
+    {
+        ChessGame cg {"r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/R3K2R w KQkq - 0 9"};
+        // In this position both 0-0 and 0-0-0 are possibile
+        ASSERT_EQ(cg.checkNotationMove("0x0")  , InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("0-1-0"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("0000") , InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("0-00") , InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("0 0 0"), InvalidMove);
+    }
 
 } // namespace cSzd

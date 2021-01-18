@@ -48,7 +48,16 @@ namespace cSzd
     ChessMove ChessGame::checkNotationMove(const std::string_view nMove) const
     {
         ChessMove cm = InvalidMove;
-        if (nMove.size() == 2) {
+        // Manages empty string
+        if (nMove.size() == 0) {
+            return InvalidMove;
+        }
+
+        if (nMove.at(0) == '0') {
+            // This can be an castling move
+            cm = castlingMoveNotationEvaluationAndConversion(nMove);
+        }
+        else if (nMove.size() == 2) {
             // just the destination cell is present, so this is a
             // simple (no-capture) pawn move.
             cm = simplePawnMoveNotationEvaluationAndConversion(nMove);
@@ -67,6 +76,28 @@ namespace cSzd
 
     // ----------------------------------------------------------------------------------
     // Private methods
+
+    // -----------------------------------------------------------------
+    ChessMove ChessGame::castlingMoveNotationEvaluationAndConversion(const std::string_view nMove) const
+    {
+        if (board.sideToMove == WhiteArmy) {
+            if ((nMove == "0-0") || (nMove == "00")) {
+                return chessMove(King, e1, g1);
+            }
+            if ((nMove == "0-0-0") || (nMove == "000")) {
+                return chessMove(King, e1, c1);
+            }
+        }
+        else if (board.sideToMove == BlackArmy) {
+            if ((nMove == "0-0") || (nMove == "00")) {
+                return chessMove(King, e8, g8);
+            }
+            if ((nMove == "0-0-0") || (nMove == "000")) {
+                return chessMove(King, e8, c8);
+            }
+        }
+        return InvalidMove;
+    }
 
     // -----------------------------------------------------------------
     ChessMove ChessGame::simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const
