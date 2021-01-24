@@ -355,9 +355,9 @@ namespace cSzd
         // castlingAvailability BitBoard shall be set, and the temporarly
         // inhibit factor shall not be present at this time. Inhibit factors are:
         //  - king is in check
-        //  - Friendly or foe pieces shall not be present between the king and the rook(s)
-        //  - No one of the cells when the king pass or the destination cell of the king
-        //    shall be under check of any enemy piece
+        //  - Friendly or foe pieces present between the king and the rook(s)
+        //  - At least one of the cells when the king pass, or the destination
+        //    cell of the king is under check of any enemy piece
 
         // If any king is in check we are unlucky...
         if (armyInCheck() != InvalidArmy)
