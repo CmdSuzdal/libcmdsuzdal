@@ -968,4 +968,58 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("x1=Q"), InvalidMove);
     }
 
+    TEST(ChessGameTester, NotationToMove_ConvertSimpleWhitePromotionWithCapture_AndOtherInvalidExamples)
+    {
+        ChessGame cg {"2q1b3/1P2P3/6k1/8/3K4/8/8/8 w - - 0 1"};
+        // In this position promotion of b7 pawn is possible
+        // Correct notation moves are for example "b8=Q" or "bxc8=Q"
+        ASSERT_EQ(cg.checkNotationMove("b8=Q"), chessMove(Pawn, b7, b8, InvalidPiece, Queen));
+        ASSERT_EQ(cg.checkNotationMove("bxc8=Q"), chessMove(Pawn, b7, c8, Queen, Queen));
+        ASSERT_EQ(cg.checkNotationMove("bxc8=N"), chessMove(Pawn, b7, c8, Queen, Knight));
+        ASSERT_EQ(cg.checkNotationMove("bxc8=B"), chessMove(Pawn, b7, c8, Queen, Bishop));
+        ASSERT_EQ(cg.checkNotationMove("bxc8=R"), chessMove(Pawn, b7, c8, Queen, Rook));
+
+        // Examples of invalid moves
+        ASSERT_EQ(cg.checkNotationMove("bxc8=K"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("bxc9=Q"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("xc8=Q"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("bc8=N"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("b8=r"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("c8=R"), InvalidMove);
+    }
+    TEST(ChessGameTester, NotationToMove_ConvertSimpleBlackPromotionWithCapture_AndOtherInvalidExamples)
+    {
+        ChessGame cg {"8/8/6k1/8/2K5/6p1/2p4p/3Q3B b - - 0 1"};
+        // In this position promotion of c2 pawn is possible
+        // Correct notation moves are for example "c1=Q" or "cxd1=Q"
+        ASSERT_EQ(cg.checkNotationMove("c1=Q"), chessMove(Pawn, c2, c1, InvalidPiece, Queen));
+        ASSERT_EQ(cg.checkNotationMove("cxd1=Q"), chessMove(Pawn, c2, d1, Queen, Queen));
+        ASSERT_EQ(cg.checkNotationMove("cxd1=N"), chessMove(Pawn, c2, d1, Queen, Knight));
+        ASSERT_EQ(cg.checkNotationMove("cxd1=B"), chessMove(Pawn, c2, d1, Queen, Bishop));
+        ASSERT_EQ(cg.checkNotationMove("cxd1=R"), chessMove(Pawn, c2, d1, Queen, Rook));
+
+        // Examples of invalid moves
+        ASSERT_EQ(cg.checkNotationMove("c:d1=Q"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("cxd1xQ"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("ixh1=Q"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("_x_1=Q"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("cx_1=N"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("cxD1=N"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("cxd0=B"), InvalidMove);
+    }
+
+    // For coverage...
+    TEST(ChessGameTester, NotationToMove_ConvertSimpleBlackPromotionWithCapture_WhenInvalidArmy)
+    {
+        ChessGame cg {"8/8/8/8/8/8/8/8 w - - 0 1"};
+        cg.board.sideToMove = InvalidArmy;
+        ASSERT_EQ(cg.checkNotationMove("c1=Q"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("cxd1=Q"), InvalidMove);
+    }
+
+
+
+
+
+
 } // namespace cSzd

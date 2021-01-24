@@ -160,8 +160,89 @@ namespace cSzd
                 return chessMove(Pawn, toCell(file, r_2), toCell(file, r_1), InvalidPiece, ppiece);
             }
         }
+        else if (nMove.size() == 6) {
+            // If size of move is 6 it can be a promotion move with capture
+            return promotionMoveWithCaptureNotationEvaluationAndConversion(nMove);
+        }
         return InvalidMove;
     }
+
+
+    ChessMove ChessGame::promotionMoveWithCaptureNotationEvaluationAndConversion(const std::string_view nMove) const
+     {
+        // Format of a promotion move for white:
+        //
+        //   <fs>x<fd>8=<P>   - where:
+        //     <fs> is the starting file (a...h),
+        //     <fd> is the destination file (a...h)
+        //     <P> the promoted piece (one of (Q, R, B, N))
+        // - The 'x' shall be in the 2nd positions
+        // - The '=' shall be in the 5th positions
+        // - side to move shall have a pawn in <fs>7 (we will not check for this, move validity check will do this)
+        // - enemy shall have a piece in <fd>8. We will check for this because we need the piece type
+        //   to compose the move
+        if ((nMove.at(1) != 'x') || (nMove.at(4) != '=')) {
+            // invalid notation move
+            return InvalidMove;
+        }
+        char fileStart_c = nMove.at(0) - 'a';
+        if ((fileStart_c < 0) || (fileStart_c >= 8)) {
+            // invalid file
+            return InvalidMove;
+        }
+        File fileStart = static_cast<File>(fileStart_c);
+        char fileDest_c = nMove.at(2) - 'a';
+        if ((fileDest_c < 0) || (fileDest_c >= 8)) {
+            // invalid file
+            return InvalidMove;
+        }
+        File fileDest = static_cast<File>(fileDest_c);
+        // extract the promoted piece from the 6th character in string
+        char ppiece_c =  nMove.at(5);
+        Piece ppiece = InvalidPiece;
+        switch (ppiece_c) {
+            case 'Q':
+                ppiece = Queen;
+                break;
+            case 'N':
+                ppiece = Knight;
+                break;
+            case 'R':
+                ppiece = Rook;
+                break;
+            case 'B':
+                ppiece = Bishop;
+                break;
+            default:
+                return InvalidMove;
+                break;
+        }
+        ArmyColor opponentColor = (board.sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
+        if  (board.sideToMove == WhiteArmy) {
+            // The destination cell shall be in the 4th position and shall be an 8
+            if (nMove.at(3) != '8') {
+                // invalid notation move
+                return InvalidMove;
+            }
+            // The enemy shall have a piece in toCell(fileDest, 8) (in any case we do not check)
+            Piece cPiece = board.armies[opponentColor].getPieceInCell(toCell(fileDest, r_8));
+            return chessMove(Pawn, toCell(fileStart, r_7), toCell(fileDest, r_8), cPiece, ppiece);
+        }
+        else if  (board.sideToMove == BlackArmy) {
+            // The destination cell shall be in the 4th position and shall be an 1
+            if (nMove.at(3) != '1') {
+                // invalid notation move
+                return InvalidMove;
+            }
+            // The enemy shall have a piece in toCell(fileDest, 8) (in any case we do not check)
+            Piece cPiece = board.armies[opponentColor].getPieceInCell(toCell(fileDest, r_1));
+            return chessMove(Pawn, toCell(fileStart, r_2), toCell(fileDest, r_1), cPiece, ppiece);
+        }
+
+        // If here sideToMove has an incorrect value
+        return InvalidMove;
+     }
+
 
     // -----------------------------------------------------------------
     ChessMove ChessGame::simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const

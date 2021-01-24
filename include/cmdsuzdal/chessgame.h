@@ -76,6 +76,7 @@ namespace cSzd
     private:
         ChessMove castlingMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
         ChessMove promotionMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
+        ChessMove promotionMoveWithCaptureNotationEvaluationAndConversion(const std::string_view nMove) const;
         ChessMove simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
 
     };
