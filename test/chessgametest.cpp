@@ -1017,9 +1017,11 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("cxd1=Q"), InvalidMove);
     }
 
-
-
-
-
+    // Piece Movements
+    TEST(ChessGameTester, NotationToMove_InitialPositionWhiteKnightMovement_Nf3)
+    {
+        ChessGame cg {FENInitialStandardPosition};
+        ASSERT_EQ(cg.checkNotationMove("Nf3"), chessMove(Knight, g1, f3));
+    }
 
 } // namespace cSzd

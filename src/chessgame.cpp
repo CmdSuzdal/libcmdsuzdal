@@ -47,6 +47,9 @@ namespace cSzd
     // performed. If the move is not valid/legal InvalidMove is returned.
     ChessMove ChessGame::checkNotationMove(const std::string_view nMove) const
     {
+        // WARNING: MOVES WITH CHECK SYMBOL AT THE END (+, ++, #)
+        // are currently not supported
+
         ChessMove cm = InvalidMove;
         // Manages empty string
         if (nMove.size() == 0) {
@@ -57,16 +60,19 @@ namespace cSzd
             // This can be an castling move
             cm = castlingMoveNotationEvaluationAndConversion(nMove);
         }
-        else if (nMove.find("=") != std::string::npos) {
-            // Promotion move!
-            cm = promotionMoveNotationEvaluationAndConversion(nMove);
+        else {
+            // If the move starts with 'K', 'Q', 'R', 'B' or 'N'
+            // it is a piece move, otherwise it is a pawn move
+            std::string pieces = "KQRBN";
+            if (pieces.find(nMove.at(0)) != std::string::npos) {
+                // piece move
+                cm = pieceMoveNotationEvaluationAndConversion(nMove);
+            }
+            else {
+                // pawn move
+                cm = pawnMoveNotationEvaluationAndConversion(nMove);
+            }
         }
-        else if (nMove.size() == 2) {
-            // just the destination cell is present, so this is a
-            // simple (no-capture) pawn move.
-            cm = simplePawnMoveNotationEvaluationAndConversion(nMove);
-        }
-
         if (cm != InvalidMove) {
             // Move found: Check for validity (the move shall
             // be in the list of legal moves)
@@ -100,6 +106,31 @@ namespace cSzd
                 return chessMove(King, e8, c8);
             }
         }
+        return InvalidMove;
+    }
+
+    // -----------------------------------------------------------------
+    ChessMove ChessGame::pieceMoveNotationEvaluationAndConversion(const std::string_view nMove) const
+    {
+        return chessMove(Knight, g1, f3);
+    }
+
+    // -----------------------------------------------------------------
+    ChessMove ChessGame::pawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const
+    {
+        if (nMove.size() == 2) {
+            // just the destination cell is present, so this is a
+            // simple (no-capture) pawn move.
+            return simplePawnMoveNotationEvaluationAndConversion(nMove);
+        }
+        else if (nMove.find("=") != std::string::npos) {
+            // Promotion move!
+            return promotionMoveNotationEvaluationAndConversion(nMove);
+        }
+
+        // no promotion pawn move with lenght greater than 2.
+        // This shall be a capture move (e.g. bxc4)
+        // TO BE COMPLETED
         return InvalidMove;
     }
 
