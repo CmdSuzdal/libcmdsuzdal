@@ -127,10 +127,11 @@ namespace cSzd
             // Promotion move!
             return promotionMoveNotationEvaluationAndConversion(nMove);
         }
-
-        // no promotion pawn move with lenght greater than 2.
-        // This shall be a capture move (e.g. bxc4)
-        // TO BE COMPLETED
+        else if (nMove.find("x") != std::string::npos) {
+            // capture (no promotion move)
+            return pawnCaptureNoPromotionMove(nMove);
+        }
+        // cannot understand this pawn move...
         return InvalidMove;
     }
 
@@ -321,6 +322,82 @@ namespace cSzd
             }
         }
         return InvalidMove;
+    }
+
+    ChessMove ChessGame::pawnCaptureNoPromotionMove(const std::string_view nMove) const
+    {
+        // A pawn capture move has the following format:
+        //    <s_f>x<d_f><d_r>    where:
+        //       <s_f>  = start file (a...h)
+        //       <d_f>  = destination file (a...h)
+        //       <d_r>  = destination rank (1...8)
+        //
+        // For example:   exd4, cxb6
+        // The target cell (<d_f><d_r>) shall contain an enemy piece, or
+        // can be an en passant target square. Additionally there are some other
+        // condition for the move to be valid: The appropriate start cell <s_f><s_r>
+        // shall be occupied by a pawn of the Army that is moving. <s_r> can be computed
+        // with the following formula:
+        //    if sideToMove is White  ---> <s_r> = <d_r> - 1
+        //    if sideToMove is Black  ---> <s_r> = <d_r> + 1
+        // The distance between <s_f> and <d_f> shall be 1. For example:
+        //    if <d_f> = c   ---> <s_f> can only be 'b' or 'd'
+        //    if <d_f> = h   ---> <s_f> can only be 'g'
+        //
+        // In any case we perform here only the strictly necessary tests to be sure of
+        // the validity of the string and to get the information necessary to build the
+        // ChessMove. We rely on the final move validity check for final acceptance
+
+        // if the 'x' character is not in the 2nd position, the move is not valid
+        if ((nMove.at(1) != 'x')) {
+            // invalid notation move
+            return InvalidMove;
+        }
+        // Extract start and destination files
+        char fileStart_c = nMove.at(0) - 'a';
+        if ((fileStart_c < 0) || (fileStart_c >= 8)) {
+            // invalid file
+            return InvalidMove;
+        }
+        File fileStart = static_cast<File>(fileStart_c);
+        char fileDest_c = nMove.at(2) - 'a';
+        if ((fileDest_c < 0) || (fileDest_c >= 8)) {
+            // invalid file
+            return InvalidMove;
+        }
+        File fileDest = static_cast<File>(fileDest_c);
+
+        // extract destination rank
+        char rankDest_c = nMove.at(3) - '1';
+        if ((rankDest_c < 0) || (rankDest_c >= 8)) {
+            // invalid rank
+            return InvalidMove;
+        }
+        Rank rankDest = static_cast<Rank>(rankDest_c);
+
+        // Computes start rank and extract captured piece
+        char rankStart_c;
+        ArmyColor opponentColor;
+        if  (board.sideToMove == WhiteArmy) {
+            rankStart_c = rankDest_c - 1;
+            opponentColor = BlackArmy;
+        }
+        else if (board.sideToMove == BlackArmy) {
+            rankStart_c = rankDest_c + 1;
+            opponentColor = WhiteArmy;
+        }
+        if ((rankStart_c < 0) || (rankStart_c >= 8)) {
+            // invalid start rank
+            return InvalidMove;
+        }
+        Rank rankStart = static_cast<Rank>(rankStart_c);
+
+        // Extracts the captured piece. We do not check for correcteness
+        Piece cPiece = board.armies[opponentColor].getPieceInCell(toCell(fileDest, rankDest));
+
+        // We do not check that the start cell contains a Pawn, we rely
+        // we Rely in future checks for move validity
+        return chessMove(Pawn, toCell(fileStart, rankStart), toCell(fileDest, rankDest), cPiece);
     }
 
 } // namespace cSzd

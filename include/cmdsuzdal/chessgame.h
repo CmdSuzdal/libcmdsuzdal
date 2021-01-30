@@ -81,6 +81,7 @@ namespace cSzd
         ChessMove promotionMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
         ChessMove promotionMoveWithCaptureNotationEvaluationAndConversion(const std::string_view nMove) const;
         ChessMove simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
+        ChessMove pawnCaptureNoPromotionMove(const std::string_view nMove) const;
 
     };
     // ---------------------------------------------------
