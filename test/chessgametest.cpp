@@ -1048,6 +1048,55 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("bx_8"), InvalidMove);
     }
 
+    TEST(ChessGameTester, NotationToMove_ConvertWhitePawnMoveWithCaptureComplex)
+    {
+        ChessGame cg {"8/8/k2p2q1/1p1pRP1n/P1B3P1/8/8/6K1 w - - 0 1"};
+        // In this position the following white moves with no capture are possible:
+        ASSERT_EQ(cg.checkNotationMove("a5"), chessMove(Pawn, a4, a5));
+        ASSERT_EQ(cg.checkNotationMove("f6"), chessMove(Pawn, f5, f6));
+        ASSERT_EQ(cg.checkNotationMove("g5"), chessMove(Pawn, g4, g5));
+
+        // and these are the moves with capture:
+        ASSERT_EQ(cg.checkNotationMove("axb5"), chessMove(Pawn, a4, b5, Pawn));
+        ASSERT_EQ(cg.checkNotationMove("fxg6"), chessMove(Pawn, f5, g6, Queen));
+
+        // This move is possible, but invalid (check)
+        ASSERT_EQ(cg.checkNotationMove("gxh5"), InvalidMove);
+
+        // If we change sligtly the position, also the latter move becames valid
+        ChessGame cg1 {"8/8/k2p2q1/1p1pRP1n/P1B3P1/8/7K/8 w - - 0 1"};
+        ASSERT_EQ(cg1.checkNotationMove("a5"), chessMove(Pawn, a4, a5));
+        ASSERT_EQ(cg1.checkNotationMove("f6"), chessMove(Pawn, f5, f6));
+        ASSERT_EQ(cg1.checkNotationMove("g5"), chessMove(Pawn, g4, g5));
+        ASSERT_EQ(cg1.checkNotationMove("axb5"), chessMove(Pawn, a4, b5, Pawn));
+        ASSERT_EQ(cg1.checkNotationMove("fxg6"), chessMove(Pawn, f5, g6, Queen));
+        ASSERT_EQ(cg1.checkNotationMove("gxh5"), chessMove(Pawn, g4, h5, Knight));
+
+    }
+    TEST(ChessGameTester, NotationToMove_ConvertBlackPawnMoveWithCaptureComplex)
+    {
+        ChessGame cg {"8/8/k2p2q1/1p1pRP1n/P1B3P1/8/8/6K1 b - - 0 1"};
+        // In this position the following white moves with no capture are possible:
+        ASSERT_EQ(cg.checkNotationMove("d4"), chessMove(Pawn, d5, d4));
+
+        // and these are the moves with capture:
+        ASSERT_EQ(cg.checkNotationMove("bxc4"), chessMove(Pawn, b5, c4, Bishop));
+        ASSERT_EQ(cg.checkNotationMove("dxe5"), chessMove(Pawn, d6, e5, Rook));
+
+        // This moves are possible, but invalid (check)
+        ASSERT_EQ(cg.checkNotationMove("b4"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("bxa4"), InvalidMove);
+
+        // If we change sligtly the position, also the latter moves becames valid
+        ChessGame cg1 {"8/k7/3p2q1/1p1pRP1n/P1B3P1/8/6K1/8 b - - 0 1"};
+        ASSERT_EQ(cg1.checkNotationMove("d4"), chessMove(Pawn, d5, d4));
+        ASSERT_EQ(cg1.checkNotationMove("bxc4"), chessMove(Pawn, b5, c4, Bishop));
+        ASSERT_EQ(cg1.checkNotationMove("dxe5"), chessMove(Pawn, d6, e5, Rook));
+        ASSERT_EQ(cg1.checkNotationMove("b4"), chessMove(Pawn, b5, b4));
+        ASSERT_EQ(cg1.checkNotationMove("bxa4"), chessMove(Pawn, b5, a4, Pawn));
+    }
+
+
     // For coverage...
     TEST(ChessGameTester, NotationToMove_ConvertSimpleBlackPromotionWithCapture_WhenInvalidArmy)
     {
