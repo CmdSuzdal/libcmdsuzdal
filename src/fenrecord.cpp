@@ -7,21 +7,15 @@ namespace cSzd
 {
 
     // -------------------------------------------------------------
-    FENRecord::FENRecord() : FENRecord(FENInitialStandardPosition) {}
-
-    // -------------------------------------------------------------
-    FENRecord::FENRecord(const std::string_view f)
+    FENRecord::FENRecord(const std::string_view f) : fen { f }
     {
-        if (f != "")
-            loadPosition(f);
-        else
-            loadPosition(FENEmptyChessBoard);
+        loadPosition(f);
     }
 
     // -------------------------------------------------------------
     void FENRecord::loadPosition(const std::string_view f)
     {
-        fen = f;
+        fen = (f != "") ? f : FENEmptyChessBoard;
         activeArmy = InvalidArmy;
         cstlAvail = BitBoard(EmptyBB);
         enPassantCell = BitBoard(EmptyBB);

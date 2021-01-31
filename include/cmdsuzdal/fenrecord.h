@@ -74,8 +74,7 @@ namespace cSzd
         // -------------------------------------------------------------------
 
         // -------------------------
-        explicit FENRecord();
-        explicit FENRecord(const std::string_view f);
+        explicit FENRecord(const std::string_view f = FENInitialStandardPosition);
 
         void loadPosition(const std::string_view f);
 
