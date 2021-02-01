@@ -237,7 +237,8 @@ namespace cSzd
             return chessMove(Pawn, toCell(fileStart, r_2), toCell(fileDest, r_1), cPiece, ppiece);
         }
         // If here sideToMove has an incorrect value
-        return InvalidMove;
+        // We never arrive here because sideToMove is filtered at beginning
+        return InvalidMove; // GCOV_EXCL_LINE
      }
 
     // -----------------------------------------------------------------

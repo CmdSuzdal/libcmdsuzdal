@@ -408,4 +408,53 @@ namespace cSzd
         ASSERT_EQ(toCell("h7\0"), h7);   // is this correct ??
     }
 
+    // prevFile, nextFile, prevRank and nextRank functions testing
+    TEST(BBDEfinsTester, PrevFileComputationTesting)
+    {
+        ASSERT_EQ(prevFile(f_a), InvalidFile);
+        ASSERT_EQ(prevFile(f_b), f_a);
+        ASSERT_EQ(prevFile(f_c), f_b);
+        ASSERT_EQ(prevFile(f_d), f_c);
+        ASSERT_EQ(prevFile(f_e), f_d);
+        ASSERT_EQ(prevFile(f_f), f_e);
+        ASSERT_EQ(prevFile(f_g), f_f);
+        ASSERT_EQ(prevFile(f_h), f_g);
+        ASSERT_EQ(prevFile(InvalidFile), InvalidFile);
+    }
+    TEST(BBDEfinsTester, NextFileComputationTesting)
+    {
+        ASSERT_EQ(nextFile(f_a), f_b);
+        ASSERT_EQ(nextFile(f_b), f_c);
+        ASSERT_EQ(nextFile(f_c), f_d);
+        ASSERT_EQ(nextFile(f_d), f_e);
+        ASSERT_EQ(nextFile(f_e), f_f);
+        ASSERT_EQ(nextFile(f_f), f_g);
+        ASSERT_EQ(nextFile(f_g), f_h);
+        ASSERT_EQ(nextFile(f_h), InvalidFile);
+        ASSERT_EQ(nextFile(InvalidFile), InvalidFile);
+    }
+    TEST(BBDEfinsTester, PrevRankComputationTesting)
+    {
+        ASSERT_EQ(prevRank(r_1), InvalidRank);
+        ASSERT_EQ(prevRank(r_2), r_1);
+        ASSERT_EQ(prevRank(r_3), r_2);
+        ASSERT_EQ(prevRank(r_4), r_3);
+        ASSERT_EQ(prevRank(r_5), r_4);
+        ASSERT_EQ(prevRank(r_6), r_5);
+        ASSERT_EQ(prevRank(r_7), r_6);
+        ASSERT_EQ(prevRank(r_8), r_7);
+        ASSERT_EQ(prevRank(InvalidRank), InvalidRank);
+    }
+    TEST(BBDEfinsTester, NextRankComputationTesting)
+    {
+        ASSERT_EQ(nextRank(r_1), r_2);
+        ASSERT_EQ(nextRank(r_2), r_3);
+        ASSERT_EQ(nextRank(r_3), r_4);
+        ASSERT_EQ(nextRank(r_4), r_5);
+        ASSERT_EQ(nextRank(r_5), r_6);
+        ASSERT_EQ(nextRank(r_6), r_7);
+        ASSERT_EQ(nextRank(r_7), r_8);
+        ASSERT_EQ(nextRank(r_8), InvalidRank);
+        ASSERT_EQ(nextRank(InvalidRank), InvalidRank);
+    }
 }
