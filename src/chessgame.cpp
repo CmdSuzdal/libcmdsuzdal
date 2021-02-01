@@ -115,7 +115,12 @@ namespace cSzd
     // -----------------------------------------------------------------
     ChessMove ChessGame::pieceMoveNotationEvaluationAndConversion(const std::string_view nMove) const
     {
-        return chessMove(Knight, g1, f3);
+        Piece p = toPiece(nMove.at(0));
+        Cell dCell = toCell(nMove.substr(1, 2));
+        if (dCell == c3) {
+            return chessMove(p, b1, c3);
+        }
+        return chessMove(p, g1, f3);
     }
 
     // -----------------------------------------------------------------

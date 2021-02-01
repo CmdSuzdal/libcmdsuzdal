@@ -1112,6 +1112,7 @@ namespace cSzd
     {
         ChessGame cg {FENInitialStandardPosition};
         ASSERT_EQ(cg.checkNotationMove("Nf3"), chessMove(Knight, g1, f3));
+        ASSERT_EQ(cg.checkNotationMove("Nc3"), chessMove(Knight, b1, c3));
     }
 
 } // namespace cSzd
