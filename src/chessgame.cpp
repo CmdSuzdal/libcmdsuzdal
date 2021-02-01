@@ -52,9 +52,12 @@ namespace cSzd
 
         ChessMove cm = InvalidMove;
         // Manages empty string
-        if (nMove.size() == 0) {
+        if (nMove.size() == 0)
             return InvalidMove;
-        }
+
+        // If no side has the move, returns InvalidMove
+        if (board.sideToMove == InvalidArmy)
+            return InvalidMove;
 
         if (nMove.at(0) == '0') {
             // This can be an castling move
@@ -149,43 +152,25 @@ namespace cSzd
                 return InvalidMove;
             }
             // extract the file from the 1st char
-            char file_c = nMove.at(0) - 'a';
-            if ((file_c < 0) || (file_c >= 8)) {
-                // invalid file
+            File file = toFile(nMove.at(0));
+            if (file == InvalidFile)
                 return InvalidMove;
-            }
-            File file = static_cast<File>(file_c);
+
             // extract the promoted piece from the 4th character in string
-            char ppiece_c =  nMove.at(3);
-            Piece ppiece = InvalidPiece;
-            switch (ppiece_c) {
-                case 'Q':
-                    ppiece = Queen;
-                    break;
-                case 'N':
-                    ppiece = Knight;
-                    break;
-                case 'R':
-                    ppiece = Rook;
-                    break;
-                case 'B':
-                    ppiece = Bishop;
-                    break;
-                default:
-                    return InvalidMove;
-                    break;
-            }
+            Piece ppiece = toPiece(nMove.at(3));
+
+            // Checks the destination rank
             if  (board.sideToMove == WhiteArmy) {
-                // The destination cell shall be in the 2nd position and shall be an 8
-                if (nMove.at(1) != '8') {
+                // The destination rank shall be in the 2nd position and shall be an 8
+                if (toRank(nMove.at(1)) != r_8) {
                     // invalid notation move
                     return InvalidMove;
                 }
                 return chessMove(Pawn, toCell(file, r_7), toCell(file, r_8), InvalidPiece, ppiece);
             }
             if  (board.sideToMove == BlackArmy) {
-                // The destination cell shall be in the 2nd position and shall be an 1
-                if (nMove.at(1) != '1') {
+                // The destination rank shall be in the 2nd position and shall be an 1
+                if (toRank(nMove.at(1)) != r_1) {
                     // invalid notation move
                     return InvalidMove;
                 }
@@ -217,42 +202,23 @@ namespace cSzd
             // invalid notation move
             return InvalidMove;
         }
-        char fileStart_c = nMove.at(0) - 'a';
-        if ((fileStart_c < 0) || (fileStart_c >= 8)) {
-            // invalid file
+
+        File fileStart = toFile(nMove.at(0));
+        if (fileStart == InvalidFile)
             return InvalidMove;
-        }
-        File fileStart = static_cast<File>(fileStart_c);
-        char fileDest_c = nMove.at(2) - 'a';
-        if ((fileDest_c < 0) || (fileDest_c >= 8)) {
-            // invalid file
+
+        File fileDest = toFile(nMove.at(2));
+        if (fileDest == InvalidFile)
             return InvalidMove;
-        }
-        File fileDest = static_cast<File>(fileDest_c);
+
         // extract the promoted piece from the 6th character in string
-        char ppiece_c =  nMove.at(5);
-        Piece ppiece = InvalidPiece;
-        switch (ppiece_c) {
-            case 'Q':
-                ppiece = Queen;
-                break;
-            case 'N':
-                ppiece = Knight;
-                break;
-            case 'R':
-                ppiece = Rook;
-                break;
-            case 'B':
-                ppiece = Bishop;
-                break;
-            default:
-                return InvalidMove;
-                break;
-        }
+        Piece ppiece = toPiece(nMove.at(5));
+
+        // Checks the destination rank
         ArmyColor opponentColor = (board.sideToMove == WhiteArmy) ? BlackArmy : WhiteArmy;
         if  (board.sideToMove == WhiteArmy) {
-            // The destination cell shall be in the 4th position and shall be an 8
-            if (nMove.at(3) != '8') {
+            // The destination rank shall be in the 4th position and shall be an 8
+            if (toRank(nMove.at(3)) != r_8) {
                 // invalid notation move
                 return InvalidMove;
             }
@@ -261,8 +227,8 @@ namespace cSzd
             return chessMove(Pawn, toCell(fileStart, r_7), toCell(fileDest, r_8), cPiece, ppiece);
         }
         else if  (board.sideToMove == BlackArmy) {
-            // The destination cell shall be in the 4th position and shall be an 1
-            if (nMove.at(3) != '1') {
+            // The destination rank shall be in the 4th position and shall be an 1
+            if (toRank(nMove.at(3)) != r_1) {
                 // invalid notation move
                 return InvalidMove;
             }
@@ -270,11 +236,9 @@ namespace cSzd
             Piece cPiece = board.armies[opponentColor].getPieceInCell(toCell(fileDest, r_1));
             return chessMove(Pawn, toCell(fileStart, r_2), toCell(fileDest, r_1), cPiece, ppiece);
         }
-
         // If here sideToMove has an incorrect value
         return InvalidMove;
      }
-
 
     // -----------------------------------------------------------------
     ChessMove ChessGame::simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const
@@ -295,12 +259,12 @@ namespace cSzd
         Cell destCell = toCell(nMove);
         if (board.sideToMove == WhiteArmy) {
             if (rank(destCell) > r_2) {
-                Cell startCell = static_cast<Cell>(destCell - 8);
+                Cell startCell = s(destCell);
                 Piece p = board.armies[board.sideToMove].getPieceInCell(startCell);
                 if (p == Pawn)
                     return chessMove(Pawn, startCell, destCell);
                 else if (rank(destCell) == r_4) {
-                    startCell = static_cast<Cell>(destCell - 16);
+                    startCell = s(startCell);
                     p = board.armies[board.sideToMove].getPieceInCell(startCell);
                     if (p == Pawn)
                         return chessMove(Pawn, startCell, destCell);
@@ -309,12 +273,12 @@ namespace cSzd
         }
         else if (board.sideToMove == BlackArmy) {
             if (rank(destCell) < r_7) {
-                Cell startCell = static_cast<Cell>(destCell + 8);
+                Cell startCell = n(destCell);
                 Piece p = board.armies[board.sideToMove].getPieceInCell(startCell);
                 if (p == Pawn)
                     return chessMove(Pawn, startCell, destCell);
                 else if (rank(destCell) == r_5) {
-                    startCell = static_cast<Cell>(destCell + 16);
+                    startCell = n(startCell);
                     p = board.armies[board.sideToMove].getPieceInCell(startCell);
                     if (p == Pawn)
                         return chessMove(Pawn, startCell, destCell);
@@ -354,49 +318,34 @@ namespace cSzd
             return InvalidMove;
         }
         // Extract start and destination files
-        char fileStart_c = nMove.at(0) - 'a';
-        if ((fileStart_c < 0) || (fileStart_c >= 8)) {
-            // invalid file
-            return InvalidMove;
-        }
-        File fileStart = static_cast<File>(fileStart_c);
-        char fileDest_c = nMove.at(2) - 'a';
-        if ((fileDest_c < 0) || (fileDest_c >= 8)) {
-            // invalid file
-            return InvalidMove;
-        }
-        File fileDest = static_cast<File>(fileDest_c);
-
+        File fileStart = toFile(nMove.at(0));
+        File fileDest = toFile(nMove.at(2));
         // extract destination rank
-        char rankDest_c = nMove.at(3) - '1';
-        if ((rankDest_c < 0) || (rankDest_c >= 8)) {
-            // invalid rank
+        Rank rankDest = toRank(nMove.at(3));
+
+        // Checks for correctness
+        if (fileStart == InvalidFile || fileDest == InvalidFile || rankDest == InvalidRank)
             return InvalidMove;
-        }
-        Rank rankDest = static_cast<Rank>(rankDest_c);
 
         // Computes start rank and extract captured piece
-        char rankStart_c;
+        Rank rankStart;
         ArmyColor opponentColor;
         if  (board.sideToMove == WhiteArmy) {
-            rankStart_c = rankDest_c - 1;
+            rankStart = prevRank(rankDest);
             opponentColor = BlackArmy;
         }
         else if (board.sideToMove == BlackArmy) {
-            rankStart_c = rankDest_c + 1;
+            rankStart = nextRank(rankDest);
             opponentColor = WhiteArmy;
         }
-        if ((rankStart_c < 0) || (rankStart_c >= 8)) {
-            // invalid start rank
+        if (rankStart == InvalidRank)
             return InvalidMove;
-        }
-        Rank rankStart = static_cast<Rank>(rankStart_c);
 
         // Extracts the captured piece. We do not check for correcteness
         Piece cPiece = board.armies[opponentColor].getPieceInCell(toCell(fileDest, rankDest));
 
-        // We do not check that the start cell contains a Pawn, we rely
-        // we Rely in future checks for move validity
+        // We do not check that the start cell contains a Pawn
+        // we rely in future checks for move validity
         return chessMove(Pawn, toCell(fileStart, rankStart), toCell(fileDest, rankDest), cPiece);
     }
 

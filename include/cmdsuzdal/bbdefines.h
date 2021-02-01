@@ -260,7 +260,10 @@ namespace cSzd
     File toFile(const char &f);
     Rank toRank(const char &r);
     Cell toCell(const std::string_view c);
-
+    File prevFile(File f);
+    File nextFile(File f);
+    Rank prevRank(Rank r);
+    Rank nextRank(Rank r);
 
 } // namespace cSzd
 

@@ -12,6 +12,7 @@ namespace cSzd
     enum Piece : unsigned int { King = 0, Queen = 1, Bishop = 2,
                  Knight = 3, Rook = 4 , Pawn = 5, InvalidPiece };
 
+    Piece toPiece(const char &c);
 }
 
 #endif // #if !defined CSZD_CHESSDEFINES_HEADER

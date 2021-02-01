@@ -114,4 +114,10 @@ namespace cSzd
         return InvalidCell;
     }
 
+    File prevFile(File f) { return (f > f_a && f <= f_h) ? (static_cast<File>(f - 1)) : InvalidFile; };
+    File nextFile(File f) { return (f < f_h && f >= f_a) ? (static_cast<File>(f + 1)) : InvalidFile; };
+    Rank prevRank(Rank r) { return (r > r_1 && r <= r_8) ? (static_cast<Rank>(r - 1)) : InvalidRank; };
+    Rank nextRank(Rank r) { return (r < r_8 && r >= r_1) ? (static_cast<Rank>(r + 1)) : InvalidRank; };
+
+
 }

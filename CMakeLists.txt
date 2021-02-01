@@ -33,6 +33,7 @@ set(HEADERS
 add_library(cmdsuzdal)
 target_sources(cmdsuzdal PRIVATE
     src/bbdefines.cpp
+    src/chessdefines.cpp
     src/bitboard.cpp
     src/chessmove.cpp
     src/army.cpp
