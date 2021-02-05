@@ -74,14 +74,18 @@ namespace cSzd
         ChessMove checkNotationMove(const std::string_view nMove) const;
 
     private:
+        // Pawn move support methods
         ChessMove castlingMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
         ChessMove pieceMoveNotationEvaluationAndConversion(const std::string_view nMove) const ;
         ChessMove pawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const ;
-
         ChessMove promotionMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
         ChessMove promotionMoveWithCaptureNotationEvaluationAndConversion(const std::string_view nMove) const;
         ChessMove simplePawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
         ChessMove pawnCaptureNoPromotionMove(const std::string_view nMove) const;
+
+        // Pieces move support methods
+        Cell determineStartCell(Piece p, Cell dCell) const;
+
 
     };
     // ---------------------------------------------------

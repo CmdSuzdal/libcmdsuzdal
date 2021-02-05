@@ -115,12 +115,26 @@ namespace cSzd
     // -----------------------------------------------------------------
     ChessMove ChessGame::pieceMoveNotationEvaluationAndConversion(const std::string_view nMove) const
     {
+        // The generic "Simple" tree character Piece
+        // (no capture, no ambiguity) move has the format:
+        //      <Piece><cell>
+        //
+        // where:
+        //      <Piece> = one of K | Q | B | N | R
+        //      <cell>  = the destination cell, e.g. a1, e4, g7, h4
+        //
+        // Examples:
+        //      Nf3
+        //      Bg5
+        //      Rh1
+        //      Qd2
+        //      Kd4
+        //
         Piece p = toPiece(nMove.at(0));
         Cell dCell = toCell(nMove.substr(1, 2));
-        if (dCell == c3) {
-            return chessMove(p, b1, c3);
-        }
-        return chessMove(p, g1, f3);
+        // Try to determine the start cell
+        Cell sCell = determineStartCell(p, dCell);
+        return chessMove(p, sCell, dCell);
     }
 
     // -----------------------------------------------------------------
@@ -353,6 +367,33 @@ namespace cSzd
         // We do not check that the start cell contains a Pawn
         // we rely in future checks for move validity
         return chessMove(Pawn, toCell(fileStart, rankStart), toCell(fileDest, rankDest), cPiece);
+    }
+
+    Cell ChessGame::determineStartCell(Piece p, Cell dCell) const
+    {
+        // Depending on Piece type, select the proper bitboard
+        BitBoard bbToCheck = board.armies[board.sideToMove].pieces[p];
+        // Search the pieces...
+        auto foundPieces = 0;
+        Cell tentativeStartCell = InvalidCell;
+        for (auto startPos = 0; (startPos < 64) && (foundPieces < bbToCheck.popCount()); startPos++) {
+            if (bbToCheck[startPos] != 0) {
+                // piece found in position startPos
+                foundPieces++;
+                // Check if the move is possible
+                if (std::find(possibleMoves.begin(), possibleMoves.end(),
+                        chessMove(p, static_cast<Cell>(startPos), dCell)) != possibleMoves.end()) {
+                    // Move found... if a valid move was still not found,
+                    // this becames the candidate, otherwise there is ambiguity
+                    // and invalid move is returned
+                    if (tentativeStartCell == InvalidCell)
+                        tentativeStartCell = static_cast<Cell>(startPos);
+                    else
+                        return InvalidCell;
+                }
+            }
+        }
+        return tentativeStartCell;
     }
 
 } // namespace cSzd
