@@ -135,11 +135,18 @@ namespace cSzd
         //      Qd2
         //      Kd4
         //
+
+        // A no capture move shall be a length of at least 3
+        if (nMove.size() < 3)
+            return InvalidMove;
+
         Piece p = toPiece(nMove.at(0));
         Cell dCell = toCell(nMove.substr(1, 2));
         // Try to determine the start cell
         Cell sCell = determineStartCell(p, dCell);
-        return chessMove(p, sCell, dCell);
+        if ((p != InvalidPiece) && (sCell != InvalidCell) && (dCell != InvalidCell))
+            return chessMove(p, sCell, dCell);
+        return InvalidMove;
     }
 
     // -----------------------------------------------------------------
@@ -159,13 +166,21 @@ namespace cSzd
         //      Qxd2
         //      Kxd4
         //
+
+        // A capture move shall be a length of at least 4
+        if (nMove.size() < 4)
+            return InvalidMove;
+
         Piece p = toPiece(nMove.at(0));
         Cell dCell = toCell(nMove.substr(2, 3));
         // Try to determine the start cell and the taken piece
         Piece capturedPiece = board.armies[(board.sideToMove == WhiteArmy)
                                             ? BlackArmy : WhiteArmy].getPieceInCell(dCell);
         Cell sCell = determineStartCell(p, dCell, capturedPiece);
-        return chessMove(p, sCell, dCell, capturedPiece);
+        if ((p != InvalidPiece) && (sCell != InvalidCell) && (dCell != InvalidCell)
+                                                          && (capturedPiece != InvalidPiece))
+            return chessMove(p, sCell, dCell, capturedPiece);
+        return InvalidMove;
     }
 
     // -----------------------------------------------------------------
