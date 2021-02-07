@@ -23,11 +23,18 @@ before_script:
   - git submodule update --init --recursive
   - mkdir build
   - cd build
-  - cmake ..
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE_TEST=1 ..
+    else
+      cmake ..
+    fi
 
 script:
   - cmake --build .
 
 after_script:
   - cmake --build . --target test
-
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      cmake --build . --target cmdsuzdal_coverage
+      bash <(curl -s https://codecov.io/bash)
+    fi
