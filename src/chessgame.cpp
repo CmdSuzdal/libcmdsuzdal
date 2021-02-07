@@ -115,6 +115,11 @@ namespace cSzd
     // -----------------------------------------------------------------
     ChessMove ChessGame::pieceMoveNotationEvaluationAndConversion(const std::string_view nMove) const
     {
+        if (nMove.find('x') != std::string::npos) {
+            // capture move
+            return pieceCaptureMoveNotationEvaluationAndConversion(nMove);
+        }
+
         // The generic "Simple" tree character Piece
         // (no capture, no ambiguity) move has the format:
         //      <Piece><cell>
@@ -138,6 +143,28 @@ namespace cSzd
     }
 
     // -----------------------------------------------------------------
+    ChessMove ChessGame::pieceCaptureMoveNotationEvaluationAndConversion(const std::string_view nMove) const
+    {
+        // The generic "Simple" (no ambiguity) capture move of a Piece has the format:
+        //      <Piece>x<cell>
+        //
+        // where:
+        //      <Piece> = one of K | Q | B | N | R
+        //      <cell>  = the destination cell, e.g. a1, e4, g7, h4
+        //
+        // Examples:
+        //      Nxf3
+        //      Bxg5
+        //      Rxh1
+        //      Qxd2
+        //      Kxd4
+        //
+        return chessMove(Rook, e1, b1, Rook);
+    }
+
+
+
+    // -----------------------------------------------------------------
     ChessMove ChessGame::pawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const
     {
         if (nMove.size() == 2) {
@@ -145,11 +172,11 @@ namespace cSzd
             // simple (no-capture) pawn move.
             return simplePawnMoveNotationEvaluationAndConversion(nMove);
         }
-        else if (nMove.find("=") != std::string::npos) {
+        else if (nMove.find('=') != std::string::npos) {
             // Promotion move!
             return promotionMoveNotationEvaluationAndConversion(nMove);
         }
-        else if (nMove.find("x") != std::string::npos) {
+        else if (nMove.find('x') != std::string::npos) {
             // capture (no promotion move)
             return pawnCaptureNoPromotionMove(nMove);
         }

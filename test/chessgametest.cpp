@@ -1196,4 +1196,13 @@ namespace cSzd
         //ASSERT_EQ(cg.checkNotationMove("Rfxd8"), chessMove(Rook, f8, d8, Queen));
     }
 
+    TEST(ChessGameTester, NotationToMove_PiecesCaptureMovements)
+    {
+        ChessGame cg {"4rbk1/p1qn1ppp/b1p1p3/8/P1pPP3/2B1N1P1/2Q2P1P/1r2RBK1 w - - 0 24"};
+        ASSERT_EQ(cg.checkNotationMove("Rxb1"), chessMove(Rook, e1, b1, Rook));
+
+    }
+
+
+
 } // namespace cSzd
