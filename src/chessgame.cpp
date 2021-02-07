@@ -141,11 +141,32 @@ namespace cSzd
             return InvalidMove;
 
         Piece p = toPiece(nMove.at(0));
-        Cell dCell = toCell(nMove.substr(1, 2));
-        // Try to determine the start cell
-        Cell sCell = determineStartCell(p, dCell);
-        if ((p != InvalidPiece) && (sCell != InvalidCell) && (dCell != InvalidCell))
-            return chessMove(p, sCell, dCell);
+        Cell dCell = InvalidCell;
+        Cell sCell = InvalidCell;
+        if (nMove.size() == 3) {
+            dCell = toCell(nMove.substr(1, 2));
+            // Try to determine the start cell
+            sCell = determineStartCell(p, dCell);
+            if ((p != InvalidPiece) && (sCell != InvalidCell) && (dCell != InvalidCell))
+                return chessMove(p, sCell, dCell);
+        }
+        else if (nMove.size() == 4) {
+            // move with disambiguation character (file or rank)
+            dCell = toCell(nMove.substr(2, 3));
+            char disChar = nMove.at(1);
+            File disFile = toFile(disChar);
+            if (disFile != InvalidFile) {
+                // Move with disambiguation file
+                sCell = determineStartCell(p, dCell, InvalidPiece, {disFile, InvalidRank});
+            }
+            Rank disRank = toRank(disChar);
+            if (disRank != InvalidRank) {
+                // Move with disambiguation rank
+                sCell = determineStartCell(p, dCell, InvalidPiece, {InvalidFile, disRank});
+            }
+            if ((p != InvalidPiece) && (sCell != InvalidCell) && (dCell != InvalidCell))
+                return chessMove(p, sCell, dCell);
+        }
         return InvalidMove;
     }
 
@@ -415,7 +436,8 @@ namespace cSzd
         return chessMove(Pawn, toCell(fileStart, rankStart), toCell(fileDest, rankDest), cPiece);
     }
 
-    Cell ChessGame::determineStartCell(Piece p, Cell dCell, Piece capturedPiece) const
+    Cell ChessGame::determineStartCell(Piece p, Cell dCell, Piece capturedPiece,
+                                            std::tuple<File, Rank> suggested) const
     {
         // Depending on Piece type, select the proper bitboard
         BitBoard bbToCheck = board.armies[board.sideToMove].pieces[p];
@@ -429,13 +451,32 @@ namespace cSzd
                 // Check if the move is possible
                 if (std::find(possibleMoves.begin(), possibleMoves.end(),
                         chessMove(p, static_cast<Cell>(startPos), dCell, capturedPiece)) != possibleMoves.end()) {
-                    // Move found... if a valid move was still not found,
+                    // Move found... validate with suggestions
+                    if (std::get<0>(suggested) != InvalidFile) {
+                        // File of the found possible start cell
+                        // shall correspond to the suggested one
+                        if (file(static_cast<Cell>(startPos)) != std::get<0>(suggested)) {
+                            // not good...
+                            continue;
+                        }
+                    }
+                    if (std::get<1>(suggested) != InvalidRank) {
+                        // Rank of the found possible start cell
+                        // shall correspond to the suggested one
+                        if (rank(static_cast<Cell>(startPos)) != std::get<1>(suggested)) {
+                            // not good...
+                            continue;
+                        }
+                    }
+                    // Move really found! If a valid move was still not found,
                     // this becames the candidate, otherwise there is ambiguity
                     // and invalid move is returned
-                    if (tentativeStartCell == InvalidCell)
+                    if (tentativeStartCell == InvalidCell) {
                         tentativeStartCell = static_cast<Cell>(startPos);
-                    else
+                    }
+                    else {
                         return InvalidCell;
+                    }
                 }
             }
         }

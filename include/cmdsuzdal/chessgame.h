@@ -86,7 +86,8 @@ namespace cSzd
         ChessMove pawnCaptureNoPromotionMove(const std::string_view nMove) const;
 
         // Pieces move support methods
-        Cell determineStartCell(Piece p, Cell dCell, Piece capturedPiece = InvalidPiece) const;
+        Cell determineStartCell(Piece p, Cell dCell, Piece capturedPiece = InvalidPiece,
+                        std::tuple<File, Rank> suggested = {InvalidFile, InvalidRank}) const;
 
     };
     // ---------------------------------------------------
