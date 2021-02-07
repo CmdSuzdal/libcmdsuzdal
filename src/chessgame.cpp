@@ -159,10 +159,14 @@ namespace cSzd
         //      Qxd2
         //      Kxd4
         //
-        return chessMove(Rook, e1, b1, Rook);
+        Piece p = toPiece(nMove.at(0));
+        Cell dCell = toCell(nMove.substr(2, 3));
+        // Try to determine the start cell and the taken piece
+        Piece capturedPiece = board.armies[(board.sideToMove == WhiteArmy)
+                                            ? BlackArmy : WhiteArmy].getPieceInCell(dCell);
+        Cell sCell = determineStartCell(p, dCell, capturedPiece);
+        return chessMove(p, sCell, dCell, capturedPiece);
     }
-
-
 
     // -----------------------------------------------------------------
     ChessMove ChessGame::pawnMoveNotationEvaluationAndConversion(const std::string_view nMove) const
@@ -396,7 +400,7 @@ namespace cSzd
         return chessMove(Pawn, toCell(fileStart, rankStart), toCell(fileDest, rankDest), cPiece);
     }
 
-    Cell ChessGame::determineStartCell(Piece p, Cell dCell) const
+    Cell ChessGame::determineStartCell(Piece p, Cell dCell, Piece capturedPiece) const
     {
         // Depending on Piece type, select the proper bitboard
         BitBoard bbToCheck = board.armies[board.sideToMove].pieces[p];
@@ -409,7 +413,7 @@ namespace cSzd
                 foundPieces++;
                 // Check if the move is possible
                 if (std::find(possibleMoves.begin(), possibleMoves.end(),
-                        chessMove(p, static_cast<Cell>(startPos), dCell)) != possibleMoves.end()) {
+                        chessMove(p, static_cast<Cell>(startPos), dCell, capturedPiece)) != possibleMoves.end()) {
                     // Move found... if a valid move was still not found,
                     // this becames the candidate, otherwise there is ambiguity
                     // and invalid move is returned

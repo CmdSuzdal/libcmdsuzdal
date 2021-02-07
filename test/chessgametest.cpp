@@ -1196,12 +1196,40 @@ namespace cSzd
         //ASSERT_EQ(cg.checkNotationMove("Rfxd8"), chessMove(Rook, f8, d8, Queen));
     }
 
-    TEST(ChessGameTester, NotationToMove_PiecesCaptureMovements)
+    TEST(ChessGameTester, NotationToMove_WhiteToMove_PiecesCaptureMovements)
     {
         ChessGame cg {"4rbk1/p1qn1ppp/b1p1p3/8/P1pPP3/2B1N1P1/2Q2P1P/1r2RBK1 w - - 0 24"};
         ASSERT_EQ(cg.checkNotationMove("Rxb1"), chessMove(Rook, e1, b1, Rook));
+        ASSERT_EQ(cg.checkNotationMove("Qxb1"), chessMove(Queen, c2, b1, Rook));
+        ASSERT_EQ(cg.checkNotationMove("Nxc4"), chessMove(Knight, e3, c4, Pawn));
+        ASSERT_EQ(cg.checkNotationMove("Bxc4"), chessMove(Bishop, f1, c4, Pawn));
+
+        // Invalid moves...
+        ASSERT_EQ(cg.checkNotationMove("Qxc4"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Rb1"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qb1"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Nc4"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bc4"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Rb1x"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("xQb1"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qxxb1"), InvalidMove);
 
     }
+
+    TEST(ChessGameTester, NotationToMove_BlackToMove_PiecesCaptureMovements)
+    {
+        ChessGame cg {"5bk1/p4ppp/q3pn2/2p5/P1NPP3/4BPP1/2Q4P/6K1 b - - 1 31"};
+        ASSERT_EQ(cg.checkNotationMove("Qxc4"), chessMove(Queen, a6, c4, Knight));
+        ASSERT_EQ(cg.checkNotationMove("Qxa4"), chessMove(Queen, a6, a4, Pawn));
+        ASSERT_EQ(cg.checkNotationMove("Nxe4"), chessMove(Knight, f6, e4, Pawn));
+
+        // Invalid moves...
+        ASSERT_EQ(cg.checkNotationMove("Qxc2"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qc4"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Kxc4"), InvalidMove);
+    }
+
+
 
 
 
