@@ -24,6 +24,8 @@ before_script:
   - mkdir build
   - cd build
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      pip install -U pip ;
+      sudo pip install gcovr ;
       cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE_TEST=1 .. ;
     else
       cmake .. ;
