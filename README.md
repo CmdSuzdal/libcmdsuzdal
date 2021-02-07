@@ -1,6 +1,7 @@
 # cmdsuzdal
 
 [![Build Status](https://travis-ci.org/fpiantini/cmdsuzdal.svg?branch=main)](https://travis-ci.org/fpiantini/cmdsuzdal)
+[![codecov](https://codecov.io/gh/fpiantini/cmdsuzdal/branch/main/graph/badge.svg?token=O6Y4AK3L9K)](https://codecov.io/gh/fpiantini/cmdsuzdal)
 
 [Commander Suzdal]: a project to build a chess engine in C++ with a TDD approach.
 
@@ -21,7 +22,5 @@ cmake --build .
 ```bash
 ctest -V .
 ```
-
-
 
 [Commander Suzdal]: https://www.fadedpage.com/showbook.php?pid=20170826
