@@ -157,12 +157,14 @@ namespace cSzd
             File disFile = toFile(disChar);
             if (disFile != InvalidFile) {
                 // Move with disambiguation file
-                sCell = determineStartCell(p, dCell, InvalidPiece, {disFile, InvalidRank});
+                sCell = determineStartCell(p, dCell, InvalidPiece,
+                            std::tuple<File, Rank>{disFile, InvalidRank});
             }
             Rank disRank = toRank(disChar);
             if (disRank != InvalidRank) {
                 // Move with disambiguation rank
-                sCell = determineStartCell(p, dCell, InvalidPiece, {InvalidFile, disRank});
+                sCell = determineStartCell(p, dCell, InvalidPiece,
+                            std::tuple<File, Rank>{InvalidFile, disRank});
             }
             if ((p != InvalidPiece) && (sCell != InvalidCell) && (dCell != InvalidCell))
                 return chessMove(p, sCell, dCell);

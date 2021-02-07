@@ -87,7 +87,7 @@ namespace cSzd
 
         // Pieces move support methods
         Cell determineStartCell(Piece p, Cell dCell, Piece capturedPiece = InvalidPiece,
-                        std::tuple<File, Rank> suggested = {InvalidFile, InvalidRank}) const;
+                std::tuple<File, Rank> suggested = std::tuple<File, Rank>{InvalidFile, InvalidRank}) const;
 
     };
     // ---------------------------------------------------
