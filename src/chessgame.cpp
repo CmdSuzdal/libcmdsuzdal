@@ -195,14 +195,41 @@ namespace cSzd
             return InvalidMove;
 
         Piece p = toPiece(nMove.at(0));
-        Cell dCell = toCell(nMove.substr(2, 3));
-        // Try to determine the start cell and the taken piece
-        Piece capturedPiece = board.armies[(board.sideToMove == WhiteArmy)
-                                            ? BlackArmy : WhiteArmy].getPieceInCell(dCell);
-        Cell sCell = determineStartCell(p, dCell, capturedPiece);
-        if ((p != InvalidPiece) && (sCell != InvalidCell) && (dCell != InvalidCell)
-                                                          && (capturedPiece != InvalidPiece))
-            return chessMove(p, sCell, dCell, capturedPiece);
+        Piece capturedPiece = InvalidPiece;
+        Cell dCell = InvalidCell;
+        Cell sCell = InvalidCell;
+        if (nMove.size() == 4) {
+            dCell = toCell(nMove.substr(2, 3));
+            // Try to determine the start cell and the taken piece
+            capturedPiece = board.armies[(board.sideToMove == WhiteArmy)
+                                           ? BlackArmy : WhiteArmy].getPieceInCell(dCell);
+            sCell = determineStartCell(p, dCell, capturedPiece);
+            if ((p != InvalidPiece) && (sCell != InvalidCell) && (dCell != InvalidCell)
+                                                            && (capturedPiece != InvalidPiece))
+                return chessMove(p, sCell, dCell, capturedPiece);
+        }
+        else if (nMove.size() == 5) {
+            dCell = toCell(nMove.substr(3, 4));
+            // Try to determine the start cell and the taken piece
+            capturedPiece = board.armies[(board.sideToMove == WhiteArmy)
+                                           ? BlackArmy : WhiteArmy].getPieceInCell(dCell);
+            char disChar = nMove.at(1);
+            File disFile = toFile(disChar);
+            if (disFile != InvalidFile) {
+                // Move with disambiguation file
+                sCell = determineStartCell(p, dCell, capturedPiece,
+                            std::tuple<File, Rank>{disFile, InvalidRank});
+            }
+            Rank disRank = toRank(disChar);
+            if (disRank != InvalidRank) {
+                // Move with disambiguation rank
+                sCell = determineStartCell(p, dCell, capturedPiece,
+                            std::tuple<File, Rank>{InvalidFile, disRank});
+            }
+            if ((p != InvalidPiece) && (sCell != InvalidCell) &&
+                    (dCell != InvalidCell) && (capturedPiece != InvalidPiece))
+                return chessMove(p, sCell, dCell, capturedPiece);
+        }
         return InvalidMove;
     }
 
@@ -453,6 +480,7 @@ namespace cSzd
                 // Check if the move is possible
                 if (std::find(possibleMoves.begin(), possibleMoves.end(),
                         chessMove(p, static_cast<Cell>(startPos), dCell, capturedPiece)) != possibleMoves.end()) {
+
                     // Move found... validate with suggestions
                     if (std::get<0>(suggested) != InvalidFile) {
                         // File of the found possible start cell
