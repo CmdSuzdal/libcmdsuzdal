@@ -1,6 +1,8 @@
 #if !defined CSZD_CHESSGAME_HEADER
 #define CSZD_CHESSGAME_HEADER
 
+#include <tuple>   // Necessary for C++ antecedent to edition 17
+
 #include "cmdsuzdal/chessboard.h"
 
 namespace cSzd
