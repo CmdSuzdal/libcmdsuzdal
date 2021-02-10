@@ -91,6 +91,8 @@ namespace cSzd
         Cell determineStartCell(Piece p, Cell dCell, Piece capturedPiece = InvalidPiece,
                 std::tuple<File, Rank> suggested = std::tuple<File, Rank>{InvalidFile, InvalidRank}) const;
 
+        static const std::string_view removeAnnotions(const std::string_view nMove);
+
     };
     // ---------------------------------------------------
 

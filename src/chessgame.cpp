@@ -47,9 +47,6 @@ namespace cSzd
     // performed. If the move is not valid/legal InvalidMove is returned.
     ChessMove ChessGame::checkNotationMove(const std::string_view nMove) const
     {
-        // WARNING: MOVES WITH CHECK SYMBOL AT THE END (+, ++, #)
-        // are currently not supported
-
         ChessMove cm = InvalidMove;
         // Manages empty string
         if (nMove.size() == 0)
@@ -59,21 +56,24 @@ namespace cSzd
         if (board.sideToMove == InvalidArmy)
             return InvalidMove;
 
-        if (nMove.at(0) == '0') {
+        // Removes the annotations
+        auto move = removeAnnotions(nMove);
+
+        if (move.at(0) == '0') {
             // This can be an castling move
-            cm = castlingMoveNotationEvaluationAndConversion(nMove);
+            cm = castlingMoveNotationEvaluationAndConversion(move);
         }
         else {
             // If the move starts with 'K', 'Q', 'R', 'B' or 'N'
             // it is a piece move, otherwise it is a pawn move
             std::string pieces = "KQRBN";
-            if (pieces.find(nMove.at(0)) != std::string::npos) {
+            if (pieces.find(move.at(0)) != std::string::npos) {
                 // piece move
-                cm = pieceMoveNotationEvaluationAndConversion(nMove);
+                cm = pieceMoveNotationEvaluationAndConversion(move);
             }
             else {
                 // pawn move
-                cm = pawnMoveNotationEvaluationAndConversion(nMove);
+                cm = pawnMoveNotationEvaluationAndConversion(move);
             }
         }
         if (cm != InvalidMove) {
@@ -428,6 +428,10 @@ namespace cSzd
         // the validity of the string and to get the information necessary to build the
         // ChessMove. We rely on the final move validity check for final acceptance
 
+        // the move shall have a lenght of exactly 4 chars
+        if ((nMove.size() != 4))
+            return InvalidMove;
+
         // if the 'x' character is not in the 2nd position, the move is not valid
         if ((nMove.at(1) != 'x')) {
             // invalid notation move
@@ -511,6 +515,74 @@ namespace cSzd
             }
         }
         return tentativeStartCell;
+    }
+
+    // -------------------------------------------------------------------------
+    const std::string_view ChessGame::removeAnnotions(const std::string_view nMove)
+    {
+        // ANNOTATIONS:
+        //   '+' = check
+        //   '#' = checkmate
+        //   '!' = good move
+        //   '?' = bad move
+        //   '!!' = excellent move
+        //   '??' = blunder
+        //   '!?' = interesting move (that can be questionable)
+        //   '?!' = questionable move (that can be interesting)
+        //
+        // Some annotations can be composed:
+        //
+        //   '+?' '+??' '+?!' '+!' '+!!' '+!?'
+        //
+        // Some other composition does not make sense
+        // but we do not consider them wrong (FOR THE MOMENT):
+        //
+        //   '#?' '#??' '#!' '#!!' '#!?' '#?!'
+        //
+        // These composition are conceptually wrong and should be refused:
+        //   '?+' '!+' '?+?' '??+' '!+!' '!!+' '!+?' '!?+' '?+!' '?!+'
+        //   '?#' '!#' '?#?' '??#' '!#!' '!!#' '!#?' '!?#' '?#!' '?!#'
+        //   '++' '##' '+#' '#+'
+
+        // At the end of the string, there can be the game result:
+        //   '1-0' = win for white
+        //   '0-1' = win for black
+        //   '1/2-1/2' = draw
+        //
+        // Any of the combination that make sense above can be
+        // associated to the game result
+        //
+
+        if (nMove.size() < 3)
+            return nMove;
+
+        int currentPosition = nMove.size() - 1;
+
+        // Removes '!' and '?'
+        int charsRemoved = 0;
+        while ((currentPosition > 1) && (charsRemoved < 2)) {
+            if ((nMove.at(currentPosition) == '!') ||
+                 (nMove.at(currentPosition) == '?')) {
+                --currentPosition;
+                ++charsRemoved;
+            }
+            else
+                break;
+        }
+
+        // Removes '+' and '#'
+        charsRemoved = 0;
+        while ((currentPosition > 1) && (charsRemoved < 1)) {
+            if ((nMove.at(currentPosition) == '+') ||
+                (nMove.at(currentPosition) == '#')) {
+                --currentPosition;
+                ++charsRemoved;
+            }
+            else
+                break;
+        }
+
+        return nMove.substr(0, currentPosition + 1);
     }
 
 } // namespace cSzd
