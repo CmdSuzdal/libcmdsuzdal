@@ -1431,6 +1431,11 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Qg8"), chessMove(Queen, g4, g8));
         ASSERT_EQ(cg.checkNotationMove("Qd7#"), chessMove(Queen, g4, d7));
         ASSERT_EQ(cg.checkNotationMove("Qg8#"), chessMove(Queen, g4, g8));
+
+        // The '+#' and '#+' annotations are invalid and shall be refused
+        ASSERT_EQ(cg.checkNotationMove("Qd7+#"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qg8#+"), InvalidMove);
+
     }
 
     TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_BadMoves)
@@ -1549,7 +1554,5 @@ namespace cSzd
         ASSERT_EQ(cg1.checkNotationMove("Bg4!\?\?!"), InvalidMove);
         ASSERT_EQ(cg1.checkNotationMove("Bg4?!!?"), InvalidMove);
     }
-
-
 
 } // namespace cSzd
