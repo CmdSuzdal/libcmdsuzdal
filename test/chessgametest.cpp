@@ -1393,7 +1393,7 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Nd6xe4"), InvalidMove);
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithDecorations_Checks)
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_Checks)
     {
         ChessGame cg {"3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1"};
 
@@ -1433,7 +1433,7 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Qg8#"), chessMove(Queen, g4, g8));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithDecorations_BadMoves)
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_BadMoves)
     {
         ChessGame cg {"rnb1k2r/pp3ppp/4p3/q2p4/1bPP4/2NB4/PPQN1PPP/R3K2R b KQkq - 0 10"};
 
@@ -1441,14 +1441,23 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("dxc4?"), chessMove(Pawn, d5, c4, Pawn));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithDecorations_GoodMoves)
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_GoodMoves)
     {
         ChessGame cg {"r1b1k2r/pp3ppp/2n1p3/6q1/2NP4/2PB4/P1Q2PPP/R4RK1 w kq - 1 14"};
         ASSERT_EQ(cg.checkNotationMove("f4"), chessMove(Pawn, f2, f4));
         ASSERT_EQ(cg.checkNotationMove("f4!"), chessMove(Pawn, f2, f4));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithDecorations_InterestingAndQuestionableMoves)
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_BrilliantMoves)
+    {
+        // Planinc - Velimirovic , Jugoslavia 1975
+        ChessGame cg {"1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16"};
+        ASSERT_EQ(cg.checkNotationMove("d5"), chessMove(Pawn, d6, d5));
+        ASSERT_EQ(cg.checkNotationMove("d5!"), chessMove(Pawn, d6, d5));
+        ASSERT_EQ(cg.checkNotationMove("d5!!"), chessMove(Pawn, d6, d5));
+    }
+
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_InterestingAndQuestionableMoves)
     {
         ChessGame cg {"rnbqkb1r/pppppppp/5n2/8/4P3/2N5/PPPP1PPP/R1BQKBNR b KQkq - 2 2"};
         ASSERT_EQ(cg.checkNotationMove("e6"), chessMove(Pawn, e7, e6));
@@ -1456,19 +1465,91 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("e6?!"), chessMove(Pawn, e7, e6));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithDecorations_Blunder)
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_Blunder)
     {
         ChessGame cg {"rn1qkb1r/pQ2pppp/1np5/4Nb2/2BP4/4P3/PP3PPP/RNB1K2R b KQkq - 2 8"};
         ASSERT_EQ(cg.checkNotationMove("Bc8??"),   chessMove(Bishop, f5, c8));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithDecorations_CompositeAnnotation)
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_CompositeAnnotation)
     {
         ChessGame cg {"r6r/p4kbp/bq3np1/2pp2B1/6Q1/5N2/PPP2PPP/1R2R1K1 w - - 0 17"};
         ASSERT_EQ(cg.checkNotationMove("Ne5+"),   chessMove(Knight, f3, e5));
         ASSERT_EQ(cg.checkNotationMove("Ne5+?"),  chessMove(Knight, f3, e5));
         ASSERT_EQ(cg.checkNotationMove("Ne5+??"), chessMove(Knight, f3, e5));
     }
+
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_CheckmatesWithAdditionalAnnotations)
+    {
+        // Additional annotation on checkmates are superfluous if not wrong...
+        // but we accect them (for the moment)
+
+        // checkmate (in one...) cannot be a good/brilliant move
+        ChessGame cg {"3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1"};
+        ASSERT_EQ(cg.checkNotationMove("Qd7#!"), chessMove(Queen, g4, d7));
+        ASSERT_EQ(cg.checkNotationMove("Qd7#!!"), chessMove(Queen, g4, d7));
+
+        // A fortiori, Checkmate cannot be a bad move / blunder
+        ASSERT_EQ(cg.checkNotationMove("Qd7#?"), chessMove(Queen, g4, d7));
+        ASSERT_EQ(cg.checkNotationMove("Qd7#??"), chessMove(Queen, g4, d7));
+
+        // Finally, questionable / interesting does not make sense
+        ASSERT_EQ(cg.checkNotationMove("Qd7#!?"), chessMove(Queen, g4, d7));
+        ASSERT_EQ(cg.checkNotationMove("Qd7#?!"), chessMove(Queen, g4, d7));
+    }
+
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_InvalidAnnotations)
+    {
+        ChessGame cg {"r6r/p4kbp/bq3np1/2pp2B1/6Q1/5N2/PPP2PPP/1R2R1K1 w - - 0 17"};
+        ASSERT_EQ(cg.checkNotationMove(""),   InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Ne5?+"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Ne5??+"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Ne5!+"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Ne5!!+"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Ne5?!+"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Ne5!?+"),  InvalidMove);
+
+        ChessGame cgWithMate {"3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1"};
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7!#"),  InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8!#"),  InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7!!#"), InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8!!#"), InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7?#"),  InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8?#"),  InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7??#"), InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8??#"), InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7!?#"), InvalidMove);
+        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8?!#"), InvalidMove);
+    }
+
+    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_OtherInvalidCases)
+    {
+        // Too much '!'
+        ChessGame cg {"1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16"};
+        ASSERT_EQ(cg.checkNotationMove("d5!!!"), InvalidMove);
+
+        // Too much '?'
+        ChessGame cg1 {"1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16"};
+        ASSERT_EQ(cg1.checkNotationMove("Bg4??"), chessMove(Bishop, d7, g4));
+        ASSERT_EQ(cg1.checkNotationMove("Bg4???"), InvalidMove);
+
+        // Too much '?' combined with '!'
+        ASSERT_EQ(cg1.checkNotationMove("Bg4!??"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4?!?"), InvalidMove);
+
+        // Note that '??!' is a trigraph
+        ASSERT_EQ(cg1.checkNotationMove("Bg4\?\?!"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4?!!"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4!?!"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4!!?"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4!!??"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4\?\?!!"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4?!?!"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4!?!?"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4!\?\?!"), InvalidMove);
+        ASSERT_EQ(cg1.checkNotationMove("Bg4?!!?"), InvalidMove);
+    }
+
 
 
 } // namespace cSzd
