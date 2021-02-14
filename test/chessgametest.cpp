@@ -1419,6 +1419,7 @@ namespace cSzd
 
 
         // Checks
+        // We accept also the check move without the check annotation
         ASSERT_EQ(cg.checkNotationMove("Qh4"), chessMove(Queen, g4, h4));
         ASSERT_EQ(cg.checkNotationMove("Qg5"), chessMove(Queen, g4, g5));
         ASSERT_EQ(cg.checkNotationMove("Qc8"), chessMove(Queen, g4, c8));
@@ -1427,10 +1428,15 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Qc8+"), chessMove(Queen, g4, c8));
 
         // Checkmates
+        // We accept also the checkmate move without the checkmate annotation
+        // and we accet also the checkmate with only the check annotation
+        // (questionable...)
         ASSERT_EQ(cg.checkNotationMove("Qd7"), chessMove(Queen, g4, d7));
         ASSERT_EQ(cg.checkNotationMove("Qg8"), chessMove(Queen, g4, g8));
         ASSERT_EQ(cg.checkNotationMove("Qd7#"), chessMove(Queen, g4, d7));
         ASSERT_EQ(cg.checkNotationMove("Qg8#"), chessMove(Queen, g4, g8));
+        ASSERT_EQ(cg.checkNotationMove("Qd7+"), chessMove(Queen, g4, d7));
+        ASSERT_EQ(cg.checkNotationMove("Qg8+"), chessMove(Queen, g4, g8));
 
         // The '+#' and '#+' annotations are invalid and shall be refused
         ASSERT_EQ(cg.checkNotationMove("Qd7+#"), InvalidMove);
@@ -1553,6 +1559,28 @@ namespace cSzd
         ASSERT_EQ(cg1.checkNotationMove("Bg4!?!?"), InvalidMove);
         ASSERT_EQ(cg1.checkNotationMove("Bg4!\?\?!"), InvalidMove);
         ASSERT_EQ(cg1.checkNotationMove("Bg4?!!?"), InvalidMove);
+    }
+
+    TEST(ChessGameTester, DISABLED_NotationToMove_MovesWithAnnotations_RefusesFalseCheckAndCheckMateAnnotations)
+    {
+        ChessGame cg {"1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16"};
+
+        ASSERT_EQ(cg.checkNotationMove("Nxe4"), chessMove(Knight, f6, e4, Pawn));
+        ASSERT_EQ(cg.checkNotationMove("Bxb5"), chessMove(Bishop, d7, b5, Knight));
+        ASSERT_EQ(cg.checkNotationMove("Ra2"), chessMove(Rook, a6, a2));
+        ASSERT_EQ(cg.checkNotationMove("Ra1+"), chessMove(Rook, a6, a1));
+
+        // We refuse 'no check' moves annotated as check or checkmate
+        ASSERT_EQ(cg.checkNotationMove("Nxe4+"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bxb5+"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Ra2+"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Nxe4#"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bxb5#"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Ra2#"),  InvalidMove);
+
+        // No checkmate move annotated as checkmate
+        //ASSERT_EQ(cg.checkNotationMove("Ra1#"), chessMove(Rook, a6, a1));
+
     }
 
 } // namespace cSzd

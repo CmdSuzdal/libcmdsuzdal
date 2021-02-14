@@ -11,10 +11,13 @@ namespace cSzd
     // Chess Move. 32-bits wide bitset with the following format:
     //
     //  bits[0..2]   = the moved piece (0..5, cannot be invalid)
-    //  bits[4..6]   = in case of opposite army piece taken, the taken piece
+    //  bits[3..5]   = in case of opposite army piece taken, the taken piece
     //                 (InvalidPiece if no piece taken)
-    //  bits[8..10]  = in case of promotion, the piece chosen after promotion
+    //  bits[6..8]   = in case of promotion, the piece chosen after promotion
     //                 (InvalidPiece if no promotion)
+    //  bits[9]      = move is a check
+    //  bits[10]     = move is a checkmate
+    //  bits[11]     = not used
     //  bits[12..17] = the start Cell (0...63, cannot be invalid)
     //  bits[18..23] = the destination Cell (0...63, cannot be invalid)
     //  bits[24..30] = the en passant Cell (InvalidCell if no en-passant)
@@ -22,13 +25,15 @@ namespace cSzd
     //
     //  Examples:
     //    - Pawn e2 to e3
-    //      0 1000000 010100 001100 0110 0110 0101 = 0x4050C665
+    //      0 1000000 010100 001100 0001 1011 0101 = 0x4050C1B5
     using ChessMove = std::bitset<32>;
     constexpr ChessMove InvalidMove = 0x80000000;
 
     constexpr unsigned int MovedPieceOffset = 0;
-    constexpr unsigned int TakenPieceOffset = 4;
-    constexpr unsigned int PromotedPieceOffset = 8;
+    constexpr unsigned int TakenPieceOffset = 3;
+    constexpr unsigned int PromotedPieceOffset = 6;
+    constexpr unsigned int CheckFlagOffset = 9;
+    constexpr unsigned int CheckMateFlagOffset = 10;
     constexpr unsigned int StartCellOffset = 12;
     constexpr unsigned int DestinationCellOffset = 18;
     constexpr unsigned int EnPassantCellOffset = 24;
