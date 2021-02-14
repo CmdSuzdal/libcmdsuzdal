@@ -103,6 +103,38 @@ namespace cSzd
         ASSERT_EQ(chessMove(Rook, d7, d5), static_cast<ChessMove>(0x408F31B4));
     }
 
+    // ---- Moves with various type of check & stale conditions -----------
+    TEST(ChessMoveTester, ExampleOfMoveThatCausesACheck)
+    {
+        // Bishop (2 = 010) from a4 (24 = 011000) to c2 (10 = 001010)
+        // with capture of Knight (3 = 011) and check
+        //      0 1000000 001010 011000 001 110 011 010
+        //      0100 0000 0010 1001 1000 0011 1001 1010 = 0x4029839A
+        ASSERT_EQ(chessMove(Bishop, a4, c2, Knight, InvalidPiece, {true, false, false}),
+                        static_cast<ChessMove>(0x4029839A));
+    }
+    TEST(ChessMoveTester, ExampleOfMoveThatCausesACheckMate)
+    {
+        // Queen (1 = 001) from g8 (62 = 111110) to g2 (14 = 001110)
+        // with capture of Knight (3 = 011) and check
+        //      0 1000000 001110 111110 011 110 011 001
+        //      0100 0000 0011 1011 1110 0111 1001 1001 = 0x403BE799
+        ASSERT_EQ(chessMove(Queen, g8, g2, Knight, InvalidPiece, {false, true, false}),
+                        static_cast<ChessMove>(0x403BE799));
+        ASSERT_EQ(chessMove(Queen, g8, g2, Knight, InvalidPiece, {true, true, false}),
+                        static_cast<ChessMove>(0x403BE799));
+    }
+    TEST(ChessMoveTester, ExampleOfMoveThatCausesAStaleMate)
+    {
+        // Queen (1 = 001) from g8 (62 = 111110) to g3 (22 = 010110)
+        // with capture of Bishop (2 = 010) and stalemate
+        //      0 1000000 010110 111110 100 110 010 001
+        //      0100 0000 0101 1011 1110 1001 1001 0001 = 0x405BE991
+        ASSERT_EQ(chessMove(Queen, g8, g3, Bishop, InvalidPiece, {false, false, true}),
+                        static_cast<ChessMove>(0x405BE991));
+    }
+    // --------------------------------------------------------------------
+
     // --- Get sub-elements helpers method testing
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnE2toE4)
     {
@@ -113,6 +145,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), e2);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), e4);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), e3);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnB4toC5TakingAKnight)
     {
@@ -123,6 +158,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), b4);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), c5);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnF7toF8PromotingToQueen)
     {
@@ -133,6 +171,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), f7);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), f8);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_PawnB2toC1TakingABishopPromotingToKnight)
     {
@@ -143,6 +184,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), b2);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), c1);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_RookG3toB3)
     {
@@ -153,6 +197,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), g3);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), b3);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_KnightE4toC5TakingPawn)
     {
@@ -163,6 +210,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), e4);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), c5);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_BishopA3toF8TakingQueen)
     {
@@ -173,6 +223,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), a3);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), f8);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_QueenA6toE2)
     {
@@ -183,6 +236,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), a6);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), e2);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
     TEST(ChessMoveTester, TestThatTheGetElementHelpersWorksGood_KingD5toE4TakingRook)
     {
@@ -193,6 +249,9 @@ namespace cSzd
         ASSERT_EQ(chessMoveGetStartingCell(cm), d5);
         ASSERT_EQ(chessMoveGetDestinationCell(cm), e4);
         ASSERT_EQ(chessMoveGetEnPassantCell(cm), InvalidCell);
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
     }
 
     // --- isACastlingMove() method testing ---
@@ -250,4 +309,31 @@ namespace cSzd
         cm = chessMove(Bishop, f6, a1, Rook);
         ASSERT_FALSE(isACastlingMove(cm));
     }
+
+    // --- Check that check conditions helpers works OK ---
+    TEST(ChessMoveTester, CheckHelpersForChecksConditions_SimpleCheck)
+    {
+        ChessMove cm = chessMove(Queen, b1, g6,
+            InvalidPiece, InvalidPiece, {true, false, false});
+        ASSERT_TRUE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
+    }
+    TEST(ChessMoveTester, CheckHelpersForChecksConditions_CheckMate)
+    {
+        ChessMove cm = chessMove(Rook, b5, b4,
+            Pawn, InvalidPiece, {true, true, false});
+        ASSERT_TRUE(chessMoveIsACheck(cm));
+        ASSERT_TRUE(chessMoveIsACheckMate(cm));
+        ASSERT_FALSE(chessMoveIsAStaleMate(cm));
+    }
+    TEST(ChessMoveTester, CheckHelpersForChecksConditions_StaleMate)
+    {
+        ChessMove cm = chessMove(King, d8, c8,
+            InvalidPiece, InvalidPiece, {false, false, true});
+        ASSERT_FALSE(chessMoveIsACheck(cm));
+        ASSERT_FALSE(chessMoveIsACheckMate(cm));
+        ASSERT_TRUE(chessMoveIsAStaleMate(cm));
+    }
+
 }

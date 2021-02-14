@@ -5,7 +5,8 @@ namespace cSzd
 
     ChessMove chessMove(Piece movedPiece, Cell startCell, Cell destCell,
                         Piece takenPiece,
-                        Piece promotedPiece)
+                        Piece promotedPiece,
+                        const struct CheckCondition &cc)
     {
         // IMPORTANT NOTE: this method does not perform
         // any check in chess move validity. Just accept
@@ -17,6 +18,17 @@ namespace cSzd
         cm |= (promotedPiece & PieceMask) << PromotedPieceOffset;
         cm |= (startCell & ValidCellMask) << StartCellOffset;
         cm |= (destCell & ValidCellMask) << DestinationCellOffset;
+
+        // Evaluates check conditions
+        if (cc.isCheck)
+            cm |= 1 << CheckFlagOffset;
+        if (cc.isMate) {
+            // A mate is also a check
+            cm |= 1 << CheckFlagOffset;
+            cm |= 1 << CheckMateFlagOffset;
+        }
+        if (cc.isStale)
+            cm |= 1 << StaleMateFlagOffset;
 
         // Evaluates en passant
         if (movedPiece == Pawn)
