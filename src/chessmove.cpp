@@ -19,18 +19,16 @@ namespace cSzd
         cm |= (startCell & ValidCellMask) << StartCellOffset;
         cm |= (destCell & ValidCellMask) << DestinationCellOffset;
 
-        // Sets annotation information
-        setAnnotationInfo(cm, cc);
         // Evaluates check conditions
-        //if (cc.isCheck)
-        //    cm |= 1 << CheckFlagOffset;
-        //if (cc.isMate) {
-        //    // A mate is also a check
-        //    cm |= 1 << CheckFlagOffset;
-        //    cm |= 1 << CheckMateFlagOffset;
-        //}
-        //if (cc.isStale)
-        //    cm |= 1 << StaleMateFlagOffset;
+        if (cc.isCheck)
+            cm |= 1 << CheckFlagOffset;
+        if (cc.isMate) {
+            // A mate is also a check
+            cm |= 1 << CheckFlagOffset;
+            cm |= 1 << CheckMateFlagOffset;
+        }
+        if (cc.isStale)
+            cm |= 1 << StaleMateFlagOffset;
 
         // Evaluates en passant
         if (movedPiece == Pawn)
@@ -56,26 +54,6 @@ namespace cSzd
             return static_cast<Cell>(from - 8);
         }
         return InvalidCell;
-    }
-
-    void setAnnotationInfo(ChessMove &cm, const struct CheckCondition &cc) {
-        if (cc.isCheck)
-            cm |= 1 << CheckFlagOffset;
-        else
-            cm &= ~(1 << CheckFlagOffset);
-
-        if (cc.isMate) {
-            cm |= 1 << CheckMateFlagOffset;
-            // If mate, Force check
-            cm |= 1 << CheckFlagOffset;
-        }
-        else
-            cm &= ~(1 << CheckMateFlagOffset);
-
-        if (cc.isStale)
-            cm |= 1 << StaleMateFlagOffset;
-        else
-            cm &= ~(1 << StaleMateFlagOffset);
     }
 
 

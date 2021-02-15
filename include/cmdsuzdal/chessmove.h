@@ -55,11 +55,7 @@ namespace cSzd
                         Piece promotedPiece = InvalidPiece,
                         const struct CheckCondition &cc = {false, false, false});
 
-    void setAnnotationInfo(ChessMove &cm, const struct CheckCondition &cc);
-
     Cell computeEnPassant(Cell from, Cell to);
-    void setAnnotationInfo(ChessMove &cm, const struct CheckCondition &cc);
-
     inline Piece chessMoveGetMovedPiece(ChessMove cm) { return static_cast<Piece>((cm.to_ullong() >> MovedPieceOffset)  & PieceMask); }
     inline Piece chessMoveGetTakenPiece(ChessMove cm) { return static_cast<Piece>((cm.to_ullong() >> TakenPieceOffset)  & PieceMask); }
     inline Piece chessMoveGetPromotedPiece(ChessMove cm) { return static_cast<Piece>((cm.to_ullong() >> PromotedPieceOffset)  & PieceMask); }
