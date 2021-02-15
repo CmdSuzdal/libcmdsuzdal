@@ -17,7 +17,7 @@ namespace cSzd
     //                 (InvalidPiece if no promotion)
     //  bits[9]      = move is a check
     //  bits[10]     = move is a checkmate
-    //  bits[11]     = move is a stalemate
+    //  bits[11]     = not used
     //  bits[12..17] = the start Cell (0...63, cannot be invalid)
     //  bits[18..23] = the destination Cell (0...63, cannot be invalid)
     //  bits[24..30] = the en passant Cell (InvalidCell if no en-passant)
@@ -34,7 +34,6 @@ namespace cSzd
     constexpr unsigned int PromotedPieceOffset = 6;
     constexpr unsigned int CheckFlagOffset = 9;
     constexpr unsigned int CheckMateFlagOffset = 10;
-    constexpr unsigned int StaleMateFlagOffset = 11;
     constexpr unsigned int StartCellOffset = 12;
     constexpr unsigned int DestinationCellOffset = 18;
     constexpr unsigned int EnPassantCellOffset = 24;
@@ -43,18 +42,9 @@ namespace cSzd
     constexpr unsigned int ValidCellMask = 0x003F;
     constexpr unsigned int ValidAndInvalidCellMask = 0x007F;
 
-    struct CheckCondition {
-        bool isCheck;
-        bool isMate;
-        bool isStale;
-    };
-
-
     ChessMove chessMove(Piece movedPiece, Cell startCell, Cell destCell,
                         Piece takenPiece = InvalidPiece,
-                        Piece promotedPiece = InvalidPiece,
-                        const struct CheckCondition &cc = {false, false, false});
-
+                        Piece promotedPiece = InvalidPiece);
     Cell computeEnPassant(Cell from, Cell to);
     inline Piece chessMoveGetMovedPiece(ChessMove cm) { return static_cast<Piece>((cm.to_ullong() >> MovedPieceOffset)  & PieceMask); }
     inline Piece chessMoveGetTakenPiece(ChessMove cm) { return static_cast<Piece>((cm.to_ullong() >> TakenPieceOffset)  & PieceMask); }
@@ -74,11 +64,6 @@ namespace cSzd
             return true;
         return false;
     }
-
-    inline bool chessMoveIsACheck(ChessMove cm) { return static_cast<bool>((cm.to_ullong() >> CheckFlagOffset) & 0x00000001); }
-    inline bool chessMoveIsACheckMate(ChessMove cm) { return static_cast<bool>((cm.to_ullong() >> CheckMateFlagOffset) & 0x00000001); }
-    inline bool chessMoveIsAStaleMate(ChessMove cm) { return static_cast<bool>((cm.to_ullong() >> StaleMateFlagOffset) & 0x00000001); }
-
 }
 
 #endif // #if !defined CSZD_CHESSMOVE_HEADER
