@@ -520,7 +520,7 @@ namespace cSzd
         sideToMove = enemyArmy;
     }
 
-    std::ostream &operator<<(std::ostream &os, const ChessBoard &cb)                    // GCOV_EXCL_START
+    std::ostream &operator<<(std::ostream &os, const ChessBoard &cb)   // LCOV_EXCL_START
     {
         // We want to represent an ChessBoard like a Bitboard, with
         // piece symbols instead of the 'x' in the active cells of there
@@ -586,7 +586,7 @@ namespace cSzd
         os << cb.enPassantTargetSquare << std::endl;
 
         return os;
-    }  // GCOV_EXCL_STOP
+    }  // LCOV_EXCL_STOP
 
     // --------------------------------------------------------------------------------------------------
     // Private methods

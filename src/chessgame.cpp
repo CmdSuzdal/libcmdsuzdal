@@ -353,7 +353,7 @@ namespace cSzd
         }
         // If here sideToMove has an incorrect value
         // We never arrive here because sideToMove is filtered at beginning
-        return InvalidMove; // GCOV_EXCL_LINE
+        return InvalidMove; // LCOV_EXCL_LINE
      }
 
     // -----------------------------------------------------------------
