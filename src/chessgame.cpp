@@ -341,19 +341,17 @@ namespace cSzd
             Piece cPiece = board.armies[opponentColor].getPieceInCell(toCell(fileDest, r_8));
             return chessMove(Pawn, toCell(fileStart, r_7), toCell(fileDest, r_8), cPiece, ppiece);
         }
-        else if  (board.sideToMove == BlackArmy) {
-            // The destination rank shall be in the 4th position and shall be an 1
-            if (toRank(nMove.at(3)) != r_1) {
-                // invalid notation move
-                return InvalidMove;
-            }
-            // The enemy shall have a piece in toCell(fileDest, 8) (in any case we do not check)
-            Piece cPiece = board.armies[opponentColor].getPieceInCell(toCell(fileDest, r_1));
-            return chessMove(Pawn, toCell(fileStart, r_2), toCell(fileDest, r_1), cPiece, ppiece);
+
+        // if here, the sideToMove is Black, because the InvalidArmy case is filtered
+        // at the beginning od the checkNotationMove() function
+        // The destination rank shall be in the 4th position and shall be an 1
+        if (toRank(nMove.at(3)) != r_1) {
+            // invalid notation move
+            return InvalidMove;
         }
-        // If here sideToMove has an incorrect value
-        // We never arrive here because sideToMove is filtered at beginning
-        return InvalidMove; // LCOV_EXCL_LINE
+        // The enemy shall have a piece in toCell(fileDest, 8) (in any case we do not check)
+        Piece cPiece = board.armies[opponentColor].getPieceInCell(toCell(fileDest, r_1));
+        return chessMove(Pawn, toCell(fileStart, r_2), toCell(fileDest, r_1), cPiece, ppiece);
      }
 
     // -----------------------------------------------------------------
