@@ -24,9 +24,9 @@ before_script:
   - mkdir build
   - cd build
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      pip install --upgrade pip ;
-      sudo pip install fastcov ;
-      cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE_TEST=1 .. ;
+      pip install pip ;
+      sudo pip install gcovr ;
+      cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE_TEST=1 -DCOVERAGE_USE_GCOVR=1 .. ;
     else
       cmake .. ;
     fi

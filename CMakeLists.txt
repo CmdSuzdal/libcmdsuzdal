@@ -66,15 +66,25 @@ if (ENABLE_COVERAGE_TEST)
     if(CMAKE_COMPILER_IS_GNUCXX)
         include(CodeCoverage)
         append_coverage_compiler_flags()
-        ###setup_target_for_coverage_gcovr_html(
-        setup_target_for_coverage_fastcov(
-          NAME cmdsuzdal_coverage
-          EXECUTABLE ctest
-          EXCLUDE /usr/include
-                  ${PROJECT_SOURCE_DIR}/test/*
-                  ${CMAKE_CURRENT_BINARY_DIR}/*
-                  ${CMAKE_CURRENT_BINARY_DIR}/googletest-src
-        )
+        if (COVERAGE_USE_GCOVR)
+            setup_target_for_coverage_gcovr_html(
+                NAME cmdsuzdal_coverage
+                EXECUTABLE ctest
+                EXCLUDE /usr/include
+                    ${PROJECT_SOURCE_DIR}/test/*
+                    ${CMAKE_CURRENT_BINARY_DIR}/*
+                    ${CMAKE_CURRENT_BINARY_DIR}/googletest-src
+            )
+        else()
+            setup_target_for_coverage_fastcov(
+                NAME cmdsuzdal_coverage
+                EXECUTABLE ctest
+                EXCLUDE /usr/include
+                    ${PROJECT_SOURCE_DIR}/test/*
+                    ${CMAKE_CURRENT_BINARY_DIR}/*
+                    ${CMAKE_CURRENT_BINARY_DIR}/googletest-src
+            )
+        endif()
     endif()
 endif()
 
