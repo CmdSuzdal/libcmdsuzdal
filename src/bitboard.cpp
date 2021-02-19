@@ -88,7 +88,7 @@ namespace cSzd
             set((bbs >> (npos * 8)) & SouthShiftClearMask[npos - 1]);
     }
 
-    std::ostream &operator<<(std::ostream &os, const BitBoard &bb)    // LCOV_EXCL_START
+    std::ostream &operator<<(std::ostream &os, const BitBoard &bb)
     {
         // We want to represent a BitBoard in the following way:
         //
@@ -116,7 +116,7 @@ namespace cSzd
         }
         os << std::endl << "  a b c d e f g h" << std::endl;
         return os;
-    } // LCOV_EXCL_STOP
+    }
 
     int BitBoard::operator[](int i) const
     {

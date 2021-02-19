@@ -615,4 +615,41 @@ namespace cSzd
         ASSERT_TRUE(bb.isActive(f_h, r_5));
     }
 
+    // Test for the << operator
+    TEST(BBTester, CheckIoStreamOperator_EmptyBitboard)
+    {
+        BitBoard bb;
+        std::ostringstream output;
+        output << bb;
+        ASSERT_EQ(output.str(), "\n"
+                                "  _ _ _ _ _ _ _ _\n"
+                                "8| | | | | | | | |\n"
+                                "7| | | | | | | | |\n"
+                                "6| | | | | | | | |\n"
+                                "5| | | | | | | | |\n"
+                                "4| | | | | | | | |\n"
+                                "3| | | | | | | | |\n"
+                                "2| | | | | | | | |\n"
+                                "1|_|_|_|_|_|_|_|_|\n"
+                                "  a b c d e f g h\n");
+    }
+    TEST(BBTester, CheckIoStreamOperator_TestBitboard)
+    {
+        BitBoard bb ({h1, e2, f2, g2, c3, d4, d6, b7});
+        std::ostringstream output;
+        output << bb;
+        ASSERT_EQ(output.str(), "\n"
+                                "  _ _ _ _ _ _ _ _\n"
+                                "8| | | | | | | | |\n"
+                                "7| |x| | | | | | |\n"
+                                "6| | | |x| | | | |\n"
+                                "5| | | | | | | | |\n"
+                                "4| | | |x| | | | |\n"
+                                "3| | |x| | | | | |\n"
+                                "2| | | | |x|x|x| |\n"
+                                "1|_|_|_|_|_|_|_|x|\n"
+                                "  a b c d e f g h\n");
+    }
+
+
 } // namespace cSzd
