@@ -1069,4 +1069,57 @@ namespace cSzd
         ASSERT_TRUE(a == b);
     }
 
+    // Test for the << operator
+    TEST(ArmyTester, CheckIoStreamOperator_EmptyArmy)
+    {
+        Army a;
+        std::ostringstream output;
+        output << a;
+        ASSERT_EQ(output.str(), "\n"
+                                "  _ _ _ _ _ _ _ _\n"
+                                "8| | | | | | | | |\n"
+                                "7| | | | | | | | |\n"
+                                "6| | | | | | | | |\n"
+                                "5| | | | | | | | |\n"
+                                "4| | | | | | | | |\n"
+                                "3| | | | | | | | |\n"
+                                "2| | | | | | | | |\n"
+                                "1|_|_|_|_|_|_|_|_|\n"
+                                "  a b c d e f g h\n");
+    }
+    TEST(ArmyTester, CheckIoStreamOperator_InitialWhiteArmy)
+    {
+        Army a {WhiteArmy};
+        std::ostringstream output;
+        output << a;
+        ASSERT_EQ(output.str(), "\n"
+                                "  _ _ _ _ _ _ _ _\n"
+                                "8| | | | | | | | |\n"
+                                "7| | | | | | | | |\n"
+                                "6| | | | | | | | |\n"
+                                "5| | | | | | | | |\n"
+                                "4| | | | | | | | |\n"
+                                "3| | | | | | | | |\n"
+                                "2|P|P|P|P|P|P|P|P|\n"
+                                "1|R|N|B|Q|K|B|N|R|\n"
+                                "  a b c d e f g h\n");
+    }
+    TEST(ArmyTester, CheckIoStreamOperator_InitialBlackArmy)
+    {
+        Army a {BlackArmy};
+        std::ostringstream output;
+        output << a;
+        ASSERT_EQ(output.str(), "\n"
+                                "  _ _ _ _ _ _ _ _\n"
+                                "8|r|n|b|q|k|b|n|r|\n"
+                                "7|p|p|p|p|p|p|p|p|\n"
+                                "6| | | | | | | | |\n"
+                                "5| | | | | | | | |\n"
+                                "4| | | | | | | | |\n"
+                                "3| | | | | | | | |\n"
+                                "2| | | | | | | | |\n"
+                                "1|_|_|_|_|_|_|_|_|\n"
+                                "  a b c d e f g h\n");
+    }
+
 } // namespace cSzd

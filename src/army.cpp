@@ -465,7 +465,7 @@ namespace cSzd
         return ((fakeArmy.controlledCellsByPieceType(pType, intfBoard) | occupiedCells()) ^ occupiedCells());
     }
 
-    std::ostream &operator<<(std::ostream &os, const Army &a)           // LCOV_EXCL_START
+    std::ostream &operator<<(std::ostream &os, const Army &a)
     {
         // We want to represent an Army like a Bitboard, with piece symbols
         // instead of the 'x' in the active cells
@@ -536,10 +536,13 @@ namespace cSzd
                     else
                        os << fillchar << '|';
                 }
+                else {
+                    os << fillchar << '|';
+                }
             }
         }
         os << std::endl << "  a b c d e f g h" << std::endl;
         return os;
-    }   // LCOV_EXCL_STOP
+    }
 
 } // namespace cSzd
