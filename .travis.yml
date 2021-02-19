@@ -12,19 +12,19 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-7
-      - g++-7
+      - gcc-9
+      - g++-9
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      export CC=gcc-7 ;
-      export CXX=g++-7 ;
+      export CC=gcc-9 ;
+      export CXX=g++-9 ;
     fi
   - git submodule update --init --recursive
   - mkdir build
   - cd build
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      pip install -U pip ;
+      pip install --upgrade pip ;
       sudo pip install fastcov ;
       cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE_TEST=1 .. ;
     else
@@ -44,3 +44,4 @@ after_success:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       bash <(curl -s https://codecov.io/bash) ;
     fi
+
