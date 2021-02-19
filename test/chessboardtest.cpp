@@ -2624,5 +2624,47 @@ namespace cSzd
         ASSERT_TRUE(std::find(blackMoves.begin(), blackMoves.end(), chessMove(King, e8, d8)) != blackMoves.end());
     }
 
+    // Test for the << operator
+    TEST(ChessBoardTester, CheckIoStreamOperator_EmptyArmy)
+    {
+        ChessBoard cb;
+        std::ostringstream output;
+        std::cout << cb << std::endl;
+        output << cb;
+        ASSERT_EQ(output.str(), "\n"
+                                "  * ChessBoard *\n"
+                                "  _ _ _ _ _ _ _ _\n"
+                                "8|r|n|b|q|k|b|n|r|\n"
+                                "7|p|p|p|p|p|p|p|p|\n"
+                                "6| | | | | | | | |\n"
+                                "5| | | | | | | | |\n"
+                                "4| | | | | | | | |\n"
+                                "3| | | | | | | | |\n"
+                                "2|P|P|P|P|P|P|P|P|\n"
+                                "1|R|N|B|Q|K|B|N|R|\n"
+                                "  a b c d e f g h\n\n"
+                                "  *Castling av.*\n"
+                                "  _ _ _ _ _ _ _ _\n"
+                                "8| | |x| | | |x| |\n"
+                                "7| | | | | | | | |\n"
+                                "6| | | | | | | | |\n"
+                                "5| | | | | | | | |\n"
+                                "4| | | | | | | | |\n"
+                                "3| | | | | | | | |\n"
+                                "2| | | | | | | | |\n"
+                                "1|_|_|x|_|_|_|x|_|\n"
+                                "  a b c d e f g h\n\n"
+                                "  *en-pass. t.s.*\n"
+                                "  _ _ _ _ _ _ _ _\n"
+                                "8| | | | | | | | |\n"
+                                "7| | | | | | | | |\n"
+                                "6| | | | | | | | |\n"
+                                "5| | | | | | | | |\n"
+                                "4| | | | | | | | |\n"
+                                "3| | | | | | | | |\n"
+                                "2| | | | | | | | |\n"
+                                "1|_|_|_|_|_|_|_|_|\n"
+                                "  a b c d e f g h\n\n");
+    }
 
 } // namespace cSzd
