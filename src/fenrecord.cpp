@@ -79,29 +79,29 @@ namespace cSzd
     // If Piece is Invalid (default) the BitBoard of all the pieces of
     // the specified Army is returned, if also the Army is invalid, the
     // BitBoard with all the pieces is returned
-    const BitBoard FENRecord::extractBitBoard(ArmyColor c, Piece p) const
+    const BitBoard FENRecord::extractBitBoard(ArmyColor color, Piece piece) const
     {
         BitBoard bb;
         std::string skipList = "12345678";
         std::string_view pp = piecePlacement();
 
         // Build the list of pieces to search, depending on arguments
-        std::string piecesToSearch = pieceSetFENCharacters(c, p);
+        std::string piecesToSearch = pieceSetFENCharacters(color, piece);
         Cell bbCell = a8;
-        for (auto c: pp) {
-            if (c == '/') {
+        for (auto ch: pp) {
+            if (ch == '/') {
                 // end of rank: restart from previous rank
                 bbCell = static_cast<Cell>(bbCell - 16);
             }
             else {
-                if (piecesToSearch.find(c) != std::string::npos) {
+                if (piecesToSearch.find(ch) != std::string::npos) {
                     // Found a "target" piece: set the position
                     // in the bitboard
                     bb.setCell(bbCell);
                 }
-                else if (skipList.find(c) != std::string::npos) {
+                else if (skipList.find(ch) != std::string::npos) {
                     // found empty cell(s), skip them
-                    bbCell = static_cast<Cell>(bbCell + (c -'1'));
+                    bbCell = static_cast<Cell>(bbCell + (ch -'1'));
                 }
                 bbCell = static_cast<Cell>(bbCell + 1);
             }

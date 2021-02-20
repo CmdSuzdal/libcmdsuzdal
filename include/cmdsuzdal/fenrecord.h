@@ -87,7 +87,7 @@ namespace cSzd
         unsigned int halfMoveClock() const { return hmc; }
         unsigned int fullMoves() const { return fm; }
 
-        const BitBoard extractBitBoard(ArmyColor c = InvalidArmy, Piece p = InvalidPiece) const;
+        const BitBoard extractBitBoard(ArmyColor color = InvalidArmy, Piece piece = InvalidPiece) const;
 
     private:
         static const std::string pieceSetFENCharacters(ArmyColor c, Piece p);
