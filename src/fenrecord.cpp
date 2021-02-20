@@ -55,7 +55,6 @@ namespace cSzd
         // En passant target cell
         ss >> fld;
         if (fld.size() == 2) {
-            // FIXME --- TODO Improve the check!
             enPassantCell.setCell(
                 static_cast<File>(fld[0] - 'a'),
                 static_cast<Rank>(fld[1] - '1'));
@@ -63,12 +62,10 @@ namespace cSzd
 
         // half move clock
         ss >> fld;
-        // FIXME --- TODO --- Check for exceptions
         hmc = std::stoul(fld);;
 
         // full move number
         ss >> fld;
-        // FIXME --- TODO --- Check for exceptions
         fm = std::stoul(fld);;
     }
 

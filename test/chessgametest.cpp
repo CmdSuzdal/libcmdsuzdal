@@ -1570,7 +1570,6 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Ra2"),  chessMove(Rook, a6, a2));
         ASSERT_EQ(cg.checkNotationMove("Ra1+"), chessMove(Rook, a6, a1));
 
-        // --- FIXME ---
         // For the moment, we accept 'no check' moves annotated as check or checkmate
         ASSERT_EQ(cg.checkNotationMove("Nxe4+"), chessMove(Knight, f6, e4, Pawn));
         ASSERT_EQ(cg.checkNotationMove("Bxb5+"), chessMove(Bishop, d7, b5, Knight));
