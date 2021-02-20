@@ -2197,6 +2197,21 @@ namespace cSzd
         ASSERT_EQ(cb.castlingAvailability, BitBoard({c1, g1, g8}));
     }
 
+    // En passant moves...
+    TEST(ChessBoardTester, CheckEnPassantCaptureMove_WhiteExample)
+    {
+        ChessBoard cb{"r1bqkbnr/ppp2ppp/2n1p3/3pP3/8/5N2/PPPP1PPP/RNBQKB1R w KQkq d6 0 4"};
+        ASSERT_EQ(cb.enPassantTargetSquare, BitBoard(d6));
+        cb.doMove(chessMove(Pawn, e5, d6, Pawn));
+        ASSERT_EQ(cb, ChessBoard("r1bqkbnr/ppp2ppp/2nPp3/8/8/5N2/PPPP1PPP/RNBQKB1R b KQkq - 0 4"));
+    }
+    TEST(ChessBoardTester, CheckEnPassantCaptureMove_BlackExample)
+    {
+        ChessBoard cb{"rnbqkbnr/pp1ppppp/8/8/1Pp5/5NP1/P1PPPP1P/RNBQKB1R b KQkq b3 0 3"};
+        ASSERT_EQ(cb.enPassantTargetSquare, BitBoard(b3));
+        cb.doMove(chessMove(Pawn, c4, b3, Pawn));
+        ASSERT_EQ(cb, ChessBoard("rnbqkbnr/pp1ppppp/8/8/8/1p3NP1/P1PPPP1P/RNBQKB1R w KQkq - 0 4"));
+    }
 
     // -----------------------------------------------------------------------------
     // generateLegalMoves(): check for castling moves
@@ -2629,7 +2644,6 @@ namespace cSzd
     {
         ChessBoard cb;
         std::ostringstream output;
-        std::cout << cb << std::endl;
         output << cb;
         ASSERT_EQ(output.str(), "\n"
                                 "  * ChessBoard *\n"

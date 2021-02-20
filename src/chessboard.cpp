@@ -423,6 +423,26 @@ namespace cSzd
         Cell startCell = chessMoveGetStartingCell(m);
         Cell destCell = chessMoveGetDestinationCell(m);
 
+        // Try to determine the cell of the captured piece. This is normally
+        // the destination cell, EXCEPT in the case of en-passant capture
+        Cell capturedPieceCell = destCell;
+        if (movedPiece == Pawn && takenPiece == Pawn) {
+            if (! armies[enemyArmy].pieces[Pawn].isActive(destCell)) {
+                // No pawn in the target square, so the only possibility
+                // is that this is an en-passant capture.
+                // Remember that this function does not perform any check
+                // of move validity, so we blindly assume that if the piece
+                // is not in target square, this shall be an en-passant
+                // capture move
+                if (sideToMove == WhiteArmy) {
+                    capturedPieceCell = toCell(file(destCell), r_5);
+                }
+                else {   // black army
+                    capturedPieceCell = toCell(file(destCell), r_4);
+                }
+            }
+        }
+
         // Check if it is a castling move and in such a case move the rook
         // (the king will be moved by the "normal move" code below).
         // Additionally, the castlingAvailability bitboard is updated
@@ -457,8 +477,7 @@ namespace cSzd
             BitBoard({startCell, destCell});
         if (takenPiece != InvalidPiece) {
             // remove the taken piece from the opposite army
-            // FIXME --- TO BE COMPLETED --- manage en-passant capture!
-            armies[enemyArmy].pieces[takenPiece] ^= BitBoard(destCell);
+            armies[enemyArmy].pieces[takenPiece] ^= BitBoard(capturedPieceCell);
         }
         // If we move a Pawn or we capture a piece, reset half move counter,
         // otherwise increases it
