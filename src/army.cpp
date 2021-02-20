@@ -27,7 +27,6 @@ namespace cSzd
                 break;
             default:
                 // invalid army.... init empty
-                // FIXME: maybe an exception shall be generated?
                 break;
         }
     }
@@ -167,7 +166,6 @@ namespace cSzd
             if (pieces[Knight][ndx] != 0) {
                 // knight in position ndx
                 foundCells++;
-                // FIXME --- This can be do probably better using the BitBoard shift functions
                 Cell c = static_cast<const Cell>(ndx);
                 bb |= BitBoard({calcCellAfterSteps(c,  2,  1),
                                 calcCellAfterSteps(c,  1,  2),
