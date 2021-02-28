@@ -1,7 +1,6 @@
 #if !defined CSZD_CHESSMOVE_HEADER
 #define CSZD_CHESSMOVE_HEADER
 
-#include <bitset>
 #include "cmdsuzdal/bbdefines.h"
 #include "cmdsuzdal/chessdefines.h"
 

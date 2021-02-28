@@ -177,7 +177,6 @@ namespace cSzd
     // center of board can be defined with the intersection of files d,e and ranks 4,5
     const BitBoardState BoardCenterBB = (RanksBB[r_4] | RanksBB[r_5]) &
                                           (FilesBB[f_d] | FilesBB[f_e]);
-    //constexpr BitBoardState BoardCenterBB  { 0x0000001818000000ULL };
 
     // West shift clear matrix
     const BitBoardState WestShiftClearMask[]{

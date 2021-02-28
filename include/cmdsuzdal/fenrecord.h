@@ -4,7 +4,8 @@
 #include <string>
 #include <string_view>
 
-#include "cmdsuzdal/army.h"
+#include "cmdsuzdal/bitboard.h"
+#include "cmdsuzdal/chessdefines.h"
 
 // From Wikipedia (https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation):
 // Forsyth–Edwards Notation (FEN) is a standard notation for describing a particular board
