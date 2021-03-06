@@ -27,4 +27,12 @@ namespace cSzd
         ASSERT_EQ(rEng.move(ChessBoard("8/8/2P5/2b5/8/6k1/8/7K w - - 0 1")), chessMove(Pawn, c6, c7));
     }
 
+    TEST_F(ARandomEngine, GenerateInvalidMoveInEmptyChessBoard)
+    {
+        ChessBoard cb {FENEmptyChessBoard};
+        std::vector<ChessMove> moves;
+        cb.generateLegalMoves(moves);
+        ASSERT_EQ(rEng.move(cb), InvalidMove);
+    }
+
 }   // namespace cSzd
