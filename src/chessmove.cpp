@@ -44,5 +44,22 @@ namespace cSzd
         return InvalidCell;
     }
 
+    std::ostream &printChessMove(std::ostream &os, const ChessMove &cm)
+    {
+        Piece pMoved = chessMoveGetMovedPiece(cm);
+        Piece pTaken = chessMoveGetTakenPiece(cm);
+        Piece pPromoted = chessMoveGetPromotedPiece(cm);
+        Cell startCell = chessMoveGetStartingCell(cm);
+        Cell destCell = chessMoveGetDestinationCell(cm);
+
+        os << pieceName(pMoved) << " " << cellName(startCell) << "-" << cellName(destCell);
+        if (pTaken != InvalidPiece) {
+            os << " x " << pieceName(pTaken);
+        }
+        if (pPromoted != InvalidPiece) {
+            os << " = " << pieceName(pPromoted);
+        }
+        return os;
+    }
 
 }

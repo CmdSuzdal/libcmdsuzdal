@@ -1,6 +1,8 @@
 #if !defined CSZD_CHESSMOVE_HEADER
 #define CSZD_CHESSMOVE_HEADER
 
+#include <iostream>
+
 #include "cmdsuzdal/bbdefines.h"
 #include "cmdsuzdal/chessdefines.h"
 
@@ -63,6 +65,9 @@ namespace cSzd
             return true;
         return false;
     }
+
+    std::ostream &printChessMove(std::ostream &os, const ChessMove &cm);
+
 }
 
 #endif // #if !defined CSZD_CHESSMOVE_HEADER

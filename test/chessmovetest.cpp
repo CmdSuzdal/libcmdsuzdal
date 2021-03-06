@@ -250,4 +250,24 @@ namespace cSzd
         cm = chessMove(Bishop, f6, a1, Rook);
         ASSERT_FALSE(isACastlingMove(cm));
     }
+
+    // Test print function
+    TEST(ChessMoveTester, TestPrintFunction)
+    {
+        std::ostringstream os;
+        printChessMove(os, chessMove(King, e1, d1));
+        ASSERT_EQ(os.str(), "King e1-d1");
+
+        os.str(std::string());
+        printChessMove(os, chessMove(Queen, d1, d5, Bishop));
+        ASSERT_EQ(os.str(), "Queen d1-d5 x Bishop");
+
+        os.str(std::string());
+        printChessMove(os, chessMove(Pawn, e7, e8, InvalidPiece, Queen));
+        ASSERT_EQ(os.str(), "Pawn e7-e8 = Queen");
+
+        os.str(std::string());
+        printChessMove(os, chessMove(Pawn, g2, h1, Rook, Knight));
+        ASSERT_EQ(os.str(), "Pawn g2-h1 x Rook = Knight");
+    }
 }
