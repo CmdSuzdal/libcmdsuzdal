@@ -6,8 +6,6 @@
 using namespace std;
 using namespace testing;
 
-#include "cmdsuzdal/fenrecord.h"
-
 namespace cSzd
 {
     constexpr std::string_view FENExampleE97Position
