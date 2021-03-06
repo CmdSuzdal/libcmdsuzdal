@@ -10,7 +10,9 @@ namespace cSzd
     class ARandomEngine: public Test {
         public:
             RandomEngine rEng;
-    };
+            static int fakeRandomizerFirstMove(int n) { return 0; }
+            static int fakeRandomizerLastMove(int n) { return n-1; }
+        };
 
     TEST_F(ARandomEngine, GenerateInvalidMoveInStaleMatePosition)
     {
@@ -30,9 +32,23 @@ namespace cSzd
     TEST_F(ARandomEngine, GenerateInvalidMoveInEmptyChessBoard)
     {
         ChessBoard cb {FENEmptyChessBoard};
-        std::vector<ChessMove> moves;
-        cb.generateLegalMoves(moves);
         ASSERT_EQ(rEng.move(cb), InvalidMove);
+    }
+
+    TEST_F(ARandomEngine, GenerateARandomMoveInInitialChessBoardFirstWhiteMove)
+    {
+        ChessBoard cb {};
+        // To perform the test, we use the fake randomizer that returns always the first move
+        rEng.setRandomizer(fakeRandomizerFirstMove);
+        ASSERT_EQ(rEng.move(cb), chessMove(Knight, b1, a3));
+    }
+    TEST_F(ARandomEngine, GenerateARandomMoveInInitialChessBoardFirstBlackMove)
+    {
+        ChessBoard cb {};
+        cb.doMove(chessMove(Pawn, e2, e4));
+        // To perform the test, we use the fake randomizer that returns always the last move
+        rEng.setRandomizer(fakeRandomizerLastMove);
+        ASSERT_EQ(rEng.move(cb), chessMove(Knight, g8, h6));
     }
 
 }   // namespace cSzd
