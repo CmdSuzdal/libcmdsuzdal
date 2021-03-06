@@ -520,6 +520,16 @@ namespace cSzd
 
     // ---------------- generateLegalMoves() testing -------------------------
 
+    // Empty chessboard
+    TEST(ChessBoardTester, NoLegalMovesIfChessBoardIsEmpty)
+    {
+        ChessBoard cb {FENEmptyChessBoard};
+        std::vector<ChessMove> moves;
+        cb.generateLegalMoves(moves);
+        ASSERT_EQ(moves.size(), 0);
+    }
+
+
     // --- KING ---
     TEST(ChessBoardTester, CheckLegalMovesOfKingsInE5AndA1WithNoInterference)
     {

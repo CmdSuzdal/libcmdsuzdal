@@ -63,9 +63,9 @@ namespace cSzd
     // -----------------------------------------------------------------
     bool ChessBoard::isCheckMate() const
     {
-        // If the army with the move is in check and there are no valid moves,
-        // this is checkmate
-        if (armyInCheck() == sideToMove) {
+        // If the army with the move is valid and it in check
+        // and there are no valid moves, this is checkmate
+        if (armyInCheck() == sideToMove && sideToMove != InvalidArmy) {
             std::vector<ChessMove> moves;
             generateLegalMoves(moves);
             if (moves.size() == 0)
@@ -76,9 +76,9 @@ namespace cSzd
     // -----------------------------------------------------------------
     bool ChessBoard::isStaleMate() const
     {
-        // If the army with the move is NOT in check and there are
-        // no valid moves, this is stalemate
-        if (armyInCheck() == InvalidArmy) {
+        // If the army with the move is valid and NOT in check
+        // and there are no valid moves, this is stalemate
+        if (armyInCheck() == InvalidArmy && sideToMove != InvalidArmy) {
             std::vector<ChessMove> moves;
             generateLegalMoves(moves);
             if (moves.size() == 0)
@@ -226,6 +226,10 @@ namespace cSzd
 
         // Clear the vector of moves
         moves.clear();
+
+        // If side to move is not valid (White or Black), returns nothing
+        if ((sideToMove != WhiteArmy) && (sideToMove != BlackArmy))
+            return;
 
         // Search for moves...
         for (auto startPos = 0; (startPos < 64) && (foundPieces < bbToCheck.popCount()); startPos++) {
