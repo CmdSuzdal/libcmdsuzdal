@@ -119,5 +119,12 @@ namespace cSzd
     Rank prevRank(Rank r) { return (r > r_1 && r <= r_8) ? (static_cast<Rank>(r - 1)) : InvalidRank; };
     Rank nextRank(Rank r) { return (r < r_8 && r >= r_1) ? (static_cast<Rank>(r + 1)) : InvalidRank; };
 
+    std::string cellName(const Cell &c)
+    {
+        std::string s;
+        s += 'a' + file(c);
+        s += '1' + rank(c);
+        return s;
+    }
 
 }

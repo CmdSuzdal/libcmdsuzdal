@@ -13,6 +13,7 @@ namespace cSzd
                  Knight = 3, Rook = 4 , Pawn = 5, InvalidPiece };
 
     Piece toPiece(const char &c);
+    std::string pieceName(Piece p);
 }
 
 #endif // #if !defined CSZD_CHESSDEFINES_HEADER

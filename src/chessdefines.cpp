@@ -2,6 +2,9 @@
 
 namespace cSzd
 {
+    const static std::string pieceNames[] = {"King", "Queen", "Bishop",
+                                 "Knight", "Rook", "Pawn", "InvalidPiece"};
+
     Piece toPiece(const char &c)
     {
         Piece p = InvalidPiece;
@@ -25,6 +28,11 @@ namespace cSzd
                 break;
         }
         return p;
+    }
+
+    std::string pieceName(Piece p)
+    {
+        return pieceNames[p];
     }
 
 } // namespace cSzd

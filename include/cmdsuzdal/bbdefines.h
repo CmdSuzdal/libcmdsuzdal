@@ -264,6 +264,8 @@ namespace cSzd
     Rank prevRank(Rank r);
     Rank nextRank(Rank r);
 
+    std::string cellName(const Cell &c);
+
 } // namespace cSzd
 
 #endif // if !defined CSZD_BBDEFINES_HEADER
