@@ -22,6 +22,8 @@ set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/fenrecord.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessboard.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessgame.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessengine.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/randomengine.h
 )
 
 # ---------------------------------------------------------------
@@ -40,6 +42,7 @@ target_sources(cmdsuzdal PRIVATE
     src/fenrecord.cpp
     src/chessboard.cpp
     src/chessgame.cpp
+    src/randomengine.cpp
 )
 
 # ------------------------------------------------------------------

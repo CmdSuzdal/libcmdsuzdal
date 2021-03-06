@@ -15,6 +15,7 @@ add_executable(testcmdsuzdal
     fenrecordtest.cpp
     chessboardtest.cpp
     chessgametest.cpp
+    randomenginetest.cpp
 )
 
 # includes the base project includes
