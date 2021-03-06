@@ -269,5 +269,9 @@ namespace cSzd
         os.str(std::string());
         printChessMove(os, chessMove(Pawn, g2, h1, Rook, Knight));
         ASSERT_EQ(os.str(), "Pawn g2-h1 x Rook = Knight");
+
+        os.str(std::string());
+        printChessMove(os, InvalidMove);
+        ASSERT_EQ(os.str(), "InvalidMove");
     }
 }
