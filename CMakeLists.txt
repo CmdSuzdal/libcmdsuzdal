@@ -1,8 +1,16 @@
+# ***************************************************************
+# CMakeLists.txt file for the Commander Suzdal Library
+#
 cmake_minimum_required(VERSION 3.8)
 
 # ***************************************************************
-project(cmdsuzdal VERSION 0.0.1)
+set(CTGT cmdsuzdal)
+project(lib${CTGT} VERSION 1.0.0)
 # ***************************************************************
+
+option(ENABLE_COVERAGE_TEST "Enable test coverage computation" ON)
+# Disable by default the installation of the Google test headers and libraries
+option(INSTALL_GTEST "Enable installation of Gtest" OFF)
 
 # This is necessary to use cmake_addons. It is assumed that
 # cmake_addons component is placed in the base directory of the
@@ -14,16 +22,16 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
 
 # ---------------------------------------------------------------
 set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/bbdefines.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/bitboard.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessdefines.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessmove.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/army.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/fenrecord.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessboard.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessgame.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/chessengine.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/cmdsuzdal/randomengine.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/bbdefines.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/bitboard.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/chessdefines.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/chessmove.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/army.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/fenrecord.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/chessboard.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/chessgame.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/chessengine.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/${CTGT}/randomengine.h
 )
 
 # ---------------------------------------------------------------
@@ -32,8 +40,8 @@ set(HEADERS
 # 4.6, we avoid to use the keyword here. The type of library built
 # can be specified at configuration time using the BUILD_SHARED_LIBS
 # variable (e.g. -DBUILD_SHARED_LIBS=YES)
-add_library(cmdsuzdal)
-target_sources(cmdsuzdal PRIVATE
+add_library(${CTGT})
+target_sources(${CTGT} PRIVATE
     src/bbdefines.cpp
     src/chessdefines.cpp
     src/bitboard.cpp
@@ -46,7 +54,7 @@ target_sources(cmdsuzdal PRIVATE
 )
 
 # ------------------------------------------------------------------
-target_include_directories(cmdsuzdal
+target_include_directories(${CTGT}
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -55,23 +63,32 @@ target_include_directories(cmdsuzdal
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_compile_options(cmdsuzdal PRIVATE -Werror)
-target_compile_features(cmdsuzdal PRIVATE cxx_std_17)
+target_compile_options(${CTGT} PRIVATE -Werror)
+target_compile_features(${CTGT} PRIVATE cxx_std_17)
 
 # ------------------------------------------------------------------
 # Installation
-install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/cmdsuzdal)
-install(TARGETS cmdsuzdal EXPORT cmdsuzdal_export DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-install(EXPORT cmdsuzdal_export FILE cmdsuzdal-config.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(FILES ${HEADERS}
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${CTGT})
+
+install(TARGETS ${CTGT}
+        EXPORT ${PROJECT_NAME}_export
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+
+install(EXPORT ${PROJECT_NAME}_export
+        FILE ${CTGT}-config.cmake
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 # ------------------------------------------------------------------
 if (ENABLE_COVERAGE_TEST)
     if(CMAKE_COMPILER_IS_GNUCXX)
+        set(CMAKE_BUILD_TYPE Debug)
+        message(STATUS "Forcing CMAKE_BUILD_TYPE to debug (test coverage computation is enabled)")
         include(CodeCoverage)
         append_coverage_compiler_flags()
         if (COVERAGE_USE_GCOVR)
             setup_target_for_coverage_gcovr_html(
-                NAME cmdsuzdal_coverage
+                NAME ${PROJECT_NAME}_coverage
                 EXECUTABLE ctest
                 EXCLUDE /usr/include
                     ${PROJECT_SOURCE_DIR}/test/*
@@ -80,7 +97,7 @@ if (ENABLE_COVERAGE_TEST)
             )
         else()
             setup_target_for_coverage_fastcov(
-                NAME cmdsuzdal_coverage
+                NAME ${PROJECT_NAME}_coverage
                 EXECUTABLE ctest
                 EXCLUDE /usr/include
                     ${PROJECT_SOURCE_DIR}/test/*
@@ -93,4 +110,3 @@ endif()
 
 enable_testing()
 add_subdirectory(test)
-
