@@ -38,10 +38,6 @@ after_script:
   - cmake --build . --target test
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       cmake --build . --target libcmdsuzdal_coverage ;
-    fi
-
-after_success:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       bash <(curl -s https://codecov.io/bash) ;
     fi
 
