@@ -8,7 +8,8 @@ set(CTGT cmdsuzdal)
 project(lib${CTGT} VERSION 1.0.0)
 # ***************************************************************
 
-option(ENABLE_COVERAGE_TEST "Enable test coverage computation" ON)
+option(ENABLE_COVERAGE_TEST "Enable test coverage computation" OFF)
+option(COVERAGE_USE_GCOVR "Use gcovr for test coverage computation" OFF)
 # Disable by default the installation of the Google test headers and libraries
 option(INSTALL_GTEST "Enable installation of Gtest" OFF)
 
