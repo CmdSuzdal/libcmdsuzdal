@@ -1,10 +1,8 @@
 # cmdsuzdal library
 
-[![Build Status](https://travis-ci.org/fpiantini/cmdsuzdal.svg?branch=main)](https://travis-ci.org/fpiantini/cmdsuzdal)
-[![codecov](https://codecov.io/gh/fpiantini/cmdsuzdal/branch/main/graph/badge.svg?token=O6Y4AK3L9K)](https://codecov.io/gh/fpiantini/cmdsuzdal)
-[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/fpiantini/cmdsuzdal.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fpiantini/cmdsuzdal/context:cpp)
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg?style=rounded)](http://makeapullrequest.com)
+[![Build Status](https://travis-ci.org/CmdSuzdal/libcmdsuzdal.svg?branch=main)](https://travis-ci.org/CmdSuzdal/libcmdsuzdal)
+[![codecov](https://codecov.io/gh/CmdSuzdal/libcmdsuzdal/branch/main/graph/badge.svg?token=GBBPR7YIUX)](https://codecov.io/gh/CmdSuzdal/libcmdsuzdal)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/CmdSuzdal/libcmdsuzdal.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/CmdSuzdal/libcmdsuzdal/alerts/)
 
 
 [Commander Suzdal] library: a C++ library to support the development of chess related software (e.g. Engines).
