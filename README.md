@@ -16,7 +16,7 @@ Command Line (basic) instructions:
 First of all, clone and build the project:
 
 ```bash
-git clone --recurse-submodules https://github.com/fpiantini/cmdsuzdal.git
+git clone --recurse-submodules https://github.com/CmdSuzdal/libcmdsuzdal.git
 mkdir build
 cd build
 cmake [cmake_options] ../cmdsuzdal
@@ -27,7 +27,13 @@ Possible `cmake_options`:
 
  - `-G <Generator>`: the generator to use to build the project. Suggested generator: [Ninja].
  - `-DCMAKE_INSTALL_PREFIX=<installation_directory>`: specify the installation directory for the `install` target
-- `-DENABLE_COVERAGE_TEST=OFF`: to disable test coverage computation
+- `-DENABLE_COVERAGE_TEST=ON`: to enable test coverage computation
+
+Example:
+```bash
+cmake -G Ninja -DCMAKE_INSTALL_PREFIX=../_INSTALL_ -DENABLE_COVERAGE_TEST=ON ../libcmdsuzdal
+```
+
 
 Execute tests:
 ```bash
