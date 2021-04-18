@@ -67,6 +67,9 @@ namespace cSzd
         explicit ChessGame(const std::string_view fenStr);
         // -----------------------------------------------------
 
+        // Load a position (restaring all)
+        void loadPosition(const std::string_view fenStr);
+
         // Add a move to the currently active variant
         void addMove(const ChessMove &m);
 

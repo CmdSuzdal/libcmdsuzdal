@@ -27,6 +27,13 @@ namespace cSzd
     }
     // ---------------------------------------------------------
 
+    // Load a position using a string containing a FEN string
+    void ChessGame::loadPosition(const std::string_view fenStr)
+    {
+        board.loadPosition(fenStr);
+        board.generateLegalMoves(possibleMoves);
+    }
+
     void ChessGame::addMove(const ChessMove &m)
     {
         // do the moves
