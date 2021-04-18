@@ -14,6 +14,7 @@ addons:
     packages:
       - gcc-9
       - g++-9
+      - python3.5    # for gcovr
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
