@@ -8,94 +8,100 @@ using namespace testing;
 namespace cSzd
 {
     // ------------------------------------------------------------------------------
+    void _checkForInitialPosition(const ChessGame &_cg) {
+        ASSERT_EQ(_cg.initialPosition, FENRecord(FENInitialStandardPosition));
+        ASSERT_EQ(_cg.board, ChessBoard());
+        ASSERT_EQ(_cg.board.armies[WhiteArmy].pieces[King], BitBoard({e1}));
+        ASSERT_EQ(_cg.board.armies[WhiteArmy].pieces[Queen], BitBoard({d1}));
+        ASSERT_EQ(_cg.board.armies[WhiteArmy].pieces[Rook], BitBoard({a1, h1}));
+        ASSERT_EQ(_cg.board.armies[WhiteArmy].pieces[Knight], BitBoard({b1, g1}));
+        ASSERT_EQ(_cg.board.armies[WhiteArmy].pieces[Bishop], BitBoard({c1, f1}));
+        ASSERT_EQ(_cg.board.armies[WhiteArmy].pieces[Pawn], BitBoard(RanksBB[r_2]));
+        ASSERT_EQ(_cg.board.armies[BlackArmy].pieces[King], BitBoard({e8}));
+        ASSERT_EQ(_cg.board.armies[BlackArmy].pieces[Queen], BitBoard({d8}));
+        ASSERT_EQ(_cg.board.armies[BlackArmy].pieces[Rook], BitBoard({a8, h8}));
+        ASSERT_EQ(_cg.board.armies[BlackArmy].pieces[Knight], BitBoard({b8, g8}));
+        ASSERT_EQ(_cg.board.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
+        ASSERT_EQ(_cg.board.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
+        ASSERT_EQ(_cg.board.sideToMove, WhiteArmy);
+        ASSERT_EQ(_cg.board.castlingAvailability, BitBoard({c1, g1, c8, g8}));
+        ASSERT_EQ(_cg.board.enPassantTargetSquare, BitBoard(EmptyBB));
+        ASSERT_EQ(_cg.board.halfMoveClock, 0);
+        ASSERT_EQ(_cg.board.fullMoves, 1);
+        ASSERT_TRUE(_cg.board.isValid());
+        ASSERT_FALSE(_cg.board.isCheckMate());
+        ASSERT_FALSE(_cg.board.isStaleMate());
+        ASSERT_FALSE(_cg.board.isDrawnPosition());
+        ASSERT_FALSE(_cg.board.drawnCanBeCalledAndCannotBeRefused());
+        ASSERT_EQ(_cg.possibleMoves.size(), 20);
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, a2, a3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, a2, a4)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, b2, b3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, b2, b4)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, c2, c3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, c2, c4)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, d2, d3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, d2, d4)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, e2, e3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, e2, e4)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, f2, f3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, f2, f4)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, g2, g3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, g2, g4)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, h2, h3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Pawn, h2, h4)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Knight, b1, a3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Knight, b1, c3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Knight, g1, f3)) != _cg.possibleMoves.end());
+        ASSERT_TRUE(find(_cg.possibleMoves.begin(), _cg.possibleMoves.end(), chessMove(Knight, g1, h3)) != _cg.possibleMoves.end());
+    }
+
+
     class AChessGameEngine: public Test {
         public:
             ChessGame cg;
             void checkForInitialPosition() {
-                ASSERT_EQ(cg.board, ChessBoard());
-                ASSERT_EQ(cg.board.armies[WhiteArmy].pieces[King], BitBoard({e1}));
-                ASSERT_EQ(cg.board.armies[WhiteArmy].pieces[Queen], BitBoard({d1}));
-                ASSERT_EQ(cg.board.armies[WhiteArmy].pieces[Rook], BitBoard({a1, h1}));
-                ASSERT_EQ(cg.board.armies[WhiteArmy].pieces[Knight], BitBoard({b1, g1}));
-                ASSERT_EQ(cg.board.armies[WhiteArmy].pieces[Bishop], BitBoard({c1, f1}));
-                ASSERT_EQ(cg.board.armies[WhiteArmy].pieces[Pawn], BitBoard(RanksBB[r_2]));
-                ASSERT_EQ(cg.board.armies[BlackArmy].pieces[King], BitBoard({e8}));
-                ASSERT_EQ(cg.board.armies[BlackArmy].pieces[Queen], BitBoard({d8}));
-                ASSERT_EQ(cg.board.armies[BlackArmy].pieces[Rook], BitBoard({a8, h8}));
-                ASSERT_EQ(cg.board.armies[BlackArmy].pieces[Knight], BitBoard({b8, g8}));
-                ASSERT_EQ(cg.board.armies[BlackArmy].pieces[Bishop], BitBoard({c8, f8}));
-                ASSERT_EQ(cg.board.armies[BlackArmy].pieces[Pawn], BitBoard(RanksBB[r_7]));
-                ASSERT_EQ(cg.board.sideToMove, WhiteArmy);
-                ASSERT_EQ(cg.board.castlingAvailability, BitBoard({c1, g1, c8, g8}));
-                ASSERT_EQ(cg.board.enPassantTargetSquare, BitBoard(EmptyBB));
-                ASSERT_EQ(cg.board.halfMoveClock, 0);
-                ASSERT_EQ(cg.board.fullMoves, 1);
-                ASSERT_TRUE(cg.board.isValid());
-                ASSERT_FALSE(cg.board.isCheckMate());
-                ASSERT_FALSE(cg.board.isStaleMate());
-                ASSERT_FALSE(cg.board.isDrawnPosition());
-                ASSERT_FALSE(cg.board.drawnCanBeCalledAndCannotBeRefused());
-            }
+                _checkForInitialPosition(cg);
+            }//
     };
 
     // ------------------------------------------------------------------------------
     // ChessGame TESTS
     // ------------------------------------------------------------------------------
+
+    // Tests constructors
+    TEST(AConstructorOfAChessGame, GeneratesAChessBoardWithTheInitialPositionAsDefault)
+    {
+        ChessGame cg1;
+        _checkForInitialPosition(cg1);
+    }
+    TEST(AConstructorOfAChessGame, GeneratesAChessBoardWithTheInitialPositionIfSpecifiedWithAFenRecord)
+    {
+        ChessGame cg1{FENRecord(FENInitialStandardPosition)};
+        _checkForInitialPosition(cg1);
+    }
+    TEST(AConstructorOfAChessGame, GeneratesAChessBoardWithTheInitialPositionIfSpecifiedWithAFenString)
+    {
+        ChessGame cg1{FENInitialStandardPosition};
+        _checkForInitialPosition(cg1);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     TEST_F(AChessGameEngine, ContainsAChessBoardWithTheInitialPositionAfterTheDefaultInitialization)
     {
         checkForInitialPosition();
     }
-
-    TEST_F(AChessGameEngine, IsAbleToLoadTheInitialPositionUsingAFenString)
+    TEST_F(AChessGameEngine, IsAbleToLoadTheInitialPositionUsingALoadPositionMethodWithDefaultArgument)
+    {
+        cg.loadPosition();
+        checkForInitialPosition();
+    }
+    TEST_F(AChessGameEngine, IsAbleToLoadTheInitialPositionUsingALoadPositionMethodWithExplicitFenString)
     {
         cg.loadPosition(FENInitialStandardPosition);
         checkForInitialPosition();
     }
 
-    TEST(ChessGameTester, AfterTheDefaultInitializationTheGameHasAFenRecordWithTheInitialPosition)
-    {
-        ChessGame cg;
-        ASSERT_EQ(cg.initialPosition, FENRecord(FENInitialStandardPosition));
-    }
-    TEST(ChessGameTester, AfterTheDefaultInitializationThePossibleMovesAreComputedCorrectly)
-    {
-        ChessGame cg;
-        ASSERT_EQ(cg.possibleMoves.size(), 20);
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, a2, a3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, a2, a4)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, b2, b3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, b2, b4)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, c2, c3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, c2, c4)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, d2, d3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, d2, d4)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, e2, e3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, e2, e4)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, f2, f3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, f2, f4)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, g2, g3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, g2, g4)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, h2, h3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, h2, h4)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, b1, a3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, b1, c3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, g1, f3)) != cg.possibleMoves.end());
-        ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, g1, h3)) != cg.possibleMoves.end());
-    }
-    TEST(ChessGameTester, InitializationUsingAFENRecordOfTheInitialStandardPosition)
-    {
-        ChessGame cg{FENRecord(FENInitialStandardPosition)};
-        ASSERT_EQ(cg.board, ChessBoard());
-        ASSERT_EQ(cg.initialPosition, FENRecord(FENInitialStandardPosition));
-        ASSERT_EQ(cg.possibleMoves.size(), 20);
-    }
-    TEST(ChessGameTester, InitializationUsingAFENStringOfTheInitialStandardPosition)
-    {
-        ChessGame cg{FENInitialStandardPosition};
-        ASSERT_EQ(cg.board, ChessBoard());
-        ASSERT_EQ(cg.initialPosition, FENRecord(FENInitialStandardPosition));
-        ASSERT_EQ(cg.possibleMoves.size(), 20);
-    }
     TEST(ChessGameTester, InitializationUsingAFENStringOfAGenericGameIsOK)
     {
         // https://lichess.org/Y89AL6UG/black#33

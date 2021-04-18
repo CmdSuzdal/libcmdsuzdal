@@ -7,29 +7,22 @@ namespace cSzd
     // --- Constructor(s) --------------------------------------
     ChessGame::ChessGame()
     {
-        // The default constructors of FENRecord and ChessBoard
-        // automatically prepares the initial standard position,
-        // here we have only to prepare the vector of the possible
-        // moves
-        board.generateLegalMoves(possibleMoves);
+        loadPosition();
     }
-    ChessGame::ChessGame(const FENRecord &fen) :
-        initialPosition(fen.fen),
-        board(fen)
+    ChessGame::ChessGame(const FENRecord &fen)
     {
-        board.generateLegalMoves(possibleMoves);
+        loadPosition(fen.fen);
     }
-    ChessGame::ChessGame(const std::string_view fenStr) :
-        initialPosition(fenStr),
-        board(fenStr)
+    ChessGame::ChessGame(const std::string_view fenStr)
     {
-        board.generateLegalMoves(possibleMoves);
+        loadPosition(fenStr);
     }
     // ---------------------------------------------------------
 
     // Load a position using a string containing a FEN string
     void ChessGame::loadPosition(const std::string_view fenStr)
     {
+        initialPosition = FENRecord(fenStr);
         board.loadPosition(fenStr);
         board.generateLegalMoves(possibleMoves);
     }

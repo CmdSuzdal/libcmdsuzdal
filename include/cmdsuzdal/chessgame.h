@@ -68,7 +68,7 @@ namespace cSzd
         // -----------------------------------------------------
 
         // Load a position (restaring all)
-        void loadPosition(const std::string_view fenStr);
+        void loadPosition(const std::string_view fenStr = FENInitialStandardPosition);
 
         // Add a move to the currently active variant
         void addMove(const ChessMove &m);
