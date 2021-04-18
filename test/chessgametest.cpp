@@ -1644,4 +1644,12 @@ namespace cSzd
 
     }
 
+    // ------------------------------------------------------------------------------
+    // Move Generation from long algebraic format function test
+    TEST_F(AChessGameEngine, HasAlgebraicMoveConversionMethodThatReturnsInvalidMoveIfEmptyStringIsPassed)
+    {
+        cg.loadPosition(FENInitialStandardPosition);
+        ASSERT_EQ(cg.checkLongAlgebraicMove(""), InvalidMove);
+    }
+
 } // namespace cSzd

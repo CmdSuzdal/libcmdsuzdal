@@ -88,6 +88,19 @@ namespace cSzd
     }
 
     // ----------------------------------------------------------------------------------
+    // Converts a string with a move in long algebraic notational format to a ChessMove.
+    // This function checks if the move is legal and return the appropriate chessMove
+    // or InvalidMove if the move is not legal or not recognized.
+    // For example, if the string "e2e4" is found, and the chess board is in the initial
+    // position the following move is returned:
+    //     chessMove(Pawn, e2, e4)
+    //
+    ChessMove ChessGame::checkLongAlgebraicMove(const std::string_view nMove) const
+    {
+        return InvalidMove;
+    }
+
+    // ----------------------------------------------------------------------------------
     // Private methods
 
     // -----------------------------------------------------------------

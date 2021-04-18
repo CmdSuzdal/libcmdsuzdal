@@ -78,6 +78,11 @@ namespace cSzd
         // if not legal respect to the current position
         ChessMove checkNotationMove(const std::string_view nMove) const;
 
+        // Check a move in long algebraic notation format, and convert
+        // to ChessMove if valid and legal. Returns InvalidMove
+        // if not legal respect to the current position
+        ChessMove checkLongAlgebraicMove(const std::string_view nMove) const;
+
     private:
         // Pawn move support methods
         ChessMove castlingMoveNotationEvaluationAndConversion(const std::string_view nMove) const;
