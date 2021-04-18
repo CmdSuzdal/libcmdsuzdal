@@ -7,9 +7,14 @@ using namespace testing;
 
 namespace cSzd
 {
-    TEST(ChessGameTester, AfterTheDefaultInitializationTheGameHasAChessBoardWithTheInitialPosition)
+    // ------------------------------------------------------------------------------
+    class AChessGameEngine: public Test {
+        public:
+            ChessGame cg;
+    };
+
+    TEST_F(AChessGameEngine, ContainsAChessBoardWithTheInitialPositionAfterTheDefaultInitialization)
     {
-        ChessGame cg;
         ASSERT_EQ(cg.board, ChessBoard());
         ASSERT_EQ(cg.board.armies[WhiteArmy].pieces[King], BitBoard({e1}));
         ASSERT_EQ(cg.board.armies[WhiteArmy].pieces[Queen], BitBoard({d1}));
