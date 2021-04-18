@@ -1651,5 +1651,10 @@ namespace cSzd
         cg.loadPosition(FENInitialStandardPosition);
         ASSERT_EQ(cg.checkLongAlgebraicMove(""), InvalidMove);
     }
+    TEST_F(AChessGameEngine, HasAlgebraicMoveConversionMethodThatConvert_e2e4_StringTo_pawn_e2_e4_Move)
+    {
+        cg.loadPosition(FENInitialStandardPosition);
+        ASSERT_EQ(cg.checkLongAlgebraicMove("e2e4"), chessMove(Pawn, e2, e4));
+    }
 
 } // namespace cSzd

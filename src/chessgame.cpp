@@ -95,9 +95,28 @@ namespace cSzd
     // position the following move is returned:
     //     chessMove(Pawn, e2, e4)
     //
-    ChessMove ChessGame::checkLongAlgebraicMove(const std::string_view nMove) const
+    ChessMove ChessGame::checkLongAlgebraicMove(const std::string_view laMove) const
     {
-        return InvalidMove;
+        // Long Algebraic move has the format <start_cell><dest_cell>[<p>] where:
+        //   - <start_cell> is the start cell in the classical <file><rank> format
+        //     with <file> in {a, b, c, d, e ,f, g, h} and <rank> in {1, 2, 3, 4, 5, 6, 7, 8}
+        //   - <dest_cell> is the destination cell in the classical <file><rank> format
+        //   - <p> (optional) is the promoted piece type in case of promotion move.
+        //     p is one of:
+        //       - q or Q if promotion to Queen
+        //       - r or R if promotion to Rook
+        //       - b or B if promotion to Bishop
+        //       - n or N if promotion to Knight
+        //
+
+        // If no side has the move, returns InvalidMove regardless of string content
+        if (board.sideToMove == InvalidArmy)
+            return InvalidMove;
+        // String can only have size of 4 or 5 (for promotion move)
+        if ((laMove.size() < 4) || (laMove.size() > 5))
+            return InvalidMove;
+
+        return chessMove(Pawn, e2, e4);
     }
 
     // ----------------------------------------------------------------------------------
