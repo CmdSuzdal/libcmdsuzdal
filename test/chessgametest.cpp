@@ -87,7 +87,7 @@ namespace cSzd
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    TEST_F(AChessGameEngine, ContainsAChessBoardWithTheInitialPositionAfterTheDefaultInitialization)
+    TEST_F(AChessGameEngine, ContainsTheInitialPositionAfterTheDefaultInitialization)
     {
         checkForInitialPosition();
     }
@@ -102,10 +102,10 @@ namespace cSzd
         checkForInitialPosition();
     }
 
-    TEST(ChessGameTester, InitializationUsingAFENStringOfAGenericGameIsOK)
+    TEST_F(AChessGameEngine, LoadsAGenericPositionSpecifiedViaAFenString)
     {
         // https://lichess.org/Y89AL6UG/black#33
-        ChessGame cg{"1r1qr1k1/ppp2ppb/4pn1p/2b5/4P2N/1P4P1/PBn1N1BP/R2QRK2 b - - 3 17"};
+        cg.loadPosition("1r1qr1k1/ppp2ppb/4pn1p/2b5/4P2N/1P4P1/PBn1N1BP/R2QRK2 b - - 3 17");
         ASSERT_EQ(cg.board, ChessBoard("1r1qr1k1/ppp2ppb/4pn1p/2b5/4P2N/1P4P1/PBn1N1BP/R2QRK2 b - - 3 17"));
         ASSERT_EQ(cg.initialPosition, FENRecord("1r1qr1k1/ppp2ppb/4pn1p/2b5/4P2N/1P4P1/PBn1N1BP/R2QRK2 b - - 3 17"));
         ASSERT_EQ(cg.possibleMoves.size(), 48);
@@ -168,9 +168,9 @@ namespace cSzd
         ASSERT_FALSE(cg.board.isDrawnPosition());
         ASSERT_FALSE(cg.board.drawnCanBeCalledAndCannotBeRefused());
     }
-    TEST(ChessGameTester, AfterDefaultInitialization_InsertAValidMove_E2_to_E4)
+    TEST_F(AChessGameEngine, ContainsCorrectPositionAfterDefaultInitializationAndInsertionOfMove_E2_to_E4)
     {
-        ChessGame cg;
+        cg.loadPosition();
         cg.addMove(chessMove(Pawn, e2, e4));
         ASSERT_EQ(cg.board, ChessBoard("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"));
         ASSERT_EQ(cg.possibleMoves.size(), 20);
@@ -211,9 +211,12 @@ namespace cSzd
     // Bd6 9. O-O O-O 10. Qc2 Bb7 11. a3 Rc8 12. Ng5 c5 13. Nxh7 Ng4 14. f4 cxd4 15.
     // exd4 Bc5 16. Be2 Nde5 17. Bxg4 Bxd4+ 18. Kh1 Nxg4 19. Nxf8 f5 20. Ng6 Qf6 21. h3
     // Qxg6 22. Qe2 Qh5 23. Qd3 Be3 0-1
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4)
+    //
+    // N.B.: THE ORDER OF THE FOLLOWING TESTS IS IMPORTANT --- DOES NOT CHANGE IT
+    //
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4)
     {
-        ChessGame cg;
+        //cg.loadPosition();
         ChessMove cm = chessMove(Pawn, d2, d4);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -240,9 +243,9 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, g8, f6)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Knight, g8, h6)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5)
     {
-        ChessGame cg {"rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1"};
+        cg.addMove(chessMove(Pawn, d2, d4));
         ChessMove cm = chessMove(Pawn, d7, d5);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -276,9 +279,10 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Queen, d1, d3)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(King, e1, d2)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4)
     {
-        ChessGame cg {"rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq d6 0 2"};
+        cg.addMove(chessMove(Pawn, d2, d4));
+        cg.addMove(chessMove(Pawn, d7, d5));
         ChessMove cm = chessMove(Pawn, c2, c4);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -313,9 +317,11 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Queen, d8, d6)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(King, e8, d7)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6)
     {
-        ChessGame cg {"rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2"};
+        cg.addMove(chessMove(Pawn, d2, d4));
+        cg.addMove(chessMove(Pawn, d7, d5));
+        cg.addMove(chessMove(Pawn, c2, c4));
         ChessMove cm = chessMove(Pawn, c7, c6);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -352,9 +358,12 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Queen, d1, a4)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(King, e1, d2)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6_Nf3)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6_Nf3)
     {
-        ChessGame cg {"rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3"};
+        cg.addMove(chessMove(Pawn, d2, d4));
+        cg.addMove(chessMove(Pawn, d7, d5));
+        cg.addMove(chessMove(Pawn, c2, c4));
+        cg.addMove(chessMove(Pawn, c7, c6));
         ChessMove cm = chessMove(Knight, g1, f3);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -390,9 +399,13 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Queen, d8, a5)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(King, e8, d7)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6_Nf3_Nf6)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6_Nf3_Nf6)
     {
-        ChessGame cg {"rnbqkbnr/pp2pppp/2p5/3p4/2PP4/5N2/PP2PPPP/RNBQKB1R b KQkq - 1 3"};
+        cg.addMove(chessMove(Pawn, d2, d4));
+        cg.addMove(chessMove(Pawn, d7, d5));
+        cg.addMove(chessMove(Pawn, c2, c4));
+        cg.addMove(chessMove(Pawn, c7, c6));
+        cg.addMove(chessMove(Knight, g1, f3));
         ChessMove cm = chessMove(Knight, g8, f6);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -431,9 +444,14 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(King, e1, d2)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, h1, g1)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6_Nf3_Nf6_Nc3)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6_Nf3_Nf6_Nc3)
     {
-        ChessGame cg {"rnbqkb1r/pp2pppp/2p2n2/3p4/2PP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 2 4"};
+        cg.addMove(chessMove(Pawn, d2, d4));
+        cg.addMove(chessMove(Pawn, d7, d5));
+        cg.addMove(chessMove(Pawn, c2, c4));
+        cg.addMove(chessMove(Pawn, c7, c6));
+        cg.addMove(chessMove(Knight, g1, f3));
+        cg.addMove(chessMove(Knight, g8, f6));
         ChessMove cm = chessMove(Knight, b1, c3);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -471,9 +489,15 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(King, e8, d7)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, h8, g8)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6)
     {
-        ChessGame cg {"rnbqkb1r/pp2pppp/2p2n2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq - 3 4"};
+        cg.addMove(chessMove(Pawn, d2, d4));
+        cg.addMove(chessMove(Pawn, d7, d5));
+        cg.addMove(chessMove(Pawn, c2, c4));
+        cg.addMove(chessMove(Pawn, c7, c6));
+        cg.addMove(chessMove(Knight, g1, f3));
+        cg.addMove(chessMove(Knight, g8, f6));
+        cg.addMove(chessMove(Knight, b1, c3));
         ChessMove cm = chessMove(Pawn, e7, e6);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -515,9 +539,16 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, a1, b1)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, h1, g1)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6_e3)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6_e3)
     {
-        ChessGame cg {"rnbqkb1r/pp3ppp/2p1pn2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 0 5"};
+        cg.addMove(chessMove(Pawn, d2, d4));
+        cg.addMove(chessMove(Pawn, d7, d5));
+        cg.addMove(chessMove(Pawn, c2, c4));
+        cg.addMove(chessMove(Pawn, c7, c6));
+        cg.addMove(chessMove(Knight, g1, f3));
+        cg.addMove(chessMove(Knight, g8, f6));
+        cg.addMove(chessMove(Knight, b1, c3));
+        cg.addMove(chessMove(Pawn, e7, e6));
         ChessMove cm = chessMove(Pawn, e2, e3);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -557,9 +588,17 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(King, e8, e7)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, h8, g8)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6_e3_Nbd7)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6_e3_Nbd7)
     {
-        ChessGame cg {"rnbqkb1r/pp3ppp/2p1pn2/3p4/2PP4/2N1PN2/PP3PPP/R1BQKB1R b KQkq - 0 5"};
+        cg.addMove(chessMove(Pawn, d2, d4));
+        cg.addMove(chessMove(Pawn, d7, d5));
+        cg.addMove(chessMove(Pawn, c2, c4));
+        cg.addMove(chessMove(Pawn, c7, c6));
+        cg.addMove(chessMove(Knight, g1, f3));
+        cg.addMove(chessMove(Knight, g8, f6));
+        cg.addMove(chessMove(Knight, b1, c3));
+        cg.addMove(chessMove(Pawn, e7, e6));
+        cg.addMove(chessMove(Pawn, e2, e3));
         ChessMove cm = chessMove(Knight, b8, d7);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -601,9 +640,9 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, a1, b1)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, h1, g1)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6_e3_Nbd7___00_00)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6_e3_Nbd7___00_00)
     {
-        ChessGame cg {"r1bqk2r/p2n1ppp/2pbpn2/1p6/3P4/2NBPN2/PP3PPP/R1BQK2R w KQkq - 2 9"};
+        cg.loadPosition("r1bqk2r/p2n1ppp/2pbpn2/1p6/3P4/2NBPN2/PP3PPP/R1BQK2R w KQkq - 2 9");
         ChessMove cm = chessMove(King, e1, g1);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), cm) != cg.possibleMoves.end());
         cg.addMove(cm);
@@ -695,9 +734,9 @@ namespace cSzd
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, a1, b1)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Rook, f1, e1)) != cg.possibleMoves.end());
     }
-    TEST(ChessGameTester, GameCheck_AronianAnand_WijkaanZee2013_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6_e3_Nbd7___00_00___Qd3_Be3)
+    TEST_F(AChessGameEngine, ComputeCorrectlyPositionDuringAGame_d4_d5_c4_c6_Nf3_Nf6_Nc3_e6_e3_Nbd7___00_00___Qd3_Be3)
     {
-        ChessGame cg {"2r3k1/pb4p1/4p3/1p3p1q/3b1Pn1/P1N4P/1P2Q1P1/R1B2R1K w - - 2 23"};
+        cg.loadPosition("2r3k1/pb4p1/4p3/1p3p1q/3b1Pn1/P1N4P/1P2Q1P1/R1B2R1K w - - 2 23");
         ASSERT_EQ(cg.possibleMoves.size(), 34);
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, a3, a4)) != cg.possibleMoves.end());
         ASSERT_TRUE(find(cg.possibleMoves.begin(), cg.possibleMoves.end(), chessMove(Pawn, b2, b3)) != cg.possibleMoves.end());
@@ -832,29 +871,29 @@ namespace cSzd
     // ------------------------------------------------------------------------------
     // Move Generation from notation function test
 
-    TEST(ChessGameTester, NotationToMove_EmptyStringGeneratesInvalidMove)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethodThatGeneratesInvalidMoveIfEmptyStringIsPassed)
     {
-        ChessGame cg {FENInitialStandardPosition};
+        cg.loadPosition(FENInitialStandardPosition);
         ASSERT_EQ(cg.checkNotationMove(""), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_FromInitialPosition_e4_Generates_Pawn_e2_e4_Move)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethodThatFromInitialPositionGeneratesGenerates_Pawn_e2_e4_Move_if_e4)
     {
-        ChessGame cg {FENInitialStandardPosition};
+        cg.loadPosition(FENInitialStandardPosition);
         ASSERT_EQ(cg.checkNotationMove("e4"), chessMove(Pawn, e2, e4));
     }
-    TEST(ChessGameTester, NotationToMove_FromInitialPosition_d3_Generates_Pawn_d2_d3_Move)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromInitialPosition_d3_Generates_Pawn_d2_d3_Move)
     {
-        ChessGame cg {FENInitialStandardPosition};
+        cg.loadPosition(FENInitialStandardPosition);
         ASSERT_EQ(cg.checkNotationMove("d3"), chessMove(Pawn, d2, d3));
     }
-    TEST(ChessGameTester, NotationToMove_FromInitialPosition_g1_Generates_InvalidMove)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromInitialPosition_g1_Generates_InvalidMove)
     {
-        ChessGame cg {FENInitialStandardPosition};
+        cg.loadPosition(FENInitialStandardPosition);
         ASSERT_EQ(cg.checkNotationMove("g1"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_WhiteToMove_ConvertPawnMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromASicilianVariantPosition_WhiteToMove_ConvertPawnMoves)
     {
-        ChessGame cg {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R w - - 5 11"};
+        cg.loadPosition("r2q1rk1/1p1nbppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R w - - 5 11");
         ASSERT_EQ(cg.checkNotationMove("f4"), chessMove(Pawn, f3, f4));
         ASSERT_EQ(cg.checkNotationMove("h4"), chessMove(Pawn, h2, h4));
         ASSERT_EQ(cg.checkNotationMove("h3"), chessMove(Pawn, h2, h3));
@@ -862,89 +901,89 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("h3%"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("h3$%&"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_WhiteToMove_ConvertInvalidPawnMove)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromASicilianVariantPosition_WhiteToMove_ConvertInvalidPawnMove)
     {
-        ChessGame cg {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R w - - 5 11"};
+        cg.loadPosition("r2q1rk1/1p1nbppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/2KR1B1R w - - 5 11");
         ASSERT_EQ(cg.checkNotationMove("f5"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("g6"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("e5"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("c3"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_BlackToMove_ConvertPawnMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromASicilianVariantPosition_BlackToMove_ConvertPawnMoves)
     {
-        ChessGame cg {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P1P1/1NN1BP2/PPPQ3P/2KR1B1R b - - 0 11"};
+        cg.loadPosition("r2q1rk1/1p1nbppp/p2pbn2/4p3/4P1P1/1NN1BP2/PPPQ3P/2KR1B1R b - - 0 11");
         ASSERT_EQ(cg.checkNotationMove("d5"), chessMove(Pawn, d6, d5));
         ASSERT_EQ(cg.checkNotationMove("g5"), chessMove(Pawn, g7, g5));
         ASSERT_EQ(cg.checkNotationMove("a5"), chessMove(Pawn, a6, a5));
         ASSERT_EQ(cg.checkNotationMove("b6"), chessMove(Pawn, b7, b6));
         ASSERT_EQ(cg.checkNotationMove("b5"), chessMove(Pawn, b7, b5));
     }
-    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_BlackToMove_ConvertInvalidPawnMove)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromASicilianVariantPosition_BlackToMove_ConvertInvalidPawnMove)
     {
-        ChessGame cg {"r2q1rk1/1p1nbppp/p2pbn2/4p3/4P1P1/1NN1BP2/PPPQ3P/2KR1B1R b - - 0 11"};
+        cg.loadPosition("r2q1rk1/1p1nbppp/p2pbn2/4p3/4P1P1/1NN1BP2/PPPQ3P/2KR1B1R b - - 0 11");
         ASSERT_EQ(cg.checkNotationMove("e4"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("a4"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("b7"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("f6"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("f5"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_BlackToMove_Convert00)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromASicilianVariantPosition_BlackToMove_Convert00)
     {
-        ChessGame cg {"rn1qk2r/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/R3KB1R b KQkq - 2 9"};
+        cg.loadPosition("rn1qk2r/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/R3KB1R b KQkq - 2 9");
         // In this position 0-0 is possibile, 0-0-0 is not
         ASSERT_EQ(cg.checkNotationMove("0-0"), chessMove(King, e8, g8));
         ASSERT_EQ(cg.checkNotationMove("00"), chessMove(King, e8, g8));
         ASSERT_EQ(cg.checkNotationMove("0-0-0"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("000"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_FromASicilianVariantPosition_WhiteToMove_Convert000)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromASicilianVariantPosition_WhiteToMove_Convert000)
     {
-        ChessGame cg {"rn1q1rk1/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/R3KB1R w KQ - 3 10"};
+        cg.loadPosition("rn1q1rk1/1p2bppp/p2pbn2/4p3/4P3/1NN1BP2/PPPQ2PP/R3KB1R w KQ - 3 10");
         // In this position 0-0-0 is possibile, 0-0 is not
         ASSERT_EQ(cg.checkNotationMove("0-0"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("00"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("0-0-0"), chessMove(King, e1, c1));
         ASSERT_EQ(cg.checkNotationMove("000"), chessMove(King, e1, c1));
     }
-    TEST(ChessGameTester, NotationToMove_FromAnItalianGame_WhiteToMove_Convert00_and000)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromAnItalianGame_WhiteToMove_Convert00_and000)
     {
-        ChessGame cg {"r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/R3K2R w KQkq - 0 9"};
+        cg.loadPosition("r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/R3K2R w KQkq - 0 9");
         // In this position both 0-0 and 0-0-0 are possibile
         ASSERT_EQ(cg.checkNotationMove("0-0"), chessMove(King, e1, g1));
         ASSERT_EQ(cg.checkNotationMove("00"), chessMove(King, e1, g1));
         ASSERT_EQ(cg.checkNotationMove("0-0-0"), chessMove(King, e1, c1));
         ASSERT_EQ(cg.checkNotationMove("000"), chessMove(King, e1, c1));
     }
-    TEST(ChessGameTester, NotationToMove_FromAnItalianGame_BlackToMove_Convert00_and000)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromAnItalianGame_BlackToMove_Convert00_and000)
     {
-        ChessGame cg {"r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/2KR3R b kq - 1 9"};
+        cg.loadPosition("r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/2KR3R b kq - 1 9");
         // In this position both 0-0 and 0-0-0 are possibile
         ASSERT_EQ(cg.checkNotationMove("0-0"), chessMove(King, e8, g8));
         ASSERT_EQ(cg.checkNotationMove("00"), chessMove(King, e8, g8));
         ASSERT_EQ(cg.checkNotationMove("0-0-0"), chessMove(King, e8, c8));
         ASSERT_EQ(cg.checkNotationMove("000"), chessMove(King, e8, c8));
     }
-    TEST(ChessGameTester, NotationToMove_FromAnItalianGame_WhiteToMove_PositionNotValidForCastling)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromAnItalianGame_WhiteToMove_PositionNotValidForCastling)
     {
-        ChessGame cg {"r4rk1/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/2KR3R w - - 2 10"};
+        cg.loadPosition("r4rk1/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/2KR3R w - - 2 10");
         // In this position no castling is possibile
         ASSERT_EQ(cg.checkNotationMove("0-0")  , InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("00")   , InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("0-0-0"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("000")  , InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_FromAnItalianGame_BlackToMove_PositionNotValidForCastling)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_FromAnItalianGame_BlackToMove_PositionNotValidForCastling)
     {
-        ChessGame cg {"r4rk1/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/P1NP1N2/1PPQ1PPP/2KR3R b - - 0 10"};
+        cg.loadPosition("r4rk1/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/P1NP1N2/1PPQ1PPP/2KR3R b - - 0 10");
         // In this position no castling is possibile
         ASSERT_EQ(cg.checkNotationMove("0-0")  , InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("00")   , InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("0-0-0"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("000")  , InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_ManageInvalidCastlingMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ManageInvalidCastlingMoves)
     {
-        ChessGame cg {"r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/R3K2R w KQkq - 0 9"};
+        cg.loadPosition("r3k2r/ppp2ppp/3p1q2/n1b1p3/2B1P1b1/2NP1N2/PPPQ1PPP/R3K2R w KQkq - 0 9");
         // In this position both 0-0 and 0-0-0 are possibile
         ASSERT_EQ(cg.checkNotationMove("0x0")  , InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("0-1-0"), InvalidMove);
@@ -952,9 +991,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("0-00") , InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("0 0 0"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_ConvertWhitePromotionWithNoCapture_AndOtherInvalidExamples)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertWhitePromotionWithNoCapture_AndOtherInvalidExamples)
     {
-        ChessGame cg {"8/1P2P3/6k1/8/2K5/8/8/8 w - - 0 1"};
+        cg.loadPosition("8/1P2P3/6k1/8/2K5/8/8/8 w - - 0 1");
         // In this position promotion of b7 and e7 pawns is possible
         // Correct notation moves are for example "b8=Q" and "e8=N"
         ASSERT_EQ(cg.checkNotationMove("b8=Q"), chessMove(Pawn, b7, b8, InvalidPiece, Queen));
@@ -978,9 +1017,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("b8=Q|||"), InvalidMove);
 
     }
-    TEST(ChessGameTester, NotationToMove_ConvertBlackPromotionWithNoCapture_AndOtherInvalidExamples)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertBlackPromotionWithNoCapture_AndOtherInvalidExamples)
     {
-        ChessGame cg {"8/8/6k1/8/2K5/8/2p4p/8 b - - 0 1"};
+        cg.loadPosition("8/8/6k1/8/2K5/8/2p4p/8 b - - 0 1");
         // In this position promotion of c2 and h2 pawns is possible
         // Correct notation moves are for example "c1=Q" and "h1=N"
         ASSERT_EQ(cg.checkNotationMove("c1=Q"), chessMove(Pawn, c2, c1, InvalidPiece, Queen));
@@ -999,10 +1038,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("c1Q="), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("x1=Q"), InvalidMove);
     }
-
-    TEST(ChessGameTester, NotationToMove_ConvertWhitePromotionWithCapture_AndOtherInvalidExamples)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertWhitePromotionWithCapture_AndOtherInvalidExamples)
     {
-        ChessGame cg {"2q1b3/1P2P3/6k1/8/3K4/8/8/8 w - - 0 1"};
+        cg.loadPosition("2q1b3/1P2P3/6k1/8/3K4/8/8/8 w - - 0 1");
         // In this position promotion of b7 pawn is possible
         // Correct notation moves are for example "b8=Q" or "bxc8=Q"
         ASSERT_EQ(cg.checkNotationMove("b8=Q"), chessMove(Pawn, b7, b8, InvalidPiece, Queen));
@@ -1019,9 +1057,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("b8=r"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("c8=R"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_ConvertBlackPromotionWithCapture_AndOtherInvalidExamples)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertBlackPromotionWithCapture_AndOtherInvalidExamples)
     {
-        ChessGame cg {"8/8/6k1/8/2K5/6p1/2p4p/3Q3B b - - 0 1"};
+        cg.loadPosition("8/8/6k1/8/2K5/6p1/2p4p/3Q3B b - - 0 1");
         // In this position promotion of c2 pawn is possible
         // Correct notation moves are for example "c1=Q" or "cxd1=Q"
         ASSERT_EQ(cg.checkNotationMove("c1=Q"), chessMove(Pawn, c2, c1, InvalidPiece, Queen));
@@ -1039,9 +1077,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("cxD1=N"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("cxd0=B"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_ConvertWhitePawnMoveWithCapture_AndExamplesOfInvalidMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertWhitePawnMoveWithCapture_AndExamplesOfInvalidMoves)
     {
-        ChessGame cg {"8/1k6/4p3/1p1p4/P1P5/5K2/8/8 w - - 0 1"};
+        cg.loadPosition("8/1k6/4p3/1p1p4/P1P5/5K2/8/8 w - - 0 1");
         // In this position the following white moves with no capture are possible:
         ASSERT_EQ(cg.checkNotationMove("a5"), chessMove(Pawn, a4, a5));
         ASSERT_EQ(cg.checkNotationMove("c5"), chessMove(Pawn, c4, c5));
@@ -1064,9 +1102,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("cxd5$$"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("cxd5$$£?°°°"), InvalidMove);
     }
-    TEST(ChessGameTester, NotationToMove_ConvertBlackPawnMoveWithCapture_AndExamplesOfInvalidMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertBlackPawnMoveWithCapture_AndExamplesOfInvalidMoves)
     {
-        ChessGame cg {"8/1k6/4p3/1p1p4/P1P5/5K2/8/8 b - - 0 1"};
+        cg.loadPosition("8/1k6/4p3/1p1p4/P1P5/5K2/8/8 b - - 0 1");
         // In this position the following black moves with no capture are possible:
         ASSERT_EQ(cg.checkNotationMove("b4"), chessMove(Pawn, b5, b4));
         ASSERT_EQ(cg.checkNotationMove("d4"), chessMove(Pawn, d5, d4));
@@ -1083,9 +1121,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("bx_8"), InvalidMove);
     }
 
-    TEST(ChessGameTester, NotationToMove_ConvertWhitePawnMoveWithCaptureComplex)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertWhitePawnMoveWithCaptureComplex)
     {
-        ChessGame cg {"8/8/k2p2q1/1p1pRP1n/P1B3P1/8/8/6K1 w - - 0 1"};
+        cg.loadPosition("8/8/k2p2q1/1p1pRP1n/P1B3P1/8/8/6K1 w - - 0 1");
         // In this position the following white moves with no capture are possible:
         ASSERT_EQ(cg.checkNotationMove("a5"), chessMove(Pawn, a4, a5));
         ASSERT_EQ(cg.checkNotationMove("f6"), chessMove(Pawn, f5, f6));
@@ -1099,18 +1137,18 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("gxh5"), InvalidMove);
 
         // If we change sligtly the position, also the latter move becames valid
-        ChessGame cg1 {"8/8/k2p2q1/1p1pRP1n/P1B3P1/8/7K/8 w - - 0 1"};
-        ASSERT_EQ(cg1.checkNotationMove("a5"), chessMove(Pawn, a4, a5));
-        ASSERT_EQ(cg1.checkNotationMove("f6"), chessMove(Pawn, f5, f6));
-        ASSERT_EQ(cg1.checkNotationMove("g5"), chessMove(Pawn, g4, g5));
-        ASSERT_EQ(cg1.checkNotationMove("axb5"), chessMove(Pawn, a4, b5, Pawn));
-        ASSERT_EQ(cg1.checkNotationMove("fxg6"), chessMove(Pawn, f5, g6, Queen));
-        ASSERT_EQ(cg1.checkNotationMove("gxh5"), chessMove(Pawn, g4, h5, Knight));
+        cg.loadPosition("8/8/k2p2q1/1p1pRP1n/P1B3P1/8/7K/8 w - - 0 1");
+        ASSERT_EQ(cg.checkNotationMove("a5"), chessMove(Pawn, a4, a5));
+        ASSERT_EQ(cg.checkNotationMove("f6"), chessMove(Pawn, f5, f6));
+        ASSERT_EQ(cg.checkNotationMove("g5"), chessMove(Pawn, g4, g5));
+        ASSERT_EQ(cg.checkNotationMove("axb5"), chessMove(Pawn, a4, b5, Pawn));
+        ASSERT_EQ(cg.checkNotationMove("fxg6"), chessMove(Pawn, f5, g6, Queen));
+        ASSERT_EQ(cg.checkNotationMove("gxh5"), chessMove(Pawn, g4, h5, Knight));
 
     }
-    TEST(ChessGameTester, NotationToMove_ConvertBlackPawnMoveWithCaptureComplex)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertBlackPawnMoveWithCaptureComplex)
     {
-        ChessGame cg {"8/8/k2p2q1/1p1pRP1n/P1B3P1/8/8/6K1 b - - 0 1"};
+        cg.loadPosition("8/8/k2p2q1/1p1pRP1n/P1B3P1/8/8/6K1 b - - 0 1");
         // In this position the following white moves with no capture are possible:
         ASSERT_EQ(cg.checkNotationMove("d4"), chessMove(Pawn, d5, d4));
 
@@ -1123,19 +1161,19 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("bxa4"), InvalidMove);
 
         // If we change sligtly the position, also the latter moves becames valid
-        ChessGame cg1 {"8/k7/3p2q1/1p1pRP1n/P1B3P1/8/6K1/8 b - - 0 1"};
-        ASSERT_EQ(cg1.checkNotationMove("d4"), chessMove(Pawn, d5, d4));
-        ASSERT_EQ(cg1.checkNotationMove("bxc4"), chessMove(Pawn, b5, c4, Bishop));
-        ASSERT_EQ(cg1.checkNotationMove("dxe5"), chessMove(Pawn, d6, e5, Rook));
-        ASSERT_EQ(cg1.checkNotationMove("b4"), chessMove(Pawn, b5, b4));
-        ASSERT_EQ(cg1.checkNotationMove("bxa4"), chessMove(Pawn, b5, a4, Pawn));
+        cg.loadPosition("8/k7/3p2q1/1p1pRP1n/P1B3P1/8/6K1/8 b - - 0 1");
+        ASSERT_EQ(cg.checkNotationMove("d4"), chessMove(Pawn, d5, d4));
+        ASSERT_EQ(cg.checkNotationMove("bxc4"), chessMove(Pawn, b5, c4, Bishop));
+        ASSERT_EQ(cg.checkNotationMove("dxe5"), chessMove(Pawn, d6, e5, Rook));
+        ASSERT_EQ(cg.checkNotationMove("b4"), chessMove(Pawn, b5, b4));
+        ASSERT_EQ(cg.checkNotationMove("bxa4"), chessMove(Pawn, b5, a4, Pawn));
     }
 
 
     // For coverage...
-    TEST(ChessGameTester, NotationToMove_ConvertSimpleBlackPromotionWithCapture_WhenInvalidArmy)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_ConvertSimpleBlackPromotionWithCapture_WhenInvalidArmy)
     {
-        ChessGame cg {"8/8/8/8/8/8/8/8 w - - 0 1"};
+        cg.loadPosition("8/8/8/8/8/8/8/8 w - - 0 1");
         cg.board.sideToMove = InvalidArmy;
         ASSERT_EQ(cg.checkNotationMove("c1=Q"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("cxd1=Q"), InvalidMove);
@@ -1143,22 +1181,22 @@ namespace cSzd
     }
 
     // Piece Movements
-    TEST(ChessGameTester, NotationToMove_InitialPositionWhiteKnightMovements)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_InitialPositionWhiteKnightMovements)
     {
-        ChessGame cg {FENInitialStandardPosition};
+        cg.loadPosition(FENInitialStandardPosition);
         ASSERT_EQ(cg.checkNotationMove("Nf3"), chessMove(Knight, g1, f3));
         ASSERT_EQ(cg.checkNotationMove("Nc3"), chessMove(Knight, b1, c3));
     }
-    TEST(ChessGameTester, NotationToMove_InitialPositionBlackKnightMovements)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_InitialPositionBlackKnightMovements)
     {
-        ChessGame cg {FENInitialStandardPosition};
+        cg.loadPosition(FENInitialStandardPosition);
         cg.addMove(chessMove(Pawn, e2, e4));
         ASSERT_EQ(cg.checkNotationMove("Nf6"), chessMove(Knight, g8, f6));
         ASSERT_EQ(cg.checkNotationMove("Nc6"), chessMove(Knight, b8, c6));
     }
-    TEST(ChessGameTester, NotationToMove_InitialPositionWhiteAndBlackInvalidMovement)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_InitialPositionWhiteAndBlackInvalidMovement)
     {
-        ChessGame cg {FENInitialStandardPosition};
+        cg.loadPosition(FENInitialStandardPosition);
         ASSERT_EQ(cg.checkNotationMove("Nf4"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("Nc6"), InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("Qd3"), InvalidMove);
@@ -1174,9 +1212,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Bc4"), InvalidMove);
     }
 
-    TEST(ChessGameTester, NotationToMove_MiddleGamePositionWhitePiecesMovements)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MiddleGamePositionWhitePiecesMovements)
     {
-        ChessGame cg {"r1bq1rk1/ppp1n1bp/3p1np1/3PppN1/1PP1P3/2N5/P3BPPP/R1BQR1K1 w - - 2 12"};
+        cg.loadPosition("r1bq1rk1/ppp1n1bp/3p1np1/3PppN1/1PP1P3/2N5/P3BPPP/R1BQR1K1 w - - 2 12");
         ASSERT_EQ(cg.checkNotationMove("Na4"), chessMove(Knight, c3, a4));
         ASSERT_EQ(cg.checkNotationMove("Nb5"), chessMove(Knight, c3, b5));
         ASSERT_EQ(cg.checkNotationMove("Nb1"), chessMove(Knight, c3, b1));
@@ -1231,9 +1269,9 @@ namespace cSzd
 
     }
 
-    TEST(ChessGameTester, NotationToMove_MiddleGamePositionBlackPiecesMovements)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MiddleGamePositionBlackPiecesMovements)
     {
-        ChessGame cg {"r2Q1rk1/pp2n1b1/4P1pp/2B1p3/1P2p3/8/P4PPP/R3R1K1 b - - 0 20"};
+        cg.loadPosition("r2Q1rk1/pp2n1b1/4P1pp/2B1p3/1P2p3/8/P4PPP/R3R1K1 b - - 0 20");
         ASSERT_EQ(cg.checkNotationMove("Kh8"), chessMove(King, g8, h8));
         ASSERT_EQ(cg.checkNotationMove("Kh7"), chessMove(King, g8, h7));
         ASSERT_EQ(cg.checkNotationMove("Nd5"), chessMove(Knight, e7, d5));
@@ -1261,9 +1299,9 @@ namespace cSzd
         //ASSERT_EQ(cg.checkNotationMove("Rfxd8"), chessMove(Rook, f8, d8, Queen));
     }
 
-    TEST(ChessGameTester, NotationToMove_WhiteToMove_PiecesCaptureMovements)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_WhiteToMove_PiecesCaptureMovements)
     {
-        ChessGame cg {"4rbk1/p1qn1ppp/b1p1p3/8/P1pPP3/2B1N1P1/2Q2P1P/1r2RBK1 w - - 0 24"};
+        cg.loadPosition("4rbk1/p1qn1ppp/b1p1p3/8/P1pPP3/2B1N1P1/2Q2P1P/1r2RBK1 w - - 0 24");
         ASSERT_EQ(cg.checkNotationMove("Rxb1"), chessMove(Rook, e1, b1, Rook));
         ASSERT_EQ(cg.checkNotationMove("Qxb1"), chessMove(Queen, c2, b1, Rook));
         ASSERT_EQ(cg.checkNotationMove("Nxc4"), chessMove(Knight, e3, c4, Pawn));
@@ -1284,9 +1322,9 @@ namespace cSzd
 
     }
 
-    TEST(ChessGameTester, NotationToMove_BlackToMove_PiecesCaptureMovements)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_BlackToMove_PiecesCaptureMovements)
     {
-        ChessGame cg {"5bk1/p4ppp/q3pn2/2p5/P1NPP3/4BPP1/2Q4P/6K1 b - - 1 31"};
+        cg.loadPosition("5bk1/p4ppp/q3pn2/2p5/P1NPP3/4BPP1/2Q4P/6K1 b - - 1 31");
         ASSERT_EQ(cg.checkNotationMove("Qxc4"), chessMove(Queen, a6, c4, Knight));
         ASSERT_EQ(cg.checkNotationMove("Qxa4"), chessMove(Queen, a6, a4, Pawn));
         ASSERT_EQ(cg.checkNotationMove("Nxe4"), chessMove(Knight, f6, e4, Pawn));
@@ -1297,9 +1335,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Kxc4"), InvalidMove);
     }
 
-    TEST(ChessGameTester, NotationToMove_WhiteToMove_AmbiguousPiecesMovements_File)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_WhiteToMove_AmbiguousPiecesMovements_File)
     {
-        ChessGame cg {"8/6k1/5p2/1P2p3/P7/8/1KN3N1/8 w - - 0 1"};
+        cg.loadPosition("8/6k1/5p2/1P2p3/P7/8/1KN3N1/8 w - - 0 1");
         // correct unambiguous moves
         ASSERT_EQ(cg.checkNotationMove("Na1"), chessMove(Knight, c2, a1));
         ASSERT_EQ(cg.checkNotationMove("Na3"), chessMove(Knight, c2, a3));
@@ -1319,9 +1357,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Nge1"), chessMove(Knight, g2, e1));
     }
 
-    TEST(ChessGameTester, NotationToMove_BlackToMove_AmbiguousPiecesMovements_Rank)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_BlackToMove_AmbiguousPiecesMovements_Rank)
     {
-        ChessGame cg {"8/3r2k1/5p2/1P2p3/P7/8/1K6/3r4 b - - 0 1"};
+        cg.loadPosition("8/3r2k1/5p2/1P2p3/P7/8/1K6/3r4 b - - 0 1");
         // correct unambiguous moves
         ASSERT_EQ(cg.checkNotationMove("Ra7"), chessMove(Rook, d7, a7));
         ASSERT_EQ(cg.checkNotationMove("Rb7"), chessMove(Rook, d7, b7));
@@ -1361,9 +1399,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("R1d2"), chessMove(Rook, d1, d2));
     }
 
-    TEST(ChessGameTester, NotationToMove_BlackToMove_AmbiguousPiecesMovementsWithCapture_File)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_BlackToMove_AmbiguousPiecesMovementsWithCapture_File)
     {
-        ChessGame cg {"6bk/r4Q1r/3n4/8/2R1P3/7P/1K1n4/8 b - - 0 1"};
+        cg.loadPosition("6bk/r4Q1r/3n4/8/2R1P3/7P/1K1n4/8 b - - 0 1");
 
         // Correct unambiguous moves
         ASSERT_EQ(cg.checkNotationMove("Bxf7"), chessMove(Bishop, g8, f7, Queen));
@@ -1417,9 +1455,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Nd6xe4"), InvalidMove);
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_Checks)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_Checks)
     {
-        ChessGame cg {"3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1"};
+        cg.loadPosition("3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1");
 
         // No check moves
         ASSERT_EQ(cg.checkNotationMove("Qa4"), chessMove(Queen, g4, a4));
@@ -1440,7 +1478,6 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Qh3"), chessMove(Queen, g4, h3));
         ASSERT_EQ(cg.checkNotationMove("Qf5"), chessMove(Queen, g4, f5));
         ASSERT_EQ(cg.checkNotationMove("Qe6"), chessMove(Queen, g4, e6));
-
 
         // Checks
         // We accept also the check move without the check annotation
@@ -1468,59 +1505,59 @@ namespace cSzd
 
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_BadMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_BadMoves)
     {
-        ChessGame cg {"rnb1k2r/pp3ppp/4p3/q2p4/1bPP4/2NB4/PPQN1PPP/R3K2R b KQkq - 0 10"};
+        cg.loadPosition("rnb1k2r/pp3ppp/4p3/q2p4/1bPP4/2NB4/PPQN1PPP/R3K2R b KQkq - 0 10");
 
         ASSERT_EQ(cg.checkNotationMove("dxc4"), chessMove(Pawn, d5, c4, Pawn));
         ASSERT_EQ(cg.checkNotationMove("dxc4?"), chessMove(Pawn, d5, c4, Pawn));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_GoodMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_GoodMoves)
     {
-        ChessGame cg {"r1b1k2r/pp3ppp/2n1p3/6q1/2NP4/2PB4/P1Q2PPP/R4RK1 w kq - 1 14"};
+        cg.loadPosition("r1b1k2r/pp3ppp/2n1p3/6q1/2NP4/2PB4/P1Q2PPP/R4RK1 w kq - 1 14");
         ASSERT_EQ(cg.checkNotationMove("f4"), chessMove(Pawn, f2, f4));
         ASSERT_EQ(cg.checkNotationMove("f4!"), chessMove(Pawn, f2, f4));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_BrilliantMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_BrilliantMoves)
     {
         // Planinc - Velimirovic , Jugoslavia 1975
-        ChessGame cg {"1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16"};
+        cg.loadPosition("1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16");
         ASSERT_EQ(cg.checkNotationMove("d5"), chessMove(Pawn, d6, d5));
         ASSERT_EQ(cg.checkNotationMove("d5!"), chessMove(Pawn, d6, d5));
         ASSERT_EQ(cg.checkNotationMove("d5!!"), chessMove(Pawn, d6, d5));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_InterestingAndQuestionableMoves)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_InterestingAndQuestionableMoves)
     {
-        ChessGame cg {"rnbqkb1r/pppppppp/5n2/8/4P3/2N5/PPPP1PPP/R1BQKBNR b KQkq - 2 2"};
+        cg.loadPosition("rnbqkb1r/pppppppp/5n2/8/4P3/2N5/PPPP1PPP/R1BQKBNR b KQkq - 2 2");
         ASSERT_EQ(cg.checkNotationMove("e6"), chessMove(Pawn, e7, e6));
         ASSERT_EQ(cg.checkNotationMove("e6!?"), chessMove(Pawn, e7, e6));
         ASSERT_EQ(cg.checkNotationMove("e6?!"), chessMove(Pawn, e7, e6));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_Blunder)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_Blunder)
     {
-        ChessGame cg {"rn1qkb1r/pQ2pppp/1np5/4Nb2/2BP4/4P3/PP3PPP/RNB1K2R b KQkq - 2 8"};
+        cg.loadPosition("rn1qkb1r/pQ2pppp/1np5/4Nb2/2BP4/4P3/PP3PPP/RNB1K2R b KQkq - 2 8");
         ASSERT_EQ(cg.checkNotationMove("Bc8??"),   chessMove(Bishop, f5, c8));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_CompositeAnnotation)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_CompositeAnnotation)
     {
-        ChessGame cg {"r6r/p4kbp/bq3np1/2pp2B1/6Q1/5N2/PPP2PPP/1R2R1K1 w - - 0 17"};
+        cg.loadPosition("r6r/p4kbp/bq3np1/2pp2B1/6Q1/5N2/PPP2PPP/1R2R1K1 w - - 0 17");
         ASSERT_EQ(cg.checkNotationMove("Ne5+"),   chessMove(Knight, f3, e5));
         ASSERT_EQ(cg.checkNotationMove("Ne5+?"),  chessMove(Knight, f3, e5));
         ASSERT_EQ(cg.checkNotationMove("Ne5+??"), chessMove(Knight, f3, e5));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_CheckmatesWithAdditionalAnnotations)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_CheckmatesWithAdditionalAnnotations)
     {
         // Additional annotation on checkmates are superfluous if not wrong...
         // but we accect them (for the moment)
 
         // checkmate (in one...) cannot be a good/brilliant move
-        ChessGame cg {"3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1"};
+        cg.loadPosition("3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1");
         ASSERT_EQ(cg.checkNotationMove("Qd7#!"), chessMove(Queen, g4, d7));
         ASSERT_EQ(cg.checkNotationMove("Qd7#!!"), chessMove(Queen, g4, d7));
 
@@ -1533,9 +1570,9 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Qd7#?!"), chessMove(Queen, g4, d7));
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_InvalidAnnotations)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_InvalidAnnotations)
     {
-        ChessGame cg {"r6r/p4kbp/bq3np1/2pp2B1/6Q1/5N2/PPP2PPP/1R2R1K1 w - - 0 17"};
+        cg.loadPosition("r6r/p4kbp/bq3np1/2pp2B1/6Q1/5N2/PPP2PPP/1R2R1K1 w - - 0 17");
         ASSERT_EQ(cg.checkNotationMove(""),   InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("Ne5?+"),  InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("Ne5??+"),  InvalidMove);
@@ -1544,50 +1581,50 @@ namespace cSzd
         ASSERT_EQ(cg.checkNotationMove("Ne5?!+"),  InvalidMove);
         ASSERT_EQ(cg.checkNotationMove("Ne5!?+"),  InvalidMove);
 
-        ChessGame cgWithMate {"3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1"};
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7!#"),  InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8!#"),  InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7!!#"), InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8!!#"), InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7?#"),  InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8?#"),  InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7??#"), InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8??#"), InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qd7!?#"), InvalidMove);
-        ASSERT_EQ(cgWithMate.checkNotationMove("Qg8?!#"), InvalidMove);
+        cg.loadPosition("3k4/8/3K4/8/6Q1/8/8/8 w - - 0 1");
+        ASSERT_EQ(cg.checkNotationMove("Qd7!#"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qg8!#"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qd7!!#"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qg8!!#"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qd7?#"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qg8?#"),  InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qd7??#"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qg8??#"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qd7!?#"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Qg8?!#"), InvalidMove);
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_OtherInvalidCases)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_OtherInvalidCases)
     {
         // Too much '!'
-        ChessGame cg {"1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16"};
+        cg.loadPosition("1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16");
         ASSERT_EQ(cg.checkNotationMove("d5!!!"), InvalidMove);
 
         // Too much '?'
-        ChessGame cg1 {"1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16"};
-        ASSERT_EQ(cg1.checkNotationMove("Bg4??"), chessMove(Bishop, d7, g4));
-        ASSERT_EQ(cg1.checkNotationMove("Bg4???"), InvalidMove);
+        cg.loadPosition("1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16");
+        ASSERT_EQ(cg.checkNotationMove("Bg4??"), chessMove(Bishop, d7, g4));
+        ASSERT_EQ(cg.checkNotationMove("Bg4???"), InvalidMove);
 
         // Too much '?' combined with '!'
-        ASSERT_EQ(cg1.checkNotationMove("Bg4!??"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4?!?"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4!??"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4?!?"), InvalidMove);
 
         // Note that '??!' is a trigraph
-        ASSERT_EQ(cg1.checkNotationMove("Bg4\?\?!"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4?!!"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4!?!"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4!!?"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4!!??"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4\?\?!!"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4?!?!"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4!?!?"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4!\?\?!"), InvalidMove);
-        ASSERT_EQ(cg1.checkNotationMove("Bg4?!!?"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4\?\?!"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4?!!"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4!?!"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4!!?"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4!!??"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4\?\?!!"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4?!?!"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4!?!?"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4!\?\?!"), InvalidMove);
+        ASSERT_EQ(cg.checkNotationMove("Bg4?!!?"), InvalidMove);
     }
 
-    TEST(ChessGameTester, NotationToMove_MovesWithAnnotations_RefusesFalseCheckAndCheckMateAnnotations)
+    TEST_F(AChessGameEngine, HasNotationToMoveMethod_MovesWithAnnotations_RefusesFalseCheckAndCheckMateAnnotations)
     {
-        ChessGame cg {"1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16"};
+        cg.loadPosition("1q3rk1/1p1bppbp/r2p1np1/1N6/4P3/1PN1BP2/1PP1Q1PP/2KR3R b - - 0 16");
 
         ASSERT_EQ(cg.checkNotationMove("Nxe4"), chessMove(Knight, f6, e4, Pawn));
         ASSERT_EQ(cg.checkNotationMove("Bxb5"), chessMove(Bishop, d7, b5, Knight));
