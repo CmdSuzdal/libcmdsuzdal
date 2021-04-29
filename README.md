@@ -11,7 +11,13 @@ Developed using a TDD approach.
 
 ## How To build
 
-Command Line (basic) instructions:
+Prerequisites: when test coverage computation is enabled, default configuration make use of [fastcov]. Install it using the following command:
+
+```bash
+sudo pip3 install fastcov
+```
+
+Command Line (basic) build instructions:
 
 First of all, clone and build the project:
 
@@ -55,3 +61,4 @@ cmake --build . --target install
 
 [Commander Suzdal]: https://www.fadedpage.com/showbook.php?pid=20170826
 [Ninja]: https://ninja-build.org/
+[fastcov]: https://github.com/RPGillespie6/fastcov
